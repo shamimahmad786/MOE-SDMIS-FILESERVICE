@@ -11,7 +11,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>MOE-SDMIS-FILESERVICE</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>MOE-SDMIS-FILESERVICE</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -26,7 +26,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
+	<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -48,9 +52,27 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi</artifactId>
+    <version>5.2.3</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi-ooxml</artifactId>
+    <version>5.2.3</version>
+</dependency>
+	
+<dependency>
+  <groupId>com.vladmihalcea</groupId>
+  <artifactId>hibernate-types-52</artifactId>
+  <!-- <version>2.9.11</version> -->
+  <version>2.17.3</version>
+</dependency>
 	</dependencies>
 
 	<build>
+		<finalName>MOE-SDMIS-FILESERVICE</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

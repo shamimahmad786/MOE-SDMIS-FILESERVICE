@@ -1,39 +1,45 @@
 package com.moe.sdmis.fileservice.validation;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Column;
 
 import org.springframework.stereotype.Component;
 
+import com.moe.sdmis.fileservice.modal.CommonBean;
 import com.moe.sdmis.fileservice.modal.StudentTempTable;
 
 @Component
 public class CustomFxcelValidator {
 
 //	String numberRegex ="^\\d+\\.\\d+$";
-	String numberRegex ="^[0-9]{0,9}$";
+	String numberRegex ="^[0-9]{0,12}$";
 	String alphanumericRegax= "^[a-zA-Z0-9]([\\w -,]*[a-zA-Z0-9])?$";
 	String jsonValidation="\"([^\"]+)\":[\"]*([^,^\\}^\"]+)";
 	String stringNonSpecialRegax="^([A-Za-z]+)(\\s[A-Za-z]+)*\\s?$";
 	String mobileRegax="^[789]\\d{9}$";
 	String emaiRegax="^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$";
 	String adharRegex = "^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$";   
-	String dateRegax="(0[1-9]|1[0-9]|2[0-9]|3[0-1]|[1-9])/(0[1-9]|1[0-2]|[1-9])/([0-9]{4})";
+	String dateRegax="(0[1-9]|1[0-9]|2[0-9]|3[0-1]|[1-9])-(0[1-9]|1[0-2]|[1-9])-([0-9]{4})";
 	String pinregex = "^[1-9]{1}[0-9]{2}\\s{0,1}[0-9]{3}$"; 
+	String admisionnumericRegax= "^[a-zA-Z0-9]([\\w -,/]*[a-zA-Z0-9])?$";
 	static Integer validationFlag=null;
 	
 	
 	
-	public Map<String, HashMap<String, String>>  validateStudent(StudentTempTable stObj){
+	public Map<String, HashMap<String, String>>  validateStudent(CommonBean stObj){
 		
 		
 //		System.out.println("Date of birth---->"+stObj.getStudentDob());
 		
 		Map<String, HashMap<String, String>> mObject=new LinkedHashMap<String,HashMap<String,String>>();
 		
+		
+		numberValidation(mObject,"udiseCode",checkNullandTrim(stObj.getUdisecode()));
 		numberValidation(mObject,"classId",checkNullandTrim(stObj.getClassId()));
 		numberValidation(mObject,"sectionId",checkNullandTrim(stObj.getSectionId()));
 		stringNonSpecialValidation(mObject,"studentName",checkNullandTrim(stObj.getStudentName()));
@@ -57,7 +63,7 @@ public class CustomFxcelValidator {
 		jsonValidation(mObject,"impairmentType",checkNullandTrim(stObj.getImpairmentType()));
 		numberValidation(mObject,"natIndYn",checkNullandTrim(stObj.getNatIndYn()));
 		numberValidation(mObject,"ooscYn",checkNullandTrim(stObj.getOoscYn()));
-		stringValidation(mObject,"admnNumber",checkNullandTrim(stObj.getAdmnNumber()));
+		admisionNumberValidation(mObject,"admnNumber",checkNullandTrim(stObj.getAdmnNumber()));
 		dateValidation(mObject,"admnStartDate",checkNullandTrim(stObj.getAdmnStartDate()));
 		numberValidation(mObject,"acdemicStream",checkNullandTrim(stObj.getAcdemicStream()));
 		numberValidation(mObject,"enrStatusPy",checkNullandTrim(stObj.getEnrStatusPy()));
@@ -68,6 +74,26 @@ public class CustomFxcelValidator {
 		numberValidation(mObject,"examMarksPy",checkNullandTrim(stObj.getExamMarksPy()));
 		numberValidation(mObject,"attendencePy",checkNullandTrim(stObj.getAttendencePy()));
 		numberValidation(mObject,"acYearId",checkNullandTrim(stObj.getAcYearId()));
+		numberValidation(mObject,"rollNo",checkNullandTrim(stObj.getRollNo()));
+		numberValidation(mObject,"aayBplYn",checkNullandTrim(stObj.getAayBplYn()));
+		stringNonSpecialValidation(mObject,"guardianName",checkNullandTrim(stObj.getGuardianName()));
+		numberValidation(mObject,"uniformFacProvided",checkNullandTrim(stObj.getUniformFacProvided()));
+		numberValidation(mObject,"textBoxFacProvided",checkNullandTrim(stObj.getTextBoxFacProvided()));
+		numberValidation(mObject,"centrlSchlrshpYn",checkNullandTrim(stObj.getCentrlSchlrshpYn()));
+		numberValidation(mObject,"centrlSchlrshpId",checkNullandTrim(stObj.getCentrlSchlrshpId()));
+		numberValidation(mObject,"stateSchlrshpYn",checkNullandTrim(stObj.getStateSchlrshpYn()));
+		numberValidation(mObject,"otherSchlrshpYn",checkNullandTrim(stObj.getOtherSchlrshpYn()));
+		numberValidation(mObject,"schlrshpAmount",checkNullandTrim(stObj.getSchlrshpAmount()));
+		numberValidation(mObject,"facProvidedCwsn",checkNullandTrim(stObj.getFacProvidedCwsn()));
+		numberValidation(mObject,"scrndFrSld",checkNullandTrim(stObj.getScrndFrSld()));
+		numberValidation(mObject,"sldType",checkNullandTrim(stObj.getSldType()));
+		numberValidation(mObject,"scrndFrAsd",checkNullandTrim(stObj.getScrndFrAsd()));
+		numberValidation(mObject,"scrndFrAdhd",checkNullandTrim(stObj.getScrndFrAdhd()));
+		numberValidation(mObject,"isEcActivity",checkNullandTrim(stObj.getIsEcActivity()));
+		
+	
+		
+		
 		
 		
 		return mObject;
@@ -82,7 +108,7 @@ public class CustomFxcelValidator {
 		
 //		System.out.println("number value--->"+value);
 		
-		if(value !=null && value.matches(numberRegex)) {
+		if(value !=null && value.matches(numberRegex) && value !="") {
 			hs.put("status", "1");	
 			
 			if(mapKey.equalsIgnoreCase("examMarksPy")) {
@@ -108,7 +134,7 @@ public class CustomFxcelValidator {
 	public Map<String, HashMap<String, String>> stringValidation(Map<String, HashMap<String, String>> mp,String mapKey, String value){
 		HashMap<String,String> hs=new HashMap<String,String>();
 		hs.put("value", value);
-		if(value !=null && value.matches(alphanumericRegax)) {
+		if(value !=null && value.matches(alphanumericRegax) && value !="") {
 			hs.put("status", "1");	
 		}else {
 			hs.put("status", "0");
@@ -149,7 +175,7 @@ public class CustomFxcelValidator {
 		HashMap<String,String> hs=new HashMap<String,String>();
 		hs.put("value", value);
 		
-		if(value !=null && value.matches(mobileRegax)) {
+		if(value !=null && value.matches(mobileRegax) && value !="") {
 			hs.put("status", "1");	
 		}else {
 			hs.put("status", "0");
@@ -163,10 +189,13 @@ public class CustomFxcelValidator {
 	
 	public Map<String, HashMap<String, String>> emailValidation(Map<String, HashMap<String, String>> mp,String mapKey, String value){
 		HashMap<String,String> hs=new HashMap<String,String>();
+		
+		System.out.println("email value--->"+value);
 		hs.put("value", value);
-		if(value !=null && value.matches(emaiRegax)) {
+		if(value !=null && value.matches(emaiRegax) && value !="") {
 			hs.put("status", "1");
 		}else {
+			System.out.println("Email Status");
 			hs.put("status", "0");
 			hs.put("message", "Invalid Email Format");
 			mp.put("finalStatus", null);
@@ -179,7 +208,7 @@ public class CustomFxcelValidator {
 		HashMap<String,String> hs=new HashMap<String,String>();
 //		System.out.println("Student DOB--->"+value);
 		
-		if(value !=null && value.matches(dateRegax)) {
+		if(value !=null && value.matches(dateRegax) && value !="") {
 			hs.put("status", "1");
 		}else {
 			hs.put("status", "0");
@@ -194,7 +223,7 @@ public class CustomFxcelValidator {
 	public Map<String, HashMap<String, String>> stringNonSpecialValidation(Map<String, HashMap<String, String>> mp,String mapKey, String value){
 		HashMap<String,String> hs=new HashMap<String,String>();
 		
-		if(value !=null && value.matches(stringNonSpecialRegax)) {
+		if(value !=null && value.matches(stringNonSpecialRegax) && value !="") {
 			hs.put("status", "1");
 		}else {
 			hs.put("status", "0");
@@ -209,7 +238,7 @@ public class CustomFxcelValidator {
 	public Map<String, HashMap<String, String>> pincodeValidation(Map<String, HashMap<String, String>> mp,String mapKey, String value){
 		HashMap<String,String> hs=new HashMap<String,String>();
 		System.out.println(mapKey+"   picode validation---->"+value);
-		if(value !=null && value.matches(pinregex)) {
+		if(value !=null && value.matches(pinregex) && value !="") {
 			hs.put("status", "1");
 		}else {
 			hs.put("status", "0");
@@ -230,7 +259,7 @@ public class CustomFxcelValidator {
 //		System.out.println("value-->"+value);
 //		System.out.println(value.matches(adharRegex));
 		
-		if(value !=null && value.matches(adharRegex)) {
+		if(value !=null && value.matches(adharRegex) && value !="") {
 			hs.put("status", "1");
 		}else {
 			hs.put("status", "0");
@@ -242,9 +271,29 @@ public class CustomFxcelValidator {
 		return mp;
 	}
 	
+	public Map<String, HashMap<String, String>> admisionNumberValidation(Map<String, HashMap<String, String>> mp,String mapKey, String value){
+		HashMap<String,String> hs=new HashMap<String,String>();
+		hs.put("value", value);
+		
+//		System.out.println("value-->"+value);
+//		System.out.println(value.matches(adharRegex));
+		
+		if(value !=null && value.matches(admisionnumericRegax) && value !="") {
+			hs.put("status", "1");
+		}else {
+			hs.put("status", "0");
+			hs.put("message", "Invalid Admision Format");
+			mp.put("finalStatus", null);
+		}
+		hs.put("value", value);
+		mp.put(mapKey, hs);
+		return mp;
+	}
+	
+	
 	
 	public String checkNullandTrim(String value) {
-		if(value !=null && value !="") {
+		if(value !=null && value !="" ) {
 			return value.trim();
 		}
 		return value;

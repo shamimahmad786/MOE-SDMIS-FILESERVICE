@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.moe.sdmis.fileservice.modal.CommonBean;
 import com.moe.sdmis.fileservice.modal.StudentBasicProfile;
 import com.moe.sdmis.fileservice.modal.StudentTempTable;
 import com.moe.sdmis.fileservice.modal.UploadHistory;
@@ -51,17 +52,17 @@ public class FileServiceImpl {
 
 	String statusFlag;
 	
-	public List<Map<String, HashMap<String, String>>> uploadData(List<StudentTempTable> lt,String userId,String address) throws Exception {
+	public List<Map<String, HashMap<String, String>>> uploadData(List<CommonBean> lt,String userId,String address,String schoolId) throws Exception {
 		statusFlag="2";
 //		System.out.println("Before save list size--->"+lt.size());
 		
-		List<StudentTempTable> response=studentTempTableRepository.saveAll(lt);
+//		List<StudentTempTable> response=studentTempTableRepository.saveAll(lt);
 		
 		List<Map<String, HashMap<String, String>>> finalList=new ArrayList<Map<String, HashMap<String, String>>>();
 		
 //		System.out.println("List Size--->"+response.size());
 		
-		for(StudentTempTable lt1 : response) {
+		for(CommonBean lt1 : lt) {
 			
 //			System.out.println(lt1.getMobileNo_1());
 			finalList.add(customFxcelValidator.validateStudent(lt1));	
@@ -79,7 +80,8 @@ public class FileServiceImpl {
 			
 	UploadHistory  uObj=new UploadHistory();
 	uObj.setHost(address);
-	uObj.setSchoolId(Integer.parseInt(lt.get(0).getUdisecode()));
+	uObj.setSchoolId(Integer.parseInt(schoolId));
+	
 	uObj.setUploadedBy(userId);
 	uObj.setStatus(statusFlag);
 	uObj.setUploadedTime(new Date());

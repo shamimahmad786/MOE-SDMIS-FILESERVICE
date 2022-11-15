@@ -86,6 +86,9 @@ public class StudentTempTable  implements Serializable{
 	private    String minorityId;
 	@Column(name="is_bpl_yn")
 	private    String isBplYn;
+	@Column(name="aay_bpl_yn")
+	private String aayBplYn;
+	
 //	aay_bpl_yn;
 	@Column(name="ews_yn")
 	private    String ewsYn;
@@ -124,6 +127,10 @@ public class StudentTempTable  implements Serializable{
 	private    String attendencePy;
     @Column(name = "ac_year_id")
     private String acYearId;
+    @Column(name = "roll_no")
+    private String rollNo;
+    @Column(name = "guardian_name")
+    private String guardianName;
 	
 	
 	
@@ -361,6 +368,24 @@ public class StudentTempTable  implements Serializable{
 	}
 	public void setAcYearId(String acYearId) {
 		this.acYearId = acYearId;
+	}
+	public String getAayBplYn() {
+		return aayBplYn;
+	}
+	public void setAayBplYn(String aayBplYn) {
+		this.aayBplYn = aayBplYn;
+	}
+	public String getRollNo() {
+		return rollNo;
+	}
+	public void setRollNo(String rollNo) {
+		this.rollNo = rollNo;
+	}
+	public String getGuardianName() {
+		return guardianName;
+	}
+	public void setGuardianName(String guardianName) {
+		this.guardianName = guardianName;
 	}
 
 	

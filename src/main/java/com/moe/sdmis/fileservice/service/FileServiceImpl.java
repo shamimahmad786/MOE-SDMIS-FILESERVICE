@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,6 +27,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moe.sdmis.fileservice.modal.CommonBean;
 import com.moe.sdmis.fileservice.modal.StudentBasicProfile;
+import com.moe.sdmis.fileservice.modal.StudentFacilityDetails;
 import com.moe.sdmis.fileservice.modal.StudentTempTable;
 import com.moe.sdmis.fileservice.modal.UploadHistory;
 import com.moe.sdmis.fileservice.repository.StudentBasicProfileRepository;
@@ -71,7 +73,7 @@ public class FileServiceImpl {
 		try {
 			
 			long 	statusCount=	finalList.stream().filter((e)->
-				e.keySet().contains("finalStatus")
+				e.keySet().contains("status=0")
 				).count();
 			
 			if(statusCount>0) {
@@ -107,7 +109,7 @@ public class FileServiceImpl {
 			ex.printStackTrace();
 		}
 		
-		List<StudentBasicProfile> ltStudentObj=new ArrayList<StudentBasicProfile>(); 
+		List<StudentBasicProfile> ltStudentObj=new LinkedList<StudentBasicProfile>(); 
 		try {
 		TypeReference<List<Map<String, HashMap<String, String>>> > typeRef 
         = new TypeReference<List<Map<String, HashMap<String, String>>> >() {};
@@ -115,6 +117,8 @@ public class FileServiceImpl {
         System.out.println(obj.get(0).get("classId").get("value"));
         
         for(Map<String, HashMap<String, String>> studentObj:obj) {
+        	
+        	try {
 //        	System.out.println(obj.get(0).get("ooscYn"));
         	StudentBasicProfile  studentPojo=new StudentBasicProfile();
         	studentPojo.setSchoolId(Integer.parseInt(data));
@@ -122,7 +126,7 @@ public class FileServiceImpl {
         	studentPojo.setSectionId(Integer.parseInt(studentObj.get("sectionId").get("value")));
         	studentPojo.setStudentName(studentObj.get("studentName").get("value"));
         	studentPojo.setGender(Integer.parseInt(studentObj.get("gender").get("value")));
-        	studentPojo.setDob(new Date(studentObj.get("studentDob").get("value")));
+        	studentPojo.setDob(new Date(studentObj.get("studentDob").get("value").replaceAll("-", "/")));
         	studentPojo.setMotherName(studentObj.get("motherName").get("value"));
         	studentPojo.setFatherName(studentObj.get("fatherName").get("value"));
         	studentPojo.setAadhaarNo(studentObj.get("aadhaarNo").get("value"));
@@ -142,7 +146,7 @@ public class FileServiceImpl {
         	studentPojo.setNatIndYN(Integer.parseInt(studentObj.get("natIndYn").get("value")));
         	studentPojo.setOoscYn(Integer.parseInt(studentObj.get("ooscYn").get("value")));
         	studentPojo.setAdmnNumber(studentObj.get("admnNumber").get("value"));
-        	studentPojo.setAdmnStartDate(new Date(studentObj.get("admnStartDate").get("value")));
+        	studentPojo.setAdmnStartDate(new Date(studentObj.get("admnStartDate").get("value").replaceAll("-", "/")));
         	studentPojo.setAcademicStream(Integer.parseInt(studentObj.get("acdemicStream").get("value")));
         	studentPojo.setEnrStatusPY(Integer.parseInt(studentObj.get("enrStatusPy").get("value")));
         	studentPojo.setClassPY(Integer.parseInt(studentObj.get("classPy").get("value")));
@@ -151,8 +155,48 @@ public class FileServiceImpl {
         	studentPojo.setExamResultPy(Integer.parseInt(studentObj.get("examResultPy").get("value")));
         	studentPojo.setExamMarksPy(Integer.parseInt(studentObj.get("examMarksPy").get("value")));
         	studentPojo.setAttendancePy(Integer.parseInt(studentObj.get("attendencePy").get("value")));
-        	studentPojo.setAcYearId(Integer.parseInt(studentObj.get("acYearId").get("value")));
+//        	studentPojo.setAcYearId(Integer.parseInt(studentObj.get("acYearId").get("value")));
+        	studentPojo.setAcYearId(10);
+        	
+        	
+        	
+        	
         	ltStudentObj.add(studentPojo);
+        	}catch(Exception ex) {
+        		ex.printStackTrace();
+        	}
+        	
+        	
+//        	try {
+//        		StudentFacilityDetails stdfacility=new StudentFacilityDetails();
+//        		
+//        		stdfacility.setStudentId(studentId);
+//        		stdfacility.setSchoolId(Integer.parseInt(data));
+//        		Integer.parseInt(studentObj.get("examMarksPy").get("value"))
+//        		stdfacility.setFacProvided(facProvided);
+//        		stdfacility.setCentralScholarshipId(centralScholarshipId);
+//        		stdfacility.setCentralScholarshipYn(centralScholarshipYn);
+//        		stdfacility.setStateScholarshipYn(stateScholarshipYn);
+//        		stdfacility.setOtherScholarshipYn(otherScholarshipYn);
+//        		stdfacility.setScholarshipAmount(scholarshipAmount);
+//        		stdfacility.setFacProvidedCwsn(facProvidedCwsn);
+//        		stdfacility.setScreenedForSld(screenedForSld);
+//        		stdfacility.setSldType(sldType);
+//        		stdfacility.setScreenedForAsd(screenedForAsd);
+//        		stdfacility.setScreenedForAdhd(screenedForAdhd);
+//        		stdfacility.setIsEcActivity(isEcActivity);
+//        		stdfacility.setGiftedChildren(giftedChildren);
+//        		stdfacility.setMentorProvided(mentorProvided);
+//        		stdfacility.setNurturanceCmpsState(nurturanceCmpsState);
+//        		stdfacility.setNurturanceCmpsNational(nurturanceCmpsNational);
+//        		stdfacility.setOlympdsNlc(olympdsNlc);
+//        		stdfacility.setNccNssYn(nccNssYn);
+//        		
+//        		
+//        		
+//        	}catch(Exception ex) {
+//        		ex.printStackTrace();
+//        	}
         }
         
         
@@ -184,7 +228,7 @@ public class FileServiceImpl {
 	}
 	
 	public Stream<String> getValidatedData(Integer schoolId) throws IOException{
-		ObjectMapper objectMapper = new ObjectMapper();
+//		ObjectMapper objectMapper = new ObjectMapper();
 		Stream<String> sObj= Files.lines(Paths.get(userBucketPath+File.separator+schoolId+File.separator+schoolId+"."+"txt"));
 		
 //		System.out.println(sObj);

@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.HashMap;
 //import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -250,7 +251,10 @@ public class FileCtrl {
 						throw new GenericExceptionHandler("Column Sequence changed or Missing column", "100003",request.getRemoteAddr(),userid,udisecode);
 					}
 				}
-
+				CellStyle cellStyle = workbook.createCellStyle();
+				cellStyle.setFillForegroundColor(IndexedColors.RED.index);
+				cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+				Map<String, HashMap<String, String>> mObject=new LinkedHashMap<String,HashMap<String,String>>();
 				if (currentRow.getRowNum() > 4) {
 //					Cell currentCell=currentRow.getCell(1).getCel
 					int i=0;
@@ -259,207 +263,502 @@ public class FileCtrl {
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("UDISE Code of School")) {
 							stdObj.setUdisecode(df.formatCellValue(currentCell));
-							CellStyle cellStyle = workbook.createCellStyle();
-							cellStyle.setFillForegroundColor(IndexedColors.RED.index);
-							cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-							currentCell.setCellStyle(cellStyle);
-							currentRow.getCell(i).setCellStyle(cellStyle);
-							System.out.println("color");
+							if(customFxcelValidator.numberValidation(mObject,"udiseCode",checkNullandTrim(stdObj.getUdisecode())).get("udiseCode").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("Grade/Class")) {
 							stdObj.setClassId(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"classId",checkNullandTrim(stdObj.getClassId())).get("classId").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("SECTION")) {
 							stdObj.setSectionId(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"sectionId",checkNullandTrim(stdObj.getSectionId())).get("sectionId").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("Roll no")) {
 							stdObj.setRollNo(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"rollNo",checkNullandTrim(stdObj.getRollNo())).get("rollNo").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("Name of Student")) {
 							stdObj.setStudentName(df.formatCellValue(currentCell));
+							if(customFxcelValidator.stringNonSpecialValidation(mObject,"studentName",checkNullandTrim(stdObj.getStudentName())).get("studentName").get("status").equalsIgnoreCase("0")) {
+								System.out.println("student name---->"+customFxcelValidator.stringNonSpecialValidation(mObject,"studentName",checkNullandTrim(stdObj.getStudentName())).get("studentName").get("status").equalsIgnoreCase("0"));
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("GENDER")) {
 							stdObj.setGender(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"gender",checkNullandTrim(stdObj.getGender())).get("gender").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("DOB (DD-MM-YYYY)")) {
 							stdObj.setStudentDob(df.formatCellValue(currentCell));
+							if(customFxcelValidator.dateValidation(mObject,"studentDob",checkNullandTrim(stdObj.getStudentDob())).get("studentDob").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("MOTHER NAME")) {
 							stdObj.setMotherName(df.formatCellValue(currentCell));
+							if(customFxcelValidator.stringNonSpecialValidation(mObject,"motherName",checkNullandTrim(stdObj.getMotherName())).get("motherName").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("FATHER Name")) {
 							stdObj.setFatherName(df.formatCellValue(currentCell));
+							if(customFxcelValidator.stringNonSpecialValidation(mObject,"fatherName",checkNullandTrim(stdObj.getFatherName())).get("fatherName").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("GUARDIAN'S NAME")) {
 							stdObj.setGuardianName(df.formatCellValue(currentCell));
+							if(customFxcelValidator.stringNonSpecialValidation(mObject,"guardianName",checkNullandTrim(stdObj.getGuardianName())).get("guardianName").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("Aadhaar No of Child :")) {
 							stdObj.setAadhaarNo(df.formatCellValue(currentCell));
+							if(customFxcelValidator.adharValidation(mObject,"aadhaarNo",checkNullandTrim(stdObj.getAadhaarNo())).get("aadhaarNo").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("NAME AS PER AADHAR")) {
 							stdObj.setNameAsAadhaar(df.formatCellValue(currentCell));
+							if(customFxcelValidator.stringNonSpecialValidation(mObject,"nameAsAadhaar",checkNullandTrim(stdObj.getNameAsAadhaar())).get("nameAsAadhaar").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("ADDRESS")) {
 							stdObj.setAddress(df.formatCellValue(currentCell));
+							if(customFxcelValidator.stringValidation(mObject,"address",checkNullandTrim(stdObj.getAddress())).get("address").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("PINCODE")) {
 							stdObj.setPincode(df.formatCellValue(currentCell));
+							if(customFxcelValidator.pincodeValidation(mObject,"pincode",checkNullandTrim(stdObj.getPincode())).get("pincode").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("MOBILE NUMBER")) {
 							stdObj.setMobileNo_1(df.formatCellValue(currentCell));
+							if(customFxcelValidator.mobileValidation(mObject,"mobileNo_1",checkNullandTrim(stdObj.getMobileNo_1())).get("mobileNo_1").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("ALTERNATE MOBILE NUMBER")) {
 							stdObj.setMobileNo_2(df.formatCellValue(currentCell));
+							if(customFxcelValidator.mobileValidation(mObject,"mobileNo_2",checkNullandTrim(stdObj.getMobileNo_2())).get("mobileNo_2").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("EMAIL ID (STUDENT/PARENT/GUARDIAN)")) {
 							stdObj.setEmailId(df.formatCellValue(currentCell));
+							if(customFxcelValidator.emailValidation(mObject,"emailId",checkNullandTrim(stdObj.getEmailId())).get("emailId").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("MOTHER TONGUE")) {
 							stdObj.setMotherTongue(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"motherTongue",checkNullandTrim(stdObj.getMotherTongue())).get("motherTongue").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("SOCIAL CATEGORY")) {
 							stdObj.setSocCatId(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"socCatId",checkNullandTrim(stdObj.getSocCatId())).get("socCatId").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("MINORITY GROUP")) {
 							stdObj.setMinorityId(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"minorityId",checkNullandTrim(stdObj.getMinorityId())).get("minorityId").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("BPL BANEFICIARY")) {
 							stdObj.setIsBplYn(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"isBplYn",checkNullandTrim(stdObj.getIsBplYn())).get("isBplYn").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("ANTYODAYA")) {
 							stdObj.setAayBplYn(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"aayBplYn",checkNullandTrim(stdObj.getAayBplYn())).get("aayBplYn").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("BELONGS TO EWS/DISADVANTAGED GROUP")) {
 							stdObj.setEwsYn(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"ewsYn",checkNullandTrim(stdObj.getEwsYn())).get("ewsYn").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("CWSN(YES/NO)")) {
 							stdObj.setCwsnYn(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"cwsnYn",checkNullandTrim(stdObj.getCwsnYn())).get("cwsnYn").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("IMPAIRMENT TYPE")) {
 							stdObj.setImpairmentType(df.formatCellValue(currentCell));
+							if(customFxcelValidator.jsonValidation(mObject,"impairmentType",checkNullandTrim(stdObj.getImpairmentType())).get("impairmentType").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("CHILD IS INDIAN NATIONAL")) {
 							stdObj.setNatIndYn(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"natIndYn",checkNullandTrim(stdObj.getNatIndYn())).get("natIndYn").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("CHILD IS OUT-OF-SCHOOL-CHILD")) {
 							stdObj.setOoscYn(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"ooscYn",checkNullandTrim(stdObj.getOoscYn())).get("ooscYn").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("Admission Number")) {
 							stdObj.setAdmnNumber(df.formatCellValue(currentCell));
+							if(customFxcelValidator.admisionNumberValidation(mObject,"admnNumber",checkNullandTrim(stdObj.getAdmnNumber())).get("admnNumber").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("ADMISSION DATE (DD-MM-YYYY)")) {
 							stdObj.setAdmnStartDate(df.formatCellValue(currentCell));
+							if(customFxcelValidator.dateValidation(mObject,"admnStartDate",checkNullandTrim(stdObj.getAdmnStartDate())).get("admnStartDate").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("STUDENT STREAM (For higher secondary only)")) {
 							stdObj.setAcdemicStream(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"acdemicStream",checkNullandTrim(stdObj.getAcdemicStream())).get("acdemicStream").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("PREVIOUS ACADEMIC SCHOOLING STATUS")) {
 							stdObj.setEnrStatusPy(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"enrStatusPy",checkNullandTrim(stdObj.getEnrStatusPy())).get("enrStatusPy").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("CLASS STUDIES IN PREVIOUS ACADEMIC")) {
 							stdObj.setClassPy(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"classPy",checkNullandTrim(stdObj.getClassPy())).get("classPy").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("ADMITED/ ENROLLED UNDER")) {
 							stdObj.setEnrTypeCy(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"enrType",checkNullandTrim(stdObj.getEnrTypeCy())).get("enrType").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("APPEARED FOR EXAM IN PREVIOUS CLASS")) {
 							stdObj.setExamAppearedPyYn(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"examAppearedPyYn",checkNullandTrim(stdObj.getExamAppearedPyYn())).get("examAppearedPyYn").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("RESULT FOR PREVIOUS EXAM")) {
 							stdObj.setExamResultPy(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"examResultPy",checkNullandTrim(stdObj.getExamResultPy())).get("examResultPy").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("MARKS % OF PREVIOUS EXAM")) {
 							stdObj.setExamMarksPy(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"examMarksPy",checkNullandTrim(stdObj.getExamMarksPy())).get("examMarksPy").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("CLASS ATTENDED DAYS")) {
 							stdObj.setAttendencePy(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"attendencePy",checkNullandTrim(stdObj.getAttendencePy())).get("attendencePy").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("Facility - Free Uniform")) {
 							stdObj.setUniformFacProvided(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"uniformFacProvided",checkNullandTrim(stdObj.getUniformFacProvided())).get("uniformFacProvided").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("Facility - Free TextBook")) {
 							stdObj.setTextBoxFacProvided(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"textBoxFacProvided",checkNullandTrim(stdObj.getTextBoxFacProvided())).get("textBoxFacProvided").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("Central Scholarship")) {
 							stdObj.setCentrlSchlrshpYn(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"centrlSchlrshpYn",checkNullandTrim(stdObj.getCentrlSchlrshpYn())).get("centrlSchlrshpYn").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("Name of Scholarship (provide code only)")) {
 							stdObj.setCentrlSchlrshpId(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"centrlSchlrshpId",checkNullandTrim(stdObj.getCentrlSchlrshpId())).get("centrlSchlrshpId").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("State Scholarship")) {
 							stdObj.setStateSchlrshpYn(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"stateSchlrshpYn",checkNullandTrim(stdObj.getStateSchlrshpYn())).get("stateSchlrshpYn").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("Other Scholarship")) {
 							stdObj.setOtherSchlrshpYn(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"otherSchlrshpYn",checkNullandTrim(stdObj.getOtherSchlrshpYn())).get("otherSchlrshpYn").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("Scholarship Amount")) {
 							stdObj.setSchlrshpAmount(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"schlrshpAmount",checkNullandTrim(stdObj.getSchlrshpAmount())).get("schlrshpAmount").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("Facility provided to the CWSN")) {;
 							stdObj.setFacProvidedCwsn(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"facProvidedCwsn",checkNullandTrim(stdObj.getFacProvidedCwsn())).get("facProvidedCwsn").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("Specific Learning Disability (SLD)")) {
 							stdObj.setScrndFrSld(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"scrndFrSld",checkNullandTrim(stdObj.getScrndFrSld())).get("scrndFrSld").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("Type of Specific Learning Disability (SLD)")) {
 							stdObj.setSldType(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"sldType",checkNullandTrim(stdObj.getSldType())).get("sldType").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("Autism Spectrum Disorder")) {
 							stdObj.setScrndFrAsd(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"scrndFrAsd",checkNullandTrim(stdObj.getScrndFrAsd())).get("scrndFrAsd").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("Attention Deficit Hyperactive Disorder (ADHD)")) {
 							stdObj.setScrndFrAdhd(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"scrndFrAdhd",checkNullandTrim(stdObj.getScrndFrAdhd())).get("scrndFrAdhd").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 						if(headersFromExcel.get(currentCell.getColumnIndex()).equalsIgnoreCase("extra curricular activity")) {
 							stdObj.setIsEcActivity(df.formatCellValue(currentCell));
+							if(customFxcelValidator.numberValidation(mObject,"isEcActivity",checkNullandTrim(stdObj.getIsEcActivity())).get("isEcActivity").get("status").equalsIgnoreCase("0")) {
+								currentCell.setCellStyle(cellStyle);
+							}else {
+								cellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+								currentCell.setCellStyle(cellStyle);
+							}
 						}
 						
 					
@@ -589,6 +888,7 @@ public class FileCtrl {
 					}
 
 				}
+		
 				if(currentRow.getRowNum()>4) {
 				stdList.add(stdObj);
 				}
@@ -598,6 +898,9 @@ public class FileCtrl {
 //					
 //				}
 			}
+			File uploadedExcel1=new File(userBucketPath+File.separator+udisecode+File.separator+udisecode+"_validated."+"xlsm");
+			FileOutputStream outFile =new FileOutputStream(uploadedExcel1);
+			workbook.write(outFile);
 //			FileOutputStream outFile =new FileOutputStream(uploadedExcel);
 //			workbook.write(outFile);
 //			outFile.close();
@@ -656,11 +959,19 @@ public class FileCtrl {
 //		}catch(Exception ex) {
 //			ex.printStackTrace();
 //		}
+		
+		
+		System.out.println("finalResponse---->"+finalResponse);
+		
 		try {
 		long 	statusCount=	finalResponse.stream().filter((e)->
-		e.keySet().contains("finalStatus")
+		e.entrySet().contains("staus=0")
+//		e.entrySet().stream().filter(a->a.getValue().entrySet().contains("staus=0").count())
 		).count();
+			
+
 		
+		System.out.println("Status count--->"+statusCount);
 		if(statusCount>0) {
 			return  ResponseEntity.ok(new FinalResponse("","1","Uploaded Successfully but Some data Error check and resolve"));
 		}else {
@@ -776,9 +1087,17 @@ return mp;
 		}else {
 			commomHeadersFromValidation=ConfigurableUtility.commomHeadersFromValidation;
 		}
-		excelExporter.exportValidatedExcel(response,schoolId,commomHeadersFromValidation);
+		excelExporter.exportValidatedExcel(response,schoolId,commomHeadersFromValidation,userBucketPath);
 		return null;
 		
+	}
+	
+
+	public String checkNullandTrim(String value) {
+		if(value !=null && value !="" ) {
+			return value.trim();
+		}
+		return value;
 	}
 	
 	

@@ -32,8 +32,12 @@ public static	List<String> commomHeadersFromValidation = Arrays.asList("numberVa
 
 
 
+//public static  List<String> commonHeaderKey=Arrays.asList("udiseCode","classId","sectionId","studentName","gender","studentDob","motherName","fatherName","aadhaarNo","nameAsAadhaar","address","pincode","mobileNo_1","mobileNo_2","emailId","motherTongue","socCatId","minorityId","isBplYn","ewsYn","cwsnYn","impairmentType","natIndYn","ooscYn","admnNumber","admnStartDate","acdemicStream",
+//		"enrStatusPy","classPy","enrTypeCy","examAppearedPyYn","examResultPy","examMarksPy","attendencePy","acYearId","rollNo","aayBplYn","guardianName","textBoxFacProvided",
+//		"centrlSchlrshpYn","centrlSchlrshpId","stateSchlrshpYn","otherSchlrshpYn","schlrshpAmount","facProvidedCwsn","scrndFrSld","sldType","scrndFrAsd","scrndFrAdhd","isEcActivity");
+
 public static  List<String> commonHeaderKey=Arrays.asList("udiseCode","classId","sectionId","studentName","gender","studentDob","motherName","fatherName","aadhaarNo","nameAsAadhaar","address","pincode","mobileNo_1","mobileNo_2","emailId","motherTongue","socCatId","minorityId","isBplYn","ewsYn","cwsnYn","impairmentType","natIndYn","ooscYn","admnNumber","admnStartDate","acdemicStream",
-		"enrStatusPy","classPy","enrTypeCy","examAppearedPyYn","examResultPy","examMarksPy","attendencePy","acYearId","rollNo","aayBplYn","guardianName","textBoxFacProvided",
+		"enrStatusPy","classPy","enrTypeCy","examAppearedPyYn","examResultPy","examMarksPy","attendencePy","rollNo","aayBplYn","guardianName","textBoxFacProvided",
 		"centrlSchlrshpYn","centrlSchlrshpId","stateSchlrshpYn","otherSchlrshpYn","schlrshpAmount","facProvidedCwsn","scrndFrSld","sldType","scrndFrAsd","scrndFrAdhd","isEcActivity");
 
 
@@ -55,7 +59,8 @@ public static	List<String> state116HeadersFromValidation = Arrays.asList("number
 "numberValidation","numberValidation","numberValidation","numberValidation",
 "numberValidation","numberValidation","numberValidation","numberValidation");
 
-public static List<String> state116HeaderKey=Arrays.asList("udiseCode","classId","sectionId","studentName","gender","studentDob","motherName","fatherName","aadhaarNo","nameAsAadhaar","address","pincode","mobileNo_1","mobileNo_2","emailId","motherTongue","socCatId","minorityId","isBplYn","ewsYn","cwsnYn","impairmentType","natIndYn","ooscYn","admnNumber","admnStartDate","acdemicStream","enrStatusPy","classPy","enrTypeCy","examAppearedPyYn","examResultPy","examMarksPy","attendencePy","acYearId","rollNo","aayBplYn","guardianName");
+//public static List<String> state116HeaderKey=Arrays.asList("udiseCode","classId","sectionId","studentName","gender","studentDob","motherName","fatherName","aadhaarNo","nameAsAadhaar","address","pincode","mobileNo_1","mobileNo_2","emailId","motherTongue","socCatId","minorityId","isBplYn","ewsYn","cwsnYn","impairmentType","natIndYn","ooscYn","admnNumber","admnStartDate","acdemicStream","enrStatusPy","classPy","enrTypeCy","examAppearedPyYn","examResultPy","examMarksPy","attendencePy","acYearId","rollNo","aayBplYn","guardianName");
+public static List<String> state116HeaderKey=Arrays.asList("udiseCode","classId","sectionId","studentName","gender","studentDob","motherName","fatherName","aadhaarNo","nameAsAadhaar","address","pincode","mobileNo_1","mobileNo_2","emailId","motherTongue","socCatId","minorityId","isBplYn","ewsYn","cwsnYn","impairmentType","natIndYn","ooscYn","admnNumber","admnStartDate","acdemicStream","enrStatusPy","classPy","enrTypeCy","examAppearedPyYn","examResultPy","examMarksPy","attendencePy","rollNo","aayBplYn","guardianName");
 
 
 

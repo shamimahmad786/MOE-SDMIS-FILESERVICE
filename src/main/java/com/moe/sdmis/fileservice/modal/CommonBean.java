@@ -50,7 +50,7 @@ public class CommonBean {
 	private String examResultPy;
 	private String examMarksPy;
 	private String attendencePy;
-	private String acYearId;
+//	private String acYearId;
 	private String rollNo;
 	private String guardianName;
 	

@@ -232,137 +232,137 @@ public class UserExcelExporter {
 
 	}
 
-	public void exportValidatedExcel(HttpServletResponse response, String schoolId, List<String> validationLists)
+	public void exportValidatedExcel(HttpServletResponse response, String schoolId, List<String> validationLists,String userBucketPath)
 			throws IOException {
 //      writeHeaderLine();
 //      writeDataLines();
 		CustomFxcelValidator cfvObj = new CustomFxcelValidator();
-		FileInputStream excelFile = new FileInputStream(new File("E:\\UDISE\\bulkExcel"+File.separator+schoolId+File.separator+schoolId+".xlsm"));
+		FileInputStream excelFile = new FileInputStream(new File(userBucketPath+File.separator+schoolId+File.separator+schoolId+"_validated.xlsm"));
 		workbook = new XSSFWorkbook(excelFile);
 		Sheet datatypeSheet = workbook.getSheetAt(1);
 		Iterator<Row> iterator = datatypeSheet.iterator();
 	
-		while (iterator.hasNext()) {
-			
-			Row currentRow = iterator.next();
+//		while (iterator.hasNext()) {
+//			
+//			Row currentRow = iterator.next();
+//
+////        	              System.out.println("Get Row Number--->"+currentRow.getRowNum());
+//
+//			Iterator<Cell> cellIterator = currentRow.iterator();
+//
+//			if (currentRow.getRowNum() > 4) {
+//			
+//				System.out.println("Row--->"+currentRow.getRowNum());
+//				int i = 0;
 
-//        	              System.out.println("Get Row Number--->"+currentRow.getRowNum());
-
-			Iterator<Cell> cellIterator = currentRow.iterator();
-
-			if (currentRow.getRowNum() > 4) {
-			
-				System.out.println("Row--->"+currentRow.getRowNum());
-				int i = 0;
-
-				while (cellIterator.hasNext()) {
-					Map<String, HashMap<String, String>> mp =new HashMap<String, HashMap<String, String>>();
-					Cell currentCell = cellIterator.next();
-					DataFormatter df = new DataFormatter();
-					String value = df.formatCellValue(currentCell);
-//					System.out.println(currentCell.getColumnIndex() + "-------" + value);
-//System.out.println("i---->"+i);
-					
-  System.out.println(validationLists.get(i)+"----"+value);
-					if (validationLists.get(i).equalsIgnoreCase("numberValidation")) {
-						Map<String, HashMap<String, String>> hs = cfvObj.numberValidation(mp, "key", value);
-						
-						if (hs.get("key").get("status").equalsIgnoreCase("0")) {
-//							System.out.println(hs.get("key"));
-							Cell colorCurrentCell=currentRow.getCell(i);
-							  CellStyle cellStyle = workbook.createCellStyle();
-							cellStyle.setFillForegroundColor(IndexedColors.RED.index);
-							cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-							colorCurrentCell.setCellStyle(cellStyle);
-//							colorCurrentCell.setCellValue(11);
-							
-						}
-					} else if (validationLists.get(i).equalsIgnoreCase("stringNonSpecialValidation")) {
-						Map<String, HashMap<String, String>> hs = cfvObj.stringNonSpecialValidation(mp, "key", value);
-					
-						if (hs.get("key").get("status").equalsIgnoreCase("0")) {
-//							System.out.println(hs.get("key"));
-							CellStyle cellStyle = workbook.createCellStyle();
-							cellStyle.setFillForegroundColor(IndexedColors.RED.index);
-							cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-							currentCell.setCellStyle(cellStyle);
-						}
-					} else if (validationLists.get(i).equalsIgnoreCase("dateValidation")) {
-						Map<String, HashMap<String, String>> hs = cfvObj.dateValidation(mp, "key", value);
-					
-						if (hs.get("key").get("status").equalsIgnoreCase("0")) {
-//							System.out.println(hs.get("key"));
-							CellStyle cellStyle = workbook.createCellStyle();
-							cellStyle.setFillForegroundColor(IndexedColors.RED.index);
-							cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-							currentCell.setCellStyle(cellStyle);
-						}
-					} else if (validationLists.get(i).equalsIgnoreCase("adharValidation")) {
-						Map<String, HashMap<String, String>> hs = cfvObj.adharValidation(mp, "key", value);
-					
-						if (hs.get("key").get("status").equalsIgnoreCase("0")) {
-//							System.out.println(hs.get("key"));
-							CellStyle cellStyle = workbook.createCellStyle();
-							cellStyle.setFillForegroundColor(IndexedColors.RED.index);
-							cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-							currentCell.setCellStyle(cellStyle);
-						}
-					} else if (validationLists.get(i).equalsIgnoreCase("stringValidation")) {
-						Map<String, HashMap<String, String>> hs = cfvObj.stringValidation(mp, "key", value);
-						
-						if (hs.get("key").get("status").equalsIgnoreCase("0")) {
-//							System.out.println(hs.get("key"));
-							CellStyle cellStyle = workbook.createCellStyle();
-							cellStyle.setFillForegroundColor(IndexedColors.RED.index);
-							cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-							currentCell.setCellStyle(cellStyle);
-						}
-					} else if (validationLists.get(i).equalsIgnoreCase("pincodeValidation")) {
-						Map<String, HashMap<String, String>> hs = cfvObj.pincodeValidation(mp, "key", value);
-						
-						if (hs.get("key").get("status").equalsIgnoreCase("0")) {
-//							System.out.println(hs.get("key"));
-							CellStyle cellStyle = workbook.createCellStyle();
-							cellStyle.setFillForegroundColor(IndexedColors.RED.index);
-							cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-							currentCell.setCellStyle(cellStyle);
-						}
-					} else if (validationLists.get(i).equalsIgnoreCase("mobileValidation")) {
-						Map<String, HashMap<String, String>> hs = cfvObj.mobileValidation(mp, "key", value);
-					
-						if (hs.get("key").get("status").equalsIgnoreCase("0")) {
-//							System.out.println(hs.get("key"));
-							CellStyle cellStyle = workbook.createCellStyle();
-							cellStyle.setFillForegroundColor(IndexedColors.RED.index);
-							cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-							currentCell.setCellStyle(cellStyle);
-						}
-					} else if (validationLists.get(i).equalsIgnoreCase("emailValidation")) {
-						Map<String, HashMap<String, String>> hs = cfvObj.emailValidation(mp, "key", value);
-				
-						if (hs.get("key").get("status").equalsIgnoreCase("0")) {
-//							System.out.println(hs.get("key"));
-							CellStyle cellStyle =workbook.createCellStyle();
-							cellStyle.setFillForegroundColor(IndexedColors.RED.index);
-							cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-							currentCell.setCellStyle(cellStyle);
-						}
-					} else if (validationLists.get(i).equalsIgnoreCase("jsonValidation")) {
-						Map<String, HashMap<String, String>> hs = cfvObj.jsonValidation(mp, "key", value);
-				
-						if (hs.get("key").get("status").equalsIgnoreCase("0")) {
-//							System.out.println(hs.get("key"));
-							CellStyle cellStyle = workbook.createCellStyle();
-							cellStyle.setFillForegroundColor(IndexedColors.RED.index);
-							cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-							currentCell.setCellStyle(cellStyle);
-						}
-					}
-					++i;
-				}
-			}
-
-		}
+//				while (cellIterator.hasNext()) {
+//					Map<String, HashMap<String, String>> mp =new HashMap<String, HashMap<String, String>>();
+//					Cell currentCell = cellIterator.next();
+//					DataFormatter df = new DataFormatter();
+//					String value = df.formatCellValue(currentCell);
+////					System.out.println(currentCell.getColumnIndex() + "-------" + value);
+////System.out.println("i---->"+i);
+//					
+//  System.out.println(validationLists.get(i)+"----"+value);
+//					if (validationLists.get(i).equalsIgnoreCase("numberValidation")) {
+//						Map<String, HashMap<String, String>> hs = cfvObj.numberValidation(mp, "key", value);
+//						
+//						if (hs.get("key").get("status").equalsIgnoreCase("0")) {
+////							System.out.println(hs.get("key"));
+//							Cell colorCurrentCell=currentRow.getCell(i);
+//							  CellStyle cellStyle = workbook.createCellStyle();
+//							cellStyle.setFillForegroundColor(IndexedColors.RED.index);
+//							cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+//							colorCurrentCell.setCellStyle(cellStyle);
+////							colorCurrentCell.setCellValue(11);
+//							
+//						}
+//					} else if (validationLists.get(i).equalsIgnoreCase("stringNonSpecialValidation")) {
+//						Map<String, HashMap<String, String>> hs = cfvObj.stringNonSpecialValidation(mp, "key", value);
+//					
+//						if (hs.get("key").get("status").equalsIgnoreCase("0")) {
+////							System.out.println(hs.get("key"));
+//							CellStyle cellStyle = workbook.createCellStyle();
+//							cellStyle.setFillForegroundColor(IndexedColors.RED.index);
+//							cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+//							currentCell.setCellStyle(cellStyle);
+//						}
+//					} else if (validationLists.get(i).equalsIgnoreCase("dateValidation")) {
+//						Map<String, HashMap<String, String>> hs = cfvObj.dateValidation(mp, "key", value);
+//					
+//						if (hs.get("key").get("status").equalsIgnoreCase("0")) {
+////							System.out.println(hs.get("key"));
+//							CellStyle cellStyle = workbook.createCellStyle();
+//							cellStyle.setFillForegroundColor(IndexedColors.RED.index);
+//							cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+//							currentCell.setCellStyle(cellStyle);
+//						}
+//					} else if (validationLists.get(i).equalsIgnoreCase("adharValidation")) {
+//						Map<String, HashMap<String, String>> hs = cfvObj.adharValidation(mp, "key", value);
+//					
+////						if (hs.get("key").get("status").equalsIgnoreCase("0")) {
+//////							System.out.println(hs.get("key"));
+////							CellStyle cellStyle = workbook.createCellStyle();
+////							cellStyle.setFillForegroundColor(IndexedColors.RED.index);
+////							cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+////							currentCell.setCellStyle(cellStyle);
+////						}
+//					} else if (validationLists.get(i).equalsIgnoreCase("stringValidation")) {
+//						Map<String, HashMap<String, String>> hs = cfvObj.stringValidation(mp, "key", value);
+//						
+////						if (hs.get("key").get("status").equalsIgnoreCase("0")) {
+//////							System.out.println(hs.get("key"));
+////							CellStyle cellStyle = workbook.createCellStyle();
+////							cellStyle.setFillForegroundColor(IndexedColors.RED.index);
+////							cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+////							currentCell.setCellStyle(cellStyle);
+////						}
+//					} else if (validationLists.get(i).equalsIgnoreCase("pincodeValidation")) {
+//						Map<String, HashMap<String, String>> hs = cfvObj.pincodeValidation(mp, "key", value);
+//						
+////						if (hs.get("key").get("status").equalsIgnoreCase("0")) {
+//////							System.out.println(hs.get("key"));
+////							CellStyle cellStyle = workbook.createCellStyle();
+////							cellStyle.setFillForegroundColor(IndexedColors.RED.index);
+////							cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+////							currentCell.setCellStyle(cellStyle);
+////						}
+//					} else if (validationLists.get(i).equalsIgnoreCase("mobileValidation")) {
+//						Map<String, HashMap<String, String>> hs = cfvObj.mobileValidation(mp, "key", value);
+//					
+////						if (hs.get("key").get("status").equalsIgnoreCase("0")) {
+//////							System.out.println(hs.get("key"));
+////							CellStyle cellStyle = workbook.createCellStyle();
+////							cellStyle.setFillForegroundColor(IndexedColors.RED.index);
+////							cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+////							currentCell.setCellStyle(cellStyle);
+////						}
+//					} else if (validationLists.get(i).equalsIgnoreCase("emailValidation")) {
+//						Map<String, HashMap<String, String>> hs = cfvObj.emailValidation(mp, "key", value);
+//				
+////						if (hs.get("key").get("status").equalsIgnoreCase("0")) {
+//////							System.out.println(hs.get("key"));
+////							CellStyle cellStyle =workbook.createCellStyle();
+////							cellStyle.setFillForegroundColor(IndexedColors.RED.index);
+////							cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+////							currentCell.setCellStyle(cellStyle);
+////						}
+//					} else if (validationLists.get(i).equalsIgnoreCase("jsonValidation")) {
+//						Map<String, HashMap<String, String>> hs = cfvObj.jsonValidation(mp, "key", value);
+//				
+////						if (hs.get("key").get("status").equalsIgnoreCase("0")) {
+//////							System.out.println(hs.get("key"));
+////							CellStyle cellStyle = workbook.createCellStyle();
+////							cellStyle.setFillForegroundColor(IndexedColors.RED.index);
+////							cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+////							currentCell.setCellStyle(cellStyle);
+////						}
+//					}
+//					++i;
+//				}
+//			}
+//
+//		}
 
 		ServletOutputStream outputStream = response.getOutputStream();
 		workbook.write(outputStream);

@@ -73,7 +73,7 @@ public class CustomFxcelValidator {
 		numberValidation(mObject,"examResultPy",checkNullandTrim(stObj.getExamResultPy()));
 		numberValidation(mObject,"examMarksPy",checkNullandTrim(stObj.getExamMarksPy()));
 		numberValidation(mObject,"attendencePy",checkNullandTrim(stObj.getAttendencePy()));
-		numberValidation(mObject,"acYearId",checkNullandTrim(stObj.getAcYearId()));
+//		numberValidation(mObject,"acYearId",checkNullandTrim(stObj.getAcYearId()));
 		numberValidation(mObject,"rollNo",checkNullandTrim(stObj.getRollNo()));
 		numberValidation(mObject,"aayBplYn",checkNullandTrim(stObj.getAayBplYn()));
 		stringNonSpecialValidation(mObject,"guardianName",checkNullandTrim(stObj.getGuardianName()));
@@ -125,7 +125,7 @@ public class CustomFxcelValidator {
 		}else {
 			hs.put("status", "0");
 			hs.put("message", "invalid number formate");
-			mp.put("finalStatus", null);
+			mp.put("finalStatus",null);
 		}
 		mp.put(mapKey, hs);
 		return mp;

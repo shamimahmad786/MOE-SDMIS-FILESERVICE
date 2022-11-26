@@ -24,6 +24,8 @@ public class StudentFacilityDetails {
 	@Column(name = "student_id")
 	private Long studentId;
 	
+	
+	
 	@Column(name = "school_id")
 	private Integer schoolId;
 	

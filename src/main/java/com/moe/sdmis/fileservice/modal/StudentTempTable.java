@@ -131,6 +131,8 @@ public class StudentTempTable  implements Serializable{
     private String rollNo;
     @Column(name = "guardian_name")
     private String guardianName;
+    
+
 	
 	
 	

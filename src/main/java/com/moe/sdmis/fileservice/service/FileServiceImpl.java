@@ -25,12 +25,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.moe.sdmis.fileservice.db.StaticReportBean;
 import com.moe.sdmis.fileservice.modal.CommonBean;
 import com.moe.sdmis.fileservice.modal.StudentBasicProfile;
 import com.moe.sdmis.fileservice.modal.StudentFacilityDetails;
 import com.moe.sdmis.fileservice.modal.StudentTempTable;
 import com.moe.sdmis.fileservice.modal.UploadHistory;
 import com.moe.sdmis.fileservice.repository.StudentBasicProfileRepository;
+import com.moe.sdmis.fileservice.repository.StudentFacilityDetailsRepository;
 import com.moe.sdmis.fileservice.repository.StudentTempTableRepository;
 import com.moe.sdmis.fileservice.repository.UploadHistoryRepository;
 import com.moe.sdmis.fileservice.utility.GeneralUtility;
@@ -48,14 +50,16 @@ public class FileServiceImpl {
 	CustomFxcelValidator customFxcelValidator;
 	@Autowired
 	UploadHistoryRepository uploadHistoryRepository;
+	@Autowired
+	StudentFacilityDetailsRepository studentFacilityDetailsRepository;
 
 	@Value("${userBucket.path}")
 	private String userBucketPath;
 
 	String statusFlag;
 	
-	public List<Map<String, HashMap<String, String>>> uploadData(List<CommonBean> lt,String userId,String address,String schoolId) throws Exception {
-		statusFlag="2";
+	public List<Map<String, HashMap<String, String>>> uploadData(List<CommonBean> lt,String userId,String address,String schoolId,StaticReportBean sObj) throws Exception {
+		statusFlag="3";
 //		System.out.println("Before save list size--->"+lt.size());
 		
 //		List<StudentTempTable> response=studentTempTableRepository.saveAll(lt);
@@ -67,18 +71,29 @@ public class FileServiceImpl {
 		for(CommonBean lt1 : lt) {
 			
 //			System.out.println(lt1.getMobileNo_1());
-			finalList.add(customFxcelValidator.validateStudent(lt1));	
+			finalList.add(customFxcelValidator.validateStudent(lt1,sObj));	
 		}
 		
 		try {
 			
+//			long 	statusCount=	finalList.stream().filter((e)->
+//		
+//				e.entrySet().contains("status=0")
+//				).count();
+//			
+			System.out.println(finalList);
 			long 	statusCount=	finalList.stream().filter((e)->
-				e.keySet().contains("status=0")
-				).count();
+			e.get("finalStatus").get("status").equalsIgnoreCase("0")
+		).count();
 			
 			if(statusCount>0) {
-				statusFlag="1";
+				statusFlag="2";
 			}
+			
+			System.out.println("final list--->"+finalList);
+			
+			System.out.println("statusCount---->"+statusCount);
+			
 			
 	UploadHistory  uObj=new UploadHistory();
 	uObj.setHost(address);
@@ -109,7 +124,8 @@ public class FileServiceImpl {
 			ex.printStackTrace();
 		}
 		
-		List<StudentBasicProfile> ltStudentObj=new LinkedList<StudentBasicProfile>(); 
+		LinkedList<StudentBasicProfile> ltStudentObj=new LinkedList<StudentBasicProfile>();
+		LinkedList<StudentFacilityDetails> ltStudentFacilityObj=new LinkedList<StudentFacilityDetails>();
 		try {
 		TypeReference<List<Map<String, HashMap<String, String>>> > typeRef 
         = new TypeReference<List<Map<String, HashMap<String, String>>> >() {};
@@ -167,36 +183,36 @@ public class FileServiceImpl {
         	}
         	
         	
-//        	try {
-//        		StudentFacilityDetails stdfacility=new StudentFacilityDetails();
-//        		
-//        		stdfacility.setStudentId(studentId);
-//        		stdfacility.setSchoolId(Integer.parseInt(data));
-//        		Integer.parseInt(studentObj.get("examMarksPy").get("value"))
-//        		stdfacility.setFacProvided(facProvided);
-//        		stdfacility.setCentralScholarshipId(centralScholarshipId);
-//        		stdfacility.setCentralScholarshipYn(centralScholarshipYn);
-//        		stdfacility.setStateScholarshipYn(stateScholarshipYn);
-//        		stdfacility.setOtherScholarshipYn(otherScholarshipYn);
-//        		stdfacility.setScholarshipAmount(scholarshipAmount);
-//        		stdfacility.setFacProvidedCwsn(facProvidedCwsn);
-//        		stdfacility.setScreenedForSld(screenedForSld);
-//        		stdfacility.setSldType(sldType);
-//        		stdfacility.setScreenedForAsd(screenedForAsd);
-//        		stdfacility.setScreenedForAdhd(screenedForAdhd);
-//        		stdfacility.setIsEcActivity(isEcActivity);
-//        		stdfacility.setGiftedChildren(giftedChildren);
-//        		stdfacility.setMentorProvided(mentorProvided);
-//        		stdfacility.setNurturanceCmpsState(nurturanceCmpsState);
-//        		stdfacility.setNurturanceCmpsNational(nurturanceCmpsNational);
-//        		stdfacility.setOlympdsNlc(olympdsNlc);
-//        		stdfacility.setNccNssYn(nccNssYn);
-//        		
-//        		
-//        		
-//        	}catch(Exception ex) {
-//        		ex.printStackTrace();
-//        	}
+        	try {
+        		StudentFacilityDetails stdfacility=new StudentFacilityDetails();
+        		
+        		stdfacility.setStudentId(1L);
+        		stdfacility.setSchoolId(Integer.parseInt(data));
+        		
+//        		stdfacility.setFacProvided(Integer.parseInt(studentObj.get("").get("value")));
+        		stdfacility.setCentralScholarshipId(Integer.parseInt(studentObj.get("centralScholarshipId").get("value")));
+        		stdfacility.setCentralScholarshipYn(Integer.parseInt(studentObj.get("centralScholarshipYn").get("value")));
+        		stdfacility.setStateScholarshipYn(Integer.parseInt(studentObj.get("stateScholarshipYn").get("value")));
+        		stdfacility.setOtherScholarshipYn(Integer.parseInt(studentObj.get("otherScholarshipYn").get("value")));
+        		stdfacility.setScholarshipAmount(Integer.parseInt(studentObj.get("scholarshipAmount").get("value")));
+//        		stdfacility.setFacProvidedCwsn(Integer.parseInt(studentObj.get("").get("value")));
+        		stdfacility.setScreenedForSld(Integer.parseInt(studentObj.get("screenedForSld").get("value")));
+        		stdfacility.setSldType(Integer.parseInt(studentObj.get("sldType").get("value")));
+        		stdfacility.setScreenedForAsd(Integer.parseInt(studentObj.get("screenedForAsd").get("value")));
+        		stdfacility.setScreenedForAdhd(Integer.parseInt(studentObj.get("screenedForAdhd").get("value")));
+        		stdfacility.setIsEcActivity(Integer.parseInt(studentObj.get("isEcActivity").get("value")));
+//        		stdfacility.setGiftedChildren(Integer.parseInt(studentObj.get("").get("value")));
+        		stdfacility.setMentorProvided(Integer.parseInt(studentObj.get("mentorProvided").get("value")));
+        		stdfacility.setNurturanceCmpsState(Integer.parseInt(studentObj.get("nurturanceCmpsState").get("value")));
+        		stdfacility.setNurturanceCmpsNational(Integer.parseInt(studentObj.get("nurturanceCmpsNational").get("value")));
+        		stdfacility.setOlympdsNlc(Integer.parseInt(studentObj.get("olympdsNlc").get("value")));
+        		stdfacility.setNccNssYn(Integer.parseInt(studentObj.get("nccNssYn").get("value")));
+        		
+        		
+        		
+        	}catch(Exception ex) {
+        		ex.printStackTrace();
+        	}
         }
         
         
@@ -207,6 +223,7 @@ public class FileServiceImpl {
 		
 		try {
 			studentBasicProfileRepository.deleteAllBySchoolId(Integer.parseInt(data));
+			studentFacilityDetailsRepository.deleteAllBySchoolId(Integer.parseInt(data));
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}
@@ -251,4 +268,22 @@ public class FileServiceImpl {
 		return sObj;
 
 	}
+	
+	
+  public void	updateHistory(String requestHost, String schoolId, String userid,String status) {
+	  try {
+			UploadHistory  uObj=new UploadHistory();
+			uObj.setHost(requestHost);
+			uObj.setSchoolId(Integer.parseInt(schoolId));
+			uObj.setUploadedBy(userid);
+			uObj.setStatus(status);
+			uObj.setUploadedTime(new Date());
+					uploadHistoryRepository.save(uObj);
+	  }catch(Exception ex) {
+		  ex.printStackTrace();
+	  }
+  }
+	
+	
+	
 }

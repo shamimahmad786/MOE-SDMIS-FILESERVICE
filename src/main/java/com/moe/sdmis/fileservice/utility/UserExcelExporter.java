@@ -27,6 +27,7 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +41,10 @@ public class UserExcelExporter {
 
 //	@Autowired
 //	NativeRepository nativeRepository; 
+	
+	
+
+	
 
 	private XSSFWorkbook workbook;
 	private XSSFSheet sheet;
@@ -219,11 +224,11 @@ public class UserExcelExporter {
 //        }
 //    }
 
-	public void export(HttpServletResponse response, String schoolId, NativeRepository nativeRepository,String templateName)
+	public void export(HttpServletResponse response, String schoolId, NativeRepository nativeRepository,String templateName,String tempPath)
 			throws IOException {
 //        writeHeaderLine();
 //        writeDataLines();
-		readAndDownloadExcel(schoolId, nativeRepository,templateName);
+		readAndDownloadExcel(schoolId, nativeRepository,templateName,tempPath);
 		ServletOutputStream outputStream = response.getOutputStream();
 		workbook.write(outputStream);
 		workbook.close();
@@ -371,8 +376,30 @@ public class UserExcelExporter {
 		outputStream.close();
 
 	}
+	
+	public StaticReportBean getSchoolData(NativeRepository nativeRepository,String schoolId) {
+		QueryResult qrObj = null;
+		StaticReportBean sobj = new StaticReportBean();
+		try {
+	
+			System.out.println(nativeRepository);
 
-	public void readAndDownloadExcel(String schoolId, NativeRepository nativeRepository,String templateName) {
+			qrObj = nativeRepository.executeQueries(
+					"select * from school_master_live sm left join  mst_district md on sm.district_id =md.district_id  left join mst_state ms on md.state_id=ms.state_id where  sm.school_id ="
+							+ schoolId + "  limit 1");
+    		sobj.setColumnName(qrObj.getColumnName());
+    		sobj.setRowValue(qrObj.getRowValue());
+    		sobj.setColumnDataType(qrObj.getColumnDataType());
+    		sobj.setStatus("1");
+//    		return sobj;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sobj;
+	}
+	
+
+	public void readAndDownloadExcel(String schoolId, NativeRepository nativeRepository,String templateName,String tempPath) {
 		QueryResult qrObj = null;
 		try {
 			StaticReportBean sobj = new StaticReportBean();
@@ -392,7 +419,7 @@ public class UserExcelExporter {
 		}
 
 		try {
-			FileInputStream excelFile = new FileInputStream(new File("E:\\UDISE\\"+templateName));
+			FileInputStream excelFile = new FileInputStream(new File(tempPath+File.separator+templateName));
 			workbook = new XSSFWorkbook(excelFile);
 			Sheet datatypeSheet = workbook.getSheetAt(1);
 			Iterator<Row> iterator = datatypeSheet.iterator();

@@ -17,13 +17,13 @@ public static	List<String> commomHeadersFromExcel = Arrays.asList("UDISE Code of
 			"Autism Spectrum Disorder","Attention Deficit Hyperactive Disorder (ADHD)","extra curricular activity","");
   public static Integer commonPhysicalColumn=52;
 
-public static	List<String> commomHeadersFromValidation = Arrays.asList("numberValidation","numberValidation","nonValidation","numberValidation","numberValidation","numberValidation","stringNonSpecialValidation","numberValidation","dateValidation",
+public static	List<String> commomHeadersFromValidation = Arrays.asList("numberValidation","numberValidation","nonValidation", "numberValidation","numberValidation","numberValidation","numberValidation","stringNonSpecialValidation","numberValidation","stringNonSpecialValidation","dateValidation",
 "stringNonSpecialValidation","stringNonSpecialValidation","stringNonSpecialValidation","adharValidation","stringNonSpecialValidation","stringValidation",
 "pincodeValidation","mobileValidation","mobileValidation","emailValidation","numberValidation",
 "numberValidation","numberValidation","numberValidation","numberValidation","numberValidation","numberValidation",
 "jsonValidation","numberValidation","numberValidation","numberValidation","dateValidation",
-"numberValidation","numberValidation","numberValidation","numberValidation",
-"numberValidation","numberValidation","numberValidation","numberValidation","numberValidation",
+"numberValidation","numberValidation","numberValidation",  
+"numberValidation", "numberValidation","numberValidation","numberValidation",
 "numberValidation","numberValidation","numberValidation","numberValidation","numberValidation",
 "numberValidation","numberValidation","numberValidation","numberValidation",
 "numberValidation","numberValidation","numberValidation","nonValidation");
@@ -36,8 +36,8 @@ public static	List<String> commomHeadersFromValidation = Arrays.asList("numberVa
 //		"enrStatusPy","classPy","enrTypeCy","examAppearedPyYn","examResultPy","examMarksPy","attendencePy","acYearId","rollNo","aayBplYn","guardianName","textBoxFacProvided",
 //		"centrlSchlrshpYn","centrlSchlrshpId","stateSchlrshpYn","otherSchlrshpYn","schlrshpAmount","facProvidedCwsn","scrndFrSld","sldType","scrndFrAsd","scrndFrAdhd","isEcActivity");
 
-public static  List<String> commonHeaderKey=Arrays.asList("udiseCode","classId","sectionId","studentName","gender","studentDob","motherName","fatherName","aadhaarNo","nameAsAadhaar","address","pincode","mobileNo_1","mobileNo_2","emailId","motherTongue","socCatId","minorityId","isBplYn","ewsYn","cwsnYn","impairmentType","natIndYn","ooscYn","admnNumber","admnStartDate","acdemicStream",
-		"enrStatusPy","classPy","enrTypeCy","examAppearedPyYn","examResultPy","examMarksPy","attendencePy","rollNo","aayBplYn","guardianName","textBoxFacProvided",
+public static  List<String> commonHeaderKey=Arrays.asList("udiseCode","classId","sectionId","rollNo","studentName","gender","studentDob","motherName","fatherName","guardianName","aadhaarNo","nameAsAadhaar","address","pincode","mobileNo_1","mobileNo_2","emailId","motherTongue","socCatId","minorityId","isBplYn","aayBplYn","ewsYn","cwsnYn","impairmentType","natIndYn","ooscYn","admnNumber","admnStartDate","acdemicStream",
+		"enrStatusPy","classPy","enrTypeCy","examAppearedPyYn","examResultPy","examMarksPy","attendencePy","textBoxFacProvided",
 		"centrlSchlrshpYn","centrlSchlrshpId","stateSchlrshpYn","otherSchlrshpYn","schlrshpAmount","facProvidedCwsn","scrndFrSld","sldType","scrndFrAsd","scrndFrAdhd","isEcActivity");
 
 

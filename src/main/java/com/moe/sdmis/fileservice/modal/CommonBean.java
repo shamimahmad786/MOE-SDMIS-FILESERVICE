@@ -68,6 +68,13 @@ public class CommonBean {
 	private String scrndFrAdhd;
 	private String isEcActivity;
 	
+	private String vocYn;
+	private String sector;
+	private String jobRole;
+	private String appVocPy;
+	
+	
+	
 	
 
 }

@@ -6,6 +6,9 @@ import java.util.Map;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -24,7 +27,10 @@ public class StudentFacilityDetails {
 	@Column(name = "student_id")
 	private Long studentId;
 	
-	
+	@OneToOne
+    @MapsId
+    @JoinColumn(name = "student_id")
+    private StudentBasicProfile studentBasicProfile;
 	
 	@Column(name = "school_id")
 	private Integer schoolId;
@@ -97,6 +103,21 @@ public class StudentFacilityDetails {
 	
 	@Column(name = "modified_time")
 	private Date modifiedTime;
+
+	@Override
+	public String toString() {
+		return "StudentFacilityDetails [studentId=" + studentId + ", studentBasicProfile=" + studentBasicProfile
+				+ ", schoolId=" + schoolId + ", facProvided=" + facProvided + ", centralScholarshipYn="
+				+ centralScholarshipYn + ", centralScholarshipId=" + centralScholarshipId + ", stateScholarshipYn="
+				+ stateScholarshipYn + ", otherScholarshipYn=" + otherScholarshipYn + ", scholarshipAmount="
+				+ scholarshipAmount + ", facProvidedCwsn=" + facProvidedCwsn + ", screenedForSld=" + screenedForSld
+				+ ", sldType=" + sldType + ", screenedForAsd=" + screenedForAsd + ", screenedForAdhd=" + screenedForAdhd
+				+ ", isEcActivity=" + isEcActivity + ", giftedChildren=" + giftedChildren + ", mentorProvided="
+				+ mentorProvided + ", nurturanceCmpsState=" + nurturanceCmpsState + ", nurturanceCmpsNational="
+				+ nurturanceCmpsNational + ", olympdsNlc=" + olympdsNlc + ", nccNssYn=" + nccNssYn + ", createdBy="
+				+ createdBy + ", createdTime=" + createdTime + ", modifiedBy=" + modifiedBy + ", modifiedTime="
+				+ modifiedTime + "]";
+	}
 	
 	
 	

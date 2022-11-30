@@ -64,17 +64,51 @@ public static List<String> state116HeaderKey=Arrays.asList("udiseCode","classId"
 
 
 
+public static	List<String> templateHeadersFromExcel_1 =Arrays.asList("Grade/ Class","SECTION","Roll no","Name of Student","GENDER","DOB (DD-MM-YYYY)","MOTHER NAME","FATHER Name","GUARDIAN NAME","Aadhaar No of Child :"
+,"NAME AS PER AADHAR","ADDRESS","PINCODE","MOBILE NUMBER","ALTERNATE MOBILE NUMBER","EMAIL ID (STUDENT/PARENT/GUARDIAN)","MOTHER TONGUE",
+"SOCIAL CATEGORY","MINORITY GROUP","BPL BANEFICIARY","ANTYODAYA","BELONGS TO EWS/DISADVANTAGED GROUP","CWSN(YES/NO)","IMPAIRMENT TYPE","CHILD IS INDIAN NATIONAL"
+,"CHILD IS OUT-OF-SCHOOL-CHILD","Admission Number","ADMISSION DATE (DD-MM-YYYY)","STUDENT STREAM (For higher secondary only)","PREVIOUS ACADEMIC SCHOOLING STATUS"
+,"CLASS STUDIES IN PREVIOUS ACADEMIC","ADMITED/ ENROLLED UNDER","APPEARED FOR EXAM IN PREVIOUS CLASS","RESULT FOR PREVIOUS EXAM","MARKS % OF PREVIOUS EXAM"	
+,"CLASS ATTENDED DAYS","Facility - Free Uniform","Facility - Free TextBook","Central Scholarship","Name of Scholarship (provide code only)"
+,"State Scholarship","Other Scholarship","Scholarship Amount","Facility provided to the CWSN","Specific Learning Disability (SLD)",
+"Type of Specific Learning Disability (SLD)","Autism Spectrum Disorder","Attention Deficit Hyperactive Disorder (ADHD)","extra curricular activity"	
+,"Vocational Courses (Yes-1, No-2)","Trade/Sector ID","Job Role ID","Appeared for Examination in Previous Class for Vocational Subject");
+
+
+public static Integer commonPhysicalColumn_1=53;
+
+public static  List<String> commonHeaderKey_1=Arrays.asList("classId","sectionId","rollNo","studentName","gender","studentDob","motherName","fatherName","guardianName","aadhaarNo",
+		"nameAsAadhaar","address","pincode","mobileNo_1","mobileNo_2","emailId","motherTongue",
+		"socCatId","minorityId","isBplYn","aayBplYn","ewsYn","cwsnYn","impairmentType","natIndYn","ooscYn","admnNumber","admnStartDate","acdemicStream",
+		"enrStatusPy","classPy","enrTypeCy","examAppearedPyYn","examResultPy","examMarksPy","attendencePy","uniformFacProvided","textBoxFacProvided",
+		"centrlSchlrshpYn","centrlSchlrshpId","stateSchlrshpYn","otherSchlrshpYn","schlrshpAmount","facProvidedCwsn","scrndFrSld","sldType","scrndFrAsd","scrndFrAdhd","isEcActivity","vocYn","sector","jobRole","appVocPy");
+
+
+
+public static	List<String> templateHeadersFromExcel_2 =Arrays.asList("Grade/ Class","SECTION","Roll no","Name of Student","GENDER","DOB (DD-MM-YYYY)","MOTHER NAME","FATHER Name","GUARDIAN NAME","Aadhaar No of Child :"
+,"NAME AS PER AADHAR","ADDRESS","PINCODE","MOBILE NUMBER","ALTERNATE MOBILE NUMBER","EMAIL ID (STUDENT/PARENT/GUARDIAN)","MOTHER TONGUE",
+"SOCIAL CATEGORY","MINORITY GROUP","BPL BANEFICIARY","ANTYODAYA","BELONGS TO EWS/DISADVANTAGED GROUP","CWSN(YES/NO)","IMPAIRMENT TYPE","CHILD IS INDIAN NATIONAL"
+,"CHILD IS OUT-OF-SCHOOL-CHILD","Admission Number","ADMISSION DATE (DD-MM-YYYY)","STUDENT STREAM (For higher secondary only)","PREVIOUS ACADEMIC SCHOOLING STATUS"
+,"CLASS STUDIES IN PREVIOUS ACADEMIC","ADMITED/ ENROLLED UNDER","APPEARED FOR EXAM IN PREVIOUS CLASS","RESULT FOR PREVIOUS EXAM","MARKS % OF PREVIOUS EXAM"	
+,"CLASS ATTENDED DAYS","Facility - Free Uniform","Facility - Free TextBook","Central Scholarship","Name of Scholarship (provide code only)"
+,"State Scholarship","Other Scholarship","Scholarship Amount","Facility provided to the CWSN","Specific Learning Disability (SLD)",
+"Type of Specific Learning Disability (SLD)","Autism Spectrum Disorder","Attention Deficit Hyperactive Disorder (ADHD)","extra curricular activity");
+
+
+public static Integer commonPhysicalColumn_2=49;
+
+public static  List<String> commonHeaderKey_2=Arrays.asList("classId","sectionId","rollNo","studentName","gender","studentDob","motherName","fatherName","guardianName","aadhaarNo",
+		"nameAsAadhaar","address","pincode","mobileNo_1","mobileNo_2","emailId","motherTongue",
+		"socCatId","minorityId","isBplYn","aayBplYn","ewsYn","cwsnYn","impairmentType","natIndYn","ooscYn","admnNumber","admnStartDate","acdemicStream",
+		"enrStatusPy","classPy","enrTypeCy","examAppearedPyYn","examResultPy","examMarksPy","attendencePy","uniformFacProvided","textBoxFacProvided",
+		"centrlSchlrshpYn","centrlSchlrshpId","stateSchlrshpYn","otherSchlrshpYn","schlrshpAmount","facProvidedCwsn","scrndFrSld","sldType","scrndFrAsd","scrndFrAdhd","isEcActivity");
 
 
 
 
-
-
-
-
-
-
-
+public static void main(String[] arr) {
+	System.out.println(templateHeadersFromExcel_1.size());
+}
 
 
 

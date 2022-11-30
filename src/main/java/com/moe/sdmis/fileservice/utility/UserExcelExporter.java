@@ -228,7 +228,7 @@ public class UserExcelExporter {
 			throws IOException {
 //        writeHeaderLine();
 //        writeDataLines();
-		readAndDownloadExcel(schoolId, nativeRepository,templateName,tempPath);
+		readAndDownloadExcel(response,schoolId, nativeRepository,templateName,tempPath);
 		ServletOutputStream outputStream = response.getOutputStream();
 		workbook.write(outputStream);
 		workbook.close();
@@ -397,9 +397,40 @@ public class UserExcelExporter {
 		}
 		return sobj;
 	}
-	
 
-	public void readAndDownloadExcel(String schoolId, NativeRepository nativeRepository,String templateName,String tempPath) {
+	public StaticReportBean getSectionData(NativeRepository nativeRepository,String schoolId) {
+		QueryResult qrObj = null;
+		StaticReportBean sobj = new StaticReportBean();
+		try {
+			qrObj = nativeRepository.executeQueries("select class_id,max(section_id) sections from school_section_details where school_id ="+schoolId+" group by class_id");
+    		sobj.setColumnName(qrObj.getColumnName());
+    		sobj.setRowValue(qrObj.getRowValue());
+    		sobj.setColumnDataType(qrObj.getColumnDataType());
+    		sobj.setStatus("1");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sobj;
+	}
+	
+	public StaticReportBean getVocationData(NativeRepository nativeRepository,String schoolId) {
+		QueryResult qrObj = null;
+		StaticReportBean sobj = new StaticReportBean();
+		try {
+			qrObj = nativeRepository.executeQueries("select sector_id,sub_sector_id,grade_id from  nsqf_school_mapping nsm where school_id ="+schoolId);
+    		sobj.setColumnName(qrObj.getColumnName());
+    		sobj.setRowValue(qrObj.getRowValue());
+    		sobj.setColumnDataType(qrObj.getColumnDataType());
+    		sobj.setStatus("1");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sobj;
+	}
+	
+	
+	
+	public void readAndDownloadExcel(HttpServletResponse response,String schoolId, NativeRepository nativeRepository,String templateName,String tempPath) {
 		QueryResult qrObj = null;
 		try {
 			StaticReportBean sobj = new StaticReportBean();
@@ -414,29 +445,48 @@ public class UserExcelExporter {
 //    		sobj.setColumnDataType(qrObj.getColumnDataType());
 //    		sobj.setStatus("1");
 //    		return sobj;
+			System.out.println(qrObj.getRowValue());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		String headerKey = "Content-Disposition";
+		String headerValue = "attachment; filename=SchoolBulkTemplate_" + (String) (qrObj.getRowValue().get(0).get("udise_sch_code")) + ".xlsm";
+		response.setHeader(headerKey, headerValue);
 		try {
 			FileInputStream excelFile = new FileInputStream(new File(tempPath+File.separator+templateName));
 			workbook = new XSSFWorkbook(excelFile);
 			Sheet datatypeSheet = workbook.getSheetAt(1);
 			Iterator<Row> iterator = datatypeSheet.iterator();
-
-			Row firstrow = datatypeSheet.getRow(1);
-			Cell ninthCel = firstrow.getCell(9);
-			Cell secondCel = firstrow.getCell(2);
+			Row thirdrow = datatypeSheet.getRow(2);
+			Cell fouthCel = thirdrow.getCell(4);
+			Cell secondCel = thirdrow.getCell(1);
+			Cell sixCell = thirdrow.getCell(6);
 			secondCel.setCellValue((String) qrObj.getRowValue().get(0).get("state_name"));
-			ninthCel.setCellValue(Double.parseDouble((String) (qrObj.getRowValue().get(0).get("udise_sch_code"))));
-			Row secondrow = datatypeSheet.getRow(2);
-			Cell secondCelofsecondrow = secondrow.getCell(2);
-			secondCelofsecondrow.setCellValue((String) qrObj.getRowValue().get(0).get("state_name"));
+			fouthCel.setCellValue(Double.parseDouble((String) (qrObj.getRowValue().get(0).get("udise_sch_code"))));
+			sixCell.setCellValue((String) (qrObj.getRowValue().get(0).get("school_name")));
+			Row fourthrow = datatypeSheet.getRow(3);
+			Cell fourthRowfouthCel = fourthrow.getCell(4);
+			Cell fourthRowsecondCel = fourthrow.getCell(1);
+			Cell fourthRowsixCell = fourthrow.getCell(6);			
+			fourthRowsecondCel.setCellValue((String) (qrObj.getRowValue().get(0).get("district_name")));
+			fourthRowfouthCel.setCellValue(Integer.parseInt(String.valueOf((qrObj.getRowValue().get(0).get("sch_type")))));
+			fourthRowsixCell.setCellValue(Integer.parseInt(String.valueOf( (qrObj.getRowValue().get(0).get("sch_mgmt_center_id")))));
+			
+			Row fifthrow = datatypeSheet.getRow(4);
+			
+			Cell fifthRowfouthCel = fifthrow.getCell(4);
+			Cell fifthRowsecondCel = fifthrow.getCell(1);
+			Cell fifthRowsixCell = fifthrow.getCell(6);			
+			fifthRowsecondCel.setCellValue((String) (qrObj.getRowValue().get(0).get("block_name")));
+			fifthRowfouthCel.setCellValue(Integer.parseInt(String.valueOf( (qrObj.getRowValue().get(0).get("class_frm")))) +" to "+Integer.parseInt(String.valueOf( (qrObj.getRowValue().get(0).get("class_to")))));
+			fifthRowsixCell.setCellValue(Integer.parseInt(String.valueOf( (qrObj.getRowValue().get(0).get("sch_category_id")))));
+			
+			
 
 			Row zerorow = datatypeSheet.getRow(0);
-			Cell zeroRowFiftyOnecell = zerorow.createCell(51);
+			Cell zeroRowFiftyOnecell = zerorow.createCell(53);
 			zeroRowFiftyOnecell.setCellValue((int) qrObj.getRowValue().get(0).get("school_id"));
-			datatypeSheet.setColumnHidden(51, true);
+			datatypeSheet.setColumnHidden(53, true);
 
 //         while (iterator.hasNext()) {
 //

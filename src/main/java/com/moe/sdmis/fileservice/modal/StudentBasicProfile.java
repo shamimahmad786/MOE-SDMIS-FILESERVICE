@@ -3,11 +3,14 @@ package com.moe.sdmis.fileservice.modal;
 import java.util.Date;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -38,6 +41,14 @@ public class StudentBasicProfile {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "studentIdSeq")
     @SequenceGenerator(name = "studentIdSeq", sequenceName = "student_id_seq", allocationSize = 1)
     private Long studentId;
+    
+    @OneToOne(mappedBy = "studentBasicProfile", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private StudentFacilityDetails studentFacilityDetails;
+    
+    @OneToOne(mappedBy = "studentBasicProfile", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private StudentVocationalDetails studentVocationalDetails;
     
     @Column(name = "student_code_nat")
     private String studentCodeNat;

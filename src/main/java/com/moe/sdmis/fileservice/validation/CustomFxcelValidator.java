@@ -41,6 +41,9 @@ public class CustomFxcelValidator {
 
 		numberValidation(mObject, "udiseCode", checkNullandTrim(stObj.getUdisecode()), 99999999999L);
 		try {
+			
+//			System.out.println("From-->"+Integer.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("class_frm")))) +"---class----->"+stObj.getClassId()+"-------To-----"+Integer.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("class_to")))));
+			
 			if(stObj.getClassId() !=null && stObj.getClassId() !="" && !stObj.getClassId().equalsIgnoreCase("null") &&  (stObj.getClassId().equalsIgnoreCase("PP1") || stObj.getClassId().equalsIgnoreCase("PP2") || stObj.getClassId().equalsIgnoreCase("PP3"))){
 				blankAndTrueValidation(mObject, "classId", stObj.getClassId());
 			}
@@ -48,6 +51,7 @@ public class CustomFxcelValidator {
 //		numberValidation(mObject, "classId", checkNullandTrim(stObj.getClassId()), 12);
 			blankAndTrueValidation(mObject, "classId", stObj.getClassId());
 		}else {
+			System.out.println("called class--->"+stObj.getClassId());
 			blankAndFalseValidation(mObject, "classId", stObj.getClassId());
 		}
 		}catch(Exception ex) {
@@ -97,7 +101,13 @@ public class CustomFxcelValidator {
 		numberValidation(mObject, "socCatId", checkNullandTrim(stObj.getSocCatId()), 4);
 		numberValidation(mObject, "minorityId", checkNullandTrim(stObj.getMinorityId()), 7);
 		numberValidation(mObject, "isBplYn", checkNullandTrim(stObj.getIsBplYn()), 2);
+		
+		if(stObj.getIsBplYn() !=null && stObj.getIsBplYn() !="" &&  !stObj.getIsBplYn().equalsIgnoreCase("null") && stObj.getIsBplYn().equalsIgnoreCase("1")) {
 		numberValidation(mObject, "aayBplYn", checkNullandTrim(stObj.getAayBplYn()), 2);
+		}else {
+			blankAndFalseValidation(mObject, "aayBplYn", checkNullandTrim(stObj.getAayBplYn()));
+		}
+		
 		numberValidation(mObject, "ewsYn", checkNullandTrim(stObj.getEwsYn()), 2);
 		numberValidation(mObject, "cwsnYn", checkNullandTrim(stObj.getCwsnYn()), 2);
 		if (checkNull(stObj.getCwsnYn()).equalsIgnoreCase("1")) {
@@ -202,14 +212,21 @@ public class CustomFxcelValidator {
 		numberValidation(mObject, "scrndFrAdhd", checkNullandTrim(stObj.getScrndFrAdhd()), 2);
 		numberValidation(mObject, "isEcActivity", checkNullandTrim(stObj.getIsEcActivity()), 2);
 	
+		
+		if(stObj.getClassId() != null && sObj.getRowValue() !=null && sObj.getRowValue().get(0).get("is_vocational_active")!=null && (checkNull(stObj.getClassId()).equalsIgnoreCase("9") || checkNull(stObj.getClassId()).equalsIgnoreCase("10") || checkNull(stObj.getClassId()).equalsIgnoreCase("11") || checkNull(stObj.getClassId()).equalsIgnoreCase("12"))  && Integer.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("is_vocational_active"))))==1) {
 		numberValidation(mObject, "vocYn", checkNullandTrim(stObj.getVocYn()), 2);
+		}else {
+			blankAndFalseValidation(mObject, "vocYn", stObj.getVocYn());	
+		}
 		
 //		System.out.println(checkNull(stObj.getSector()));
 //		System.out.println(lowerSector.get(checkNull(stObj.getSector())));
 //		System.out.println(lowerSector.get(1));
 		try {
-		if((checkNull(stObj.getClassId()).equalsIgnoreCase("9") || checkNull(stObj.getClassId()).equalsIgnoreCase("10")) && lowerSector.get(String.valueOf(checkNull(stObj.getSector())))) {
+		if(sObj.getRowValue().get(0).get("is_vocational_active")!=null && Integer.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("is_vocational_active"))))==1 &&(checkNull(stObj.getClassId()).equalsIgnoreCase("9") || checkNull(stObj.getClassId()).equalsIgnoreCase("10")) && lowerSector.get(String.valueOf(checkNull(stObj.getSector())))) {
 			blankAndTrueValidation(mObject, "sector", stObj.getSector());
+		}else {
+			blankAndFalseValidation(mObject, "sector", stObj.getSector());
 		}
 		}catch(Exception ex) {
 			blankAndFalseValidation(mObject, "sector", stObj.getSector());
@@ -217,9 +234,13 @@ public class CustomFxcelValidator {
 		}
 		
 		try {
-		if((checkNull(stObj.getClassId()).equalsIgnoreCase("11") || checkNull(stObj.getClassId()).equalsIgnoreCase("12")) && higherSector.get(checkNull(stObj.getSector()))) {
+			System.out.println("Sub sector--->"+stObj.getSector());
+			System.out.println(higherSector);
+		if(sObj.getRowValue().get(0).get("is_vocational_active")!=null && Integer.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("is_vocational_active"))))==1 && (checkNull(stObj.getClassId()).equalsIgnoreCase("11") || checkNull(stObj.getClassId()).equalsIgnoreCase("12")) && stObj.getSector() !=null && higherSector.get(String.valueOf(checkNull(stObj.getSector())))) {
 //			numberValidation(mObject, "sector", checkNullandTrim(stObj.getSector()), 2);
 				blankAndTrueValidation(mObject, "sector", stObj.getSector());
+			}else {
+				blankAndFalseValidation(mObject, "sector", stObj.getSector());
 			}
 		}catch(Exception ex) {
 			blankAndFalseValidation(mObject, "sector", stObj.getSector());
@@ -227,9 +248,11 @@ public class CustomFxcelValidator {
 		}
 		
 		try {
-		if((checkNull(stObj.getClassId()).equalsIgnoreCase("9") || checkNull(stObj.getClassId()).equalsIgnoreCase("10")) && lowerSubSector.get(checkNull(stObj.getJobRole()))) {
+		if(sObj.getRowValue().get(0).get("is_vocational_active")!=null && Integer.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("is_vocational_active"))))==1 && (checkNull(stObj.getClassId()).equalsIgnoreCase("9") || checkNull(stObj.getClassId()).equalsIgnoreCase("10")) && stObj.getJobRole() !=null && lowerSubSector.get(String.valueOf(checkNull(stObj.getJobRole())))) {
 //			numberValidation(mObject, "sector", checkNullandTrim(stObj.getSector()), 2);
 				blankAndTrueValidation(mObject, "jobRole", stObj.getJobRole());
+			}else {
+				blankAndFalseValidation(mObject, "jobRole", stObj.getJobRole());
 			}
 		}catch(Exception ex) {
 			blankAndFalseValidation(mObject, "jobRole", stObj.getJobRole());
@@ -237,9 +260,11 @@ public class CustomFxcelValidator {
 		}	
 		
 		try {
-			if((checkNull(stObj.getClassId()).equalsIgnoreCase("11") || checkNull(stObj.getClassId()).equalsIgnoreCase("12")) && higherSubSector.get(checkNull(stObj.getJobRole()))) {
+			if(sObj.getRowValue().get(0).get("is_vocational_active")!=null && Integer.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("is_vocational_active"))))==1 && (checkNull(stObj.getClassId()).equalsIgnoreCase("11") || checkNull(stObj.getClassId()).equalsIgnoreCase("12")) && stObj.getJobRole() !=null && higherSubSector.get(String.valueOf(checkNull(stObj.getJobRole())))) {
 //				numberValidation(mObject, "sector", checkNullandTrim(stObj.getSector()), 2);
 					blankAndTrueValidation(mObject, "jobRole", stObj.getJobRole());
+				}else {
+					blankAndFalseValidation(mObject, "jobRole", stObj.getJobRole());
 				}
 		}catch(Exception ex) {
 			blankAndFalseValidation(mObject, "jobRole", stObj.getJobRole());

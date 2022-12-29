@@ -40,6 +40,7 @@ public class CommonBean {
 	private String impairmentType;
 	private String natIndYn;
 	private String ooscYn;
+	private String ooscMainstreamedYn;
 	private String admnNumber;
 	private String admnStartDate;
 	private String acdemicStream;

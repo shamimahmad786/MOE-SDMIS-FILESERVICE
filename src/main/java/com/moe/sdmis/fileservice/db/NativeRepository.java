@@ -1,6 +1,7 @@
 package com.moe.sdmis.fileservice.db;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,5 +45,27 @@ public class NativeRepository {
 	        queryResult.setColumnDataType(columnDataType);
 //	        // System.out.println("queryResult--->"+queryResult);
 			return queryResult;
+	    }
+	  
+	  public int updateQueries(String queryData){  
+		  try {
+	      return  jdbcTemplate.update(queryData);
+		  }catch(Exception ex) {
+			  ex.printStackTrace();
+			  return 0;
+		  }
+			
+	    }
+	  
+	  public Map<String,Object> insertQueries(String queryData){    
+		  Map<String,Object> mp=new HashMap<String,Object>();
+		  try {
+	        jdbcTemplate.execute(queryData);
+	        mp.put("status", 1);
+		  }catch(Exception ex) {
+			  ex.printStackTrace();
+			  mp.put("status", 0);
+		  }
+			return mp;
 	    }
 }

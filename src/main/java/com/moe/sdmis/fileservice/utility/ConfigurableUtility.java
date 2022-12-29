@@ -104,10 +104,30 @@ public static  List<String> commonHeaderKey_2=Arrays.asList("classId","sectionId
 		"centrlSchlrshpYn","centrlSchlrshpId","stateSchlrshpYn","otherSchlrshpYn","schlrshpAmount","facProvidedCwsn","scrndFrSld","sldType","scrndFrAsd","scrndFrAdhd","isEcActivity");
 
 
+public static	List<String> templateHeadersFromExcel_3 =Arrays.asList("Grade/Class","SECTION","Rollno","NameofStudent","GENDER","DOB(DD-MM-YYYY)","MOTHERNAME","FATHERNAME","GUARDIANNAME(Optional)","AadhaarNoofChild","STUDENTNAMEASPERAADHAR",
+		"PRESENTADDRESS","PINCODE","MOBILENUMBER(ofStudent/Parent/Guardian)","ALTERNATEMOBILENUMBER(Optional)","EMAILID(STUDENT/PARENT/GUARDIAN)(Optional)","MOTHERTONGUE",
+		"SOCIALCATEGORY","MINORITYGROUP","IsBPLBANEFICIARY?(Yes-1,No-2)","WhetherAntyodayaAnnaYojana(AAY)beneficiary?(Yes-1,No-2)","BELONGSTOEWS/DISADVANTAGEDGROUP?(Yes-1,No-2)",
+		"ISCWSN?(Yes-1,No-2)","CWSNIMPAIRMENTTYPE","CHILDISINDIANNATIONAL?(Yes-1,No-2)","CHILDISOUT-OF-SCHOOL-CHILD?(Yes-1,No-2)","Whenthechildismainstreamed?","AdmissionNumber",
+		"ADMISSIONDATE(DD-MM-YYYY)","STUDENTSTREAM(Forhighersecondaryonly)","PREVIOUSACADEMICYEARSCHOOLINGSTATUS","CLASSSTUDIESINPREVIOUSACADEMICYEAR","ADMITED/ENROLLEDUNDERRTE/EWS?(forprivateunaidedonly)",
+		"APPEAREDFOREXAMINPREVIOUSCLASS(1-Appeared,2-NotAppeared)","RESULTFORPREVIOUSEXAM","MARKS%OFPREVIOUSEXAM","CLASSATTENDEDDAYS(PreviousYear)","FacilityReceivedFreeUniform(Yes-1,No-2)",	
+		"FacilityReceivedFreeTextBook(Yes-1,No-2)","ReceivedCentralScholarship(Yes-1,No-2)","NameofCentralScholarship(providecodeonly)","ReceivedStateScholarship(Yes-1,No-2)",
+		"ReceivedOtherScholarship(Yes-1,No-2)","ScholarshipAmount","FacilityprovidedtotheCWSN","SpecificLearningDisability(SLD)(Yes-1,No-2)","TypeofSpecificLearningDisability(SLD)",
+		"AutismSpectrumDisorder(Yes-1,No-2)","AttentionDeficitHyperactiveDisorder(ADHD)(Yes-1,No-2)","Involvedinextracurricularactivity?(Yes-1,No-2)","VocationalCourses(Yes-1,No-2)",
+		"Trade/SectorID","JobRoleID","AppearedforExaminationinPreviousClassforVocationalSubject");
+
+
+public static Integer commonPhysicalColumn_3=54;
+
+public static  List<String> commonHeaderKey_3=Arrays.asList("classId","sectionId","rollNo","studentName","gender","studentDob","motherName","fatherName","guardianName","aadhaarNo",
+		"nameAsAadhaar","address","pincode","mobileNo_1","mobileNo_2","emailId","motherTongue",
+		"socCatId","minorityId","isBplYn","aayBplYn","ewsYn","cwsnYn","impairmentType","natIndYn","ooscYn","ooscMainstreamedYn","admnNumber","admnStartDate","acdemicStream",
+		"enrStatusPy","classPy","enrTypeCy","examAppearedPyYn","examResultPy","examMarksPy","attendencePy","uniformFacProvided","textBoxFacProvided",
+		"centrlSchlrshpYn","centrlSchlrshpId","stateSchlrshpYn","otherSchlrshpYn","schlrshpAmount","facProvidedCwsn","scrndFrSld","sldType","scrndFrAsd","scrndFrAdhd","isEcActivity","vocYn","sector","jobRole","appVocPy");
+
 
 
 public static void main(String[] arr) {
-	System.out.println(templateHeadersFromExcel_1.size());
+	System.out.println(templateHeadersFromExcel_3.size());
 }
 
 

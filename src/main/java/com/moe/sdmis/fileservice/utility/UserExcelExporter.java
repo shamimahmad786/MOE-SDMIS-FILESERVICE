@@ -468,8 +468,8 @@ public class UserExcelExporter {
 			Cell fourthRowfouthCel = fourthrow.getCell(4);
 			Cell fourthRowsecondCel = fourthrow.getCell(1);
 			Cell fourthRowsixCell = fourthrow.getCell(6);			
-			fourthRowsecondCel.setCellValue((String) (qrObj.getRowValue().get(0).get("district_name")));
-			fourthRowfouthCel.setCellValue(Integer.parseInt(String.valueOf((qrObj.getRowValue().get(0).get("sch_type")))));
+			fourthRowsecondCel.setCellValue((String) (qrObj.getRowValue().get(0).get("district_cd")));
+			fourthRowfouthCel.setCellValue(GeneralUtility.typeMapping.get(String.valueOf((qrObj.getRowValue().get(0).get("sch_type")))));
 			fourthRowsixCell.setCellValue(Integer.parseInt(String.valueOf( (qrObj.getRowValue().get(0).get("sch_mgmt_center_id")))));
 			
 			Row fifthrow = datatypeSheet.getRow(4);
@@ -477,16 +477,13 @@ public class UserExcelExporter {
 			Cell fifthRowfouthCel = fifthrow.getCell(4);
 			Cell fifthRowsecondCel = fifthrow.getCell(1);
 			Cell fifthRowsixCell = fifthrow.getCell(6);			
-			fifthRowsecondCel.setCellValue((String) (qrObj.getRowValue().get(0).get("block_name")));
+			fifthRowsecondCel.setCellValue((String) (qrObj.getRowValue().get(0).get("block_cd")));
 			fifthRowfouthCel.setCellValue(Integer.parseInt(String.valueOf( (qrObj.getRowValue().get(0).get("class_frm")))) +" to "+Integer.parseInt(String.valueOf( (qrObj.getRowValue().get(0).get("class_to")))));
-			fifthRowsixCell.setCellValue(Integer.parseInt(String.valueOf( (qrObj.getRowValue().get(0).get("sch_category_id")))));
-			
-			
-
+			fifthRowsixCell.setCellValue(GeneralUtility.catMapping.get(String.valueOf( (qrObj.getRowValue().get(0).get("sch_category_id")))));
 			Row zerorow = datatypeSheet.getRow(0);
-			Cell zeroRowFiftyOnecell = zerorow.createCell(53);
+			Cell zeroRowFiftyOnecell = zerorow.createCell(54);
 			zeroRowFiftyOnecell.setCellValue((int) qrObj.getRowValue().get(0).get("school_id"));
-			datatypeSheet.setColumnHidden(53, true);
+			datatypeSheet.setColumnHidden(54, true);
 
 //         while (iterator.hasNext()) {
 //

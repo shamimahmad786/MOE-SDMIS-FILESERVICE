@@ -31,28 +31,25 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "stu_pro_enr_details")
+@Table(name = "stu_pro_enr_details_tmp")
 @TypeDefs({
     @TypeDef(name = "json", typeClass = JsonType.class)
 })
-public class StudentBasicProfile {
+public class StudentBasicProfileTmp {
 
     @Id
-    @Column(name = "student_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "studentIdSeq")
-    @SequenceGenerator(name = "studentIdSeq", sequenceName = "student_id_seq", allocationSize = 100)
-    private Long studentId;
-    
     @Column(name = "temp_id")
-    private Long tempId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stuProEnrDetailsTmpTempIdSeq")
+    @SequenceGenerator(name = "stuProEnrDetailsTmpTempIdSeq", sequenceName = "stu_pro_enr_details_tmp_temp_id_seq", allocationSize = 100)
+    private Long temp_id;
     
-    @OneToOne(mappedBy = "studentBasicProfile", cascade = CascadeType.ALL,fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToOne(mappedBy = "studentBasicProfileTmp", cascade = CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval = true)
     @PrimaryKeyJoinColumn
-    private StudentFacilityDetails studentFacilityDetails;
+    private StudentFacilityDetailsTmp studentFacilityDetailsTmp;
     
-    @OneToOne(mappedBy = "studentBasicProfile", cascade = CascadeType.ALL,fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToOne(mappedBy = "studentBasicProfileTmp", cascade = CascadeType.ALL,fetch = FetchType.LAZY, orphanRemoval = true)
     @PrimaryKeyJoinColumn
-    private StudentVocationalDetails studentVocationalDetails;
+    private StudentVocationalDetailsTmp studentVocationalDetailsTmp;
     
     @Column(name = "student_code_nat")
     private String studentCodeNat;

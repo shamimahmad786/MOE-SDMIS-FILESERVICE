@@ -3,6 +3,7 @@ package com.moe.sdmis.fileservice.utility;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -17,7 +18,7 @@ import com.moe.sdmis.fileservice.validation.CustomFxcelValidator;
 
 public class TemplateConfiguration1 {
 	DataFormatter df = new DataFormatter();
-	public CommonBean dataPrepration(Map<Integer, Boolean> mtongObj,CommonBean stdObj,Row currentRow,StaticReportBean sObj,StaticReportBean sectionsObj,StaticReportBean vocationObj,CellStyle cellStyle,CellStyle correctCellStyle,HashMap<String, Boolean> lowerSector,HashMap<String, Boolean> lowerSubSector,HashMap<String, Boolean> higherSector,HashMap<String, Boolean> higherSubSector,HashMap<String, String> sectionMap,Map<String, HashMap<String, String>> mObject ) {
+	public CommonBean dataPrepration(Map<Integer, Boolean> mtongObj,CommonBean stdObj,Row currentRow,StaticReportBean sObj,StaticReportBean sectionsObj,StaticReportBean vocationObj,CellStyle cellStyle,CellStyle correctCellStyle,HashMap<String, Boolean> lowerSector,HashMap<String, Boolean> lowerSubSector,HashMap<String, Boolean> higherSector,HashMap<String, Boolean> higherSubSector,HashMap<String, String> sectionMap,Map<String, HashMap<String, String>> mObject,HashSet<String> adharMach ) {
 		CustomFxcelValidator customFxcelValidator =new CustomFxcelValidator();
 		stdObj.setClassId(df.formatCellValue(currentRow.getCell(0)));
 		try {
@@ -74,7 +75,7 @@ public class TemplateConfiguration1 {
 				checkNull(df.formatCellValue(currentRow.getCell(3))).replaceAll("\\s+", " "));
 		if (customFxcelValidator
 				.stringNonSpecialValidation(mObject, "studentName",
-						checkNullandTrim(stdObj.getStudentName()))
+						checkNullandTrim(stdObj.getStudentName()),3,50)
 				.get("studentName").get("status").equalsIgnoreCase("0")) {
 
 			setCellColors(currentRow, currentRow.getCell(3), 3, cellStyle);
@@ -145,7 +146,7 @@ public class TemplateConfiguration1 {
 				checkNull(df.formatCellValue(currentRow.getCell(6))).replaceAll("\\s+", " "));
 		if (customFxcelValidator
 				.stringNonSpecialValidation(mObject, "motherName",
-						checkNullandTrim(stdObj.getMotherName()))
+						checkNullandTrim(stdObj.getMotherName()),3,50)
 				.get("motherName").get("status").equalsIgnoreCase("0")) {
 //			System.out.println("In set color---->8");
 			setCellColors(currentRow, currentRow.getCell(6), 6, cellStyle);
@@ -157,7 +158,7 @@ public class TemplateConfiguration1 {
 				checkNull(df.formatCellValue(currentRow.getCell(7))).replaceAll("\\s+", " "));
 		if (customFxcelValidator
 				.stringNonSpecialValidation(mObject, "fatherName",
-						checkNullandTrim(stdObj.getFatherName()))
+						checkNullandTrim(stdObj.getFatherName()),3,50)
 				.get("fatherName").get("status").equalsIgnoreCase("0")) {
 //			System.out.println("In set color---->9");
 			setCellColors(currentRow, currentRow.getCell(7), 7, cellStyle);
@@ -169,7 +170,7 @@ public class TemplateConfiguration1 {
 				checkNull(df.formatCellValue(currentRow.getCell(8))).replaceAll("\\s+", " "));
 		if (customFxcelValidator
 				.stringNonSpecialValidation(mObject, "guardianName",
-						checkNullandTrim(stdObj.getGuardianName()))
+						checkNullandTrim(stdObj.getGuardianName()),3,50)
 				.get("guardianName").get("status").equalsIgnoreCase("0")) {
 //			System.out.println("In set color---->10");
 			setCellColors(currentRow, currentRow.getCell(8), 8, cellStyle);
@@ -179,7 +180,7 @@ public class TemplateConfiguration1 {
 
 		stdObj.setAadhaarNo(df.formatCellValue(currentRow.getCell(9)));
 		if (customFxcelValidator
-				.adharValidation(mObject, "aadhaarNo", checkNullandTrim(stdObj.getAadhaarNo()))
+				.adharValidation(mObject, "aadhaarNo", checkNullandTrim(stdObj.getAadhaarNo()),adharMach)
 				.get("aadhaarNo").get("status").equalsIgnoreCase("0")) {
 //			System.out.println("In set color---->11");
 			setCellColors(currentRow, currentRow.getCell(9), 9, cellStyle);
@@ -192,7 +193,7 @@ public class TemplateConfiguration1 {
 					checkNull(df.formatCellValue(currentRow.getCell(10))).replaceAll("\\s+", " "));
 			if (customFxcelValidator
 					.stringNonSpecialValidation(mObject, "nameAsAadhaar",
-							checkNullandTrim(stdObj.getNameAsAadhaar()))
+							checkNullandTrim(stdObj.getNameAsAadhaar()),3,50)
 					.get("nameAsAadhaar").get("status").equalsIgnoreCase("0")) {
 				setCellColors(currentRow, currentRow.getCell(10), 10, cellStyle);
 			}else {
@@ -203,7 +204,7 @@ public class TemplateConfiguration1 {
 		stdObj.setAddress(
 				checkNull(df.formatCellValue(currentRow.getCell(11))).replaceAll("\\s+", " "));
 		if (customFxcelValidator
-				.stringValidation(mObject, "address", checkNullandTrim(stdObj.getAddress()))
+				.stringValidation(mObject, "address", checkNullandTrim(stdObj.getAddress()),20,100)
 				.get("address").get("status").equalsIgnoreCase("0")) {
 //			System.out.println("In set color---->13");
 			setCellColors(currentRow, currentRow.getCell(11), 11, cellStyle);

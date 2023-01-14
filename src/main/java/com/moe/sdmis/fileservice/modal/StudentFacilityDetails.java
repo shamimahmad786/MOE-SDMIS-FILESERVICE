@@ -12,7 +12,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 
+import com.vladmihalcea.hibernate.type.array.IntArrayType;
+import com.vladmihalcea.hibernate.type.json.JsonType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +25,10 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "stu_fac_othr_details")
+@TypeDefs({
+    @TypeDef(name = "json", typeClass = JsonType.class),
+    @TypeDef(name = "integer-array", typeClass = IntArrayType.class)
+})
 public class StudentFacilityDetails {
 	
 	@Id
@@ -35,9 +43,11 @@ public class StudentFacilityDetails {
 	@Column(name = "school_id")
 	private Integer schoolId;
 	
-	@Type(type = "json")
-	@Column(name = "fac_provided", columnDefinition = "json")
-	private Map<Integer, Integer> facProvided;
+//	@Type(type = "json")
+//	@Column(name = "fac_provided", columnDefinition = "json")
+	@Type(type = "integer-array")
+    @Column(name = "fac_provided", columnDefinition = "integer[]")
+	private Integer[] facProvided;
 	
 	@Column(name = "centrl_schlrshp_yn")
 	private Integer centralScholarshipYn;
@@ -54,9 +64,11 @@ public class StudentFacilityDetails {
 	@Column(name = "schlrshp_amount")
 	private Integer scholarshipAmount;
 	
-	@Type(type = "json")
-	@Column(name = "fac_provided_cwsn", columnDefinition = "json")
-	private Map<Integer, Integer> facProvidedCwsn;
+//	@Type(type = "json")
+//	@Column(name = "fac_provided_cwsn", columnDefinition = "json")
+	@Type(type = "integer-array")
+    @Column(name = "fac_provided_cwsn", columnDefinition = "integer[]")
+	private Integer[] facProvidedCwsn;
 	
 	@Column(name = "scrnd_fr_sld")
 	private Integer screenedForSld;
@@ -73,9 +85,11 @@ public class StudentFacilityDetails {
 	@Column(name = "is_ec_activity")
 	private Integer isEcActivity;
 	
-	@Type(type = "json")
-	@Column(name = "gifted_cldrn", columnDefinition = "json")
-	private Map<Integer, Integer> giftedChildren;
+//	@Type(type = "json")
+//	@Column(name = "gifted_cldrn", columnDefinition = "json")
+	@Type(type = "integer-array")
+    @Column(name = "gifted_cldrn", columnDefinition = "integer[]")
+	private Integer[] giftedChildren;
 	
 	@Column(name = "mentor_prov")
 	private Integer mentorProvided;
@@ -103,6 +117,13 @@ public class StudentFacilityDetails {
 	
 	@Column(name = "modified_time")
 	private Date modifiedTime;
+	
+	@Column(name = "is_fac_prov")
+	private Integer isFacProv;
+	
+	@Column(name = "is_cwsn_fac_prov")
+	private Integer isCwsnFacProv;
+	
 
 	@Override
 	public String toString() {

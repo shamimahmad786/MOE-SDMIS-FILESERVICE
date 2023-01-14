@@ -23,7 +23,7 @@ public class NativeRepository {
     private JdbcTemplate jdbcTemplate;
 	
 	  public QueryResult executeQueries(String queryData){        
-	     System.out.println("queryData--->"+queryData);
+//	     System.out.println("queryData--->"+queryData);
 		  MapSqlParameterSource parameters = new MapSqlParameterSource();
 	        List<Object> columnList=new ArrayList<Object>();
 	        List<Object> columnDataType=new ArrayList<Object>();

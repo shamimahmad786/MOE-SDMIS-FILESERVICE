@@ -15,7 +15,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class GeneralUtility {
 
-	public HashMap<String,String> CustomStringMapper(String data) throws JsonMappingException, JsonProcessingException {
+	public Integer[] CustomStringMapper(String data) throws JsonMappingException, JsonProcessingException {
+		
 		
 		
 		HashMap<String,String> impairmentObj= new HashMap<String , String>() {{
@@ -59,15 +60,21 @@ public class GeneralUtility {
 		
 		List<String> elephantList = Arrays.asList(data.split(","));
 		
+		Integer[] arrayObj=new Integer[elephantList.size()];
+		
 		for(String imp:elephantList) {
 			finalJSON.put(imp, impairmentObj.get(imp));
+		}
+		
+		for(int i=0;i<elephantList.size();i++) {
+			arrayObj[i]=Integer.parseInt(elephantList.get(0));
 		}
 		
 		
 //		ObjectMapper objectMapper = new ObjectMapper();
 //		 HashMap<String,String> obj=	 objectMapper.readValue(data, HashMap.class);
 //		return obj;
-		return finalJSON;
+		return arrayObj;
 	}
 	
 	public HashMap<String,String> studentFacility(String uniform,String textbook) throws JsonMappingException, JsonProcessingException {
@@ -138,6 +145,43 @@ public class GeneralUtility {
 	        ImperialMapping =  Collections.unmodifiableMap(aMap);
 	    }
 	 
+	 public static Map<String,Integer> SectionMapping=new HashMap<String,Integer>();
+	 static {
+	        HashMap<String,Integer> aMap = new HashMap<String,Integer>();
+	        aMap.put("A",1);
+	        aMap.put("B",2);
+	        aMap.put("C",3);
+	        aMap.put("D",4);
+	        aMap.put("E",5);
+	        aMap.put("F",6);
+	        aMap.put("G",7);
+	        aMap.put("H",8);
+	        aMap.put("I",9);
+	        aMap.put("F",10);
+	        aMap.put("K",11);
+	        aMap.put("L",12);
+	        aMap.put("M",13);
+	        aMap.put("N",14);
+	        aMap.put("O",15);
+	        aMap.put("P",16);
+	        aMap.put("Q",17);
+	        aMap.put("R",18);
+	        aMap.put("S",19);
+	        aMap.put("T",20);
+	        aMap.put("U",21);
+	        aMap.put("V",22);
+	        aMap.put("W",23);
+	        aMap.put("X",24);
+	        aMap.put("Y",25);
+	        aMap.put("Z",26);
+	        
+	        SectionMapping =  Collections.unmodifiableMap(aMap);
+	    }
+	 
+	 public Integer sectionId(String sec) {
+		return SectionMapping.get(sec);
+		 
+	 }
 	 
 	 
 }

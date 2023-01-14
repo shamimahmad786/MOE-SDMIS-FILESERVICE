@@ -19,6 +19,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
+import com.vladmihalcea.hibernate.type.array.IntArrayType;
 import com.vladmihalcea.hibernate.type.json.JsonType;
 
 import lombok.AllArgsConstructor;
@@ -33,14 +34,15 @@ import lombok.Setter;
 @Entity
 @Table(name = "stu_pro_enr_details")
 @TypeDefs({
-    @TypeDef(name = "json", typeClass = JsonType.class)
+    @TypeDef(name = "json", typeClass = JsonType.class),
+    @TypeDef(name = "integer-array", typeClass = IntArrayType.class)
 })
 public class StudentBasicProfile {
 
     @Id
     @Column(name = "student_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "studentIdSeq")
-    @SequenceGenerator(name = "studentIdSeq", sequenceName = "student_id_seq", allocationSize = 100)
+    @SequenceGenerator(name = "studentIdSeq", sequenceName = "student_id_seq", allocationSize = 1)
     private Long studentId;
     
     @Column(name = "temp_id")
@@ -185,9 +187,11 @@ public class StudentBasicProfile {
     private Integer isBulkUploaded;
     
 //    @Convert(converter = HashMapConverter.class)
-    @Type(type = "json")
-    @Column(name = "impairment_type", columnDefinition = "json")
-    private Map<String, String> impairmentType;
+//    @Type(type = "json")
+//    @Column(name = "impairment_type", columnDefinition = "json")
+    @Type(type = "integer-array")
+    @Column(name = "impairment_type", columnDefinition = "integer[]")
+    private Integer[] impairmentType;
     
     @Column(name = "oosc_mainstreamed_yn")
     private Integer ooscMainstreamedYn;

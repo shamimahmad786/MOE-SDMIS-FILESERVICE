@@ -172,17 +172,17 @@ public class FileCtrl {
 					Cell currentCell = cellIterator.next();
 				}
 
-				if (!df.formatCellValue(currentRow.getCell(54)).equalsIgnoreCase(schoolId)) {
-					System.out.println("ready for exception");
-					uploadedExcel.delete();
-					uploadedResponse.delete();
-					throw new GenericExceptionHandler("UDISE CODE is not matched with the this School. Please download template for crossponding school", "100001", request.getRemoteAddr(),
-							userid, schoolId);
-				}
+//				if (!df.formatCellValue(currentRow.getCell(54)).equalsIgnoreCase(schoolId)) {
+//					System.out.println("ready for exception");
+//					uploadedExcel.delete();
+//					uploadedResponse.delete();
+//					throw new GenericExceptionHandler("UDISE CODE is not matched with the this School. Please download template for crossponding school", "100001", request.getRemoteAddr(),
+//							userid, schoolId);
+//				}
 			}
 
 			if (currentRow.getRowNum() == 2) {
-				System.out.println(schoolObj.getRowValue().get(0).get("udise_sch_code"));
+//				System.out.println(schoolObj.getRowValue().get(0).get("udise_sch_code"));
 				if (schoolObj.getRowValue() != null && schoolObj.getRowValue().size() > 0
 						&& !String.valueOf(schoolObj.getRowValue().get(0).get("udise_sch_code"))
 								.equalsIgnoreCase(df.formatCellValue(currentRow.getCell(4)))) {
@@ -193,14 +193,14 @@ public class FileCtrl {
 			}
 
 			if (currentRow.getRowNum() == 6) {
-				if (stateId.equalsIgnoreCase("116")) {
+//				if (stateId.equalsIgnoreCase("116")) {
 					numberOfCell = ConfigurableUtility.commonPhysicalColumn_3;
 
-				} else if (stateId.equalsIgnoreCase("112")) {
-					numberOfCell = ConfigurableUtility.commonPhysicalColumn_2;
-				} else {
-					numberOfCell = ConfigurableUtility.commonPhysicalColumn;
-				}
+//				} else if (stateId.equalsIgnoreCase("112")) {
+//					numberOfCell = ConfigurableUtility.commonPhysicalColumn_2;
+//				} else {
+//					numberOfCell = ConfigurableUtility.commonPhysicalColumn;
+//				}
 
 				if (currentRow.getPhysicalNumberOfCells() != numberOfCell) {
 					uploadedExcel.delete();
@@ -225,13 +225,13 @@ public class FileCtrl {
 				Map<String, Integer> headerIndexMap = IntStream.range(0, cellHeader.size()).boxed()
 						.collect(Collectors.toMap(i -> cellHeader.get(i), i -> i));
 
-				if (stateId.equalsIgnoreCase("116")) {
+//				if (stateId.equalsIgnoreCase("116")) {
 					headersFromExcel = ConfigurableUtility.templateHeadersFromExcel_3;
-				} else if (stateId.equalsIgnoreCase("112")) {
-					headersFromExcel = ConfigurableUtility.templateHeadersFromExcel_2;
-				} else {
-					headersFromExcel = ConfigurableUtility.commomHeadersFromExcel;
-				}
+//				} else if (stateId.equalsIgnoreCase("112")) {
+//					headersFromExcel = ConfigurableUtility.templateHeadersFromExcel_2;
+//				} else {
+//					headersFromExcel = ConfigurableUtility.commomHeadersFromExcel;
+//				}
 
 				Integer result = null;
 				try {
@@ -261,8 +261,9 @@ public class FileCtrl {
 
 	@RequestMapping(value = "/docValidate", method = RequestMethod.POST)
 	public ResponseEntity<?> docValidate(@RequestBody String data, HttpServletRequest request) throws Exception {
+//		System.out.println("Called");
 		DataFormatter df = new DataFormatter();
-		System.out.println("Before call");
+//		System.out.println("Before call");
 		Map<String, Object> map = null;
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		long statusCount = 0;
@@ -275,8 +276,8 @@ public class FileCtrl {
 			Workbook workbook = new XSSFWorkbook(excelFile);
 			Sheet datatypeSheet = workbook.getSheetAt(1);
 			Iterator<Row> iterator = datatypeSheet.iterator();
-			Integer totalRows = datatypeSheet.getPhysicalNumberOfRows();
-
+//			Integer totalRows = datatypeSheet.getPhysicalNumberOfRows();
+			Integer totalRows =0;
 			Map<String, HashMap<String, String>> mObject = new LinkedHashMap<String, HashMap<String, String>>();
 
 			CellStyle cellStyle = workbook.createCellStyle();
@@ -291,7 +292,7 @@ public class FileCtrl {
 			StaticReportBean sectionsObj = null;
 			StaticReportBean vocationObj = null;
 			Map<Integer, Boolean> mtongObj = null;
-			HashMap<String, String> sectionMap = new HashMap<String, String>();
+			HashMap<String, List<String>> sectionMap = new HashMap<String, List<String>>();
 			List<CommonBean> stdList = new ArrayList<CommonBean>();
 			HashMap<String, Boolean> lowerSector = new HashMap<String, Boolean>();
 			HashMap<String, Boolean> lowerSubSector = new HashMap<String, Boolean>();
@@ -308,10 +309,12 @@ public class FileCtrl {
 				UserExcelExporter excelExporter = new UserExcelExporter();
 				sectionsObj = excelExporter.getSectionData(nativeRepository, String.valueOf(map.get("schoolId")));
 				for (int i = 0; i < sectionsObj.getRowValue().size(); i++) {
-					sectionMap.put(String.valueOf(sectionsObj.getRowValue().get(i).get("class_id")),
-							String.valueOf(sectionsObj.getRowValue().get(i).get("sections")));
+					
+//					try {
+					sectionMap.put(String.valueOf(sectionsObj.getRowValue().get(i).get("class_id")), new ObjectMapper().readValue(String.valueOf(sectionsObj.getRowValue().get(i).get("section_name")), List.class));
+//						sectionMap.put(String.valueOf(sectionsObj.getRowValue().get(i).get("class_id")),new ArrayList<String>().add(String.valueOf(sectionsObj.getRowValue().get(i).get("section_name"))));
+//				}catch() {}
 				}
-
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -320,7 +323,7 @@ public class FileCtrl {
 
 				UserExcelExporter excelExporter = new UserExcelExporter();
 				vocationObj = excelExporter.getVocationData(nativeRepository, String.valueOf(map.get("schoolId")));
-				System.out.println("Vocation detaisl--->" + vocationObj.getRowValue());
+//				System.out.println("Vocation detaisl--->" + vocationObj.getRowValue());
 
 				for (int i = 0; i < vocationObj.getRowValue().size(); i++) {
 					if (String.valueOf(vocationObj.getRowValue().get(i).get("grade_id")).equalsIgnoreCase("1")) {
@@ -344,20 +347,27 @@ public class FileCtrl {
 				CommonBean stdObj = new CommonBean();
 				stdObj.setUdisecode(String.valueOf(map.get("schoolId")));
 				if (currentRow.getRowNum() > 6) {
-					if (String.valueOf(map.get("stateId")).equalsIgnoreCase("116")) {
+//					if (String.valueOf(map.get("stateId")).equalsIgnoreCase("116")) {
 						mtongObj = MotherTongMaster.motherTongMap_116;
-						if (currentRow.getRowNum() > 6) {
+						Cell classCell = currentRow.getCell(0, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
+						Cell sectionCell = currentRow.getCell(1, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
+						Cell nameCell = currentRow.getCell(3, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
+						Cell genderCell = currentRow.getCell(4, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
+			
+					
+						if (currentRow.getRowNum() > 6 && (classCell !=null || sectionCell !=null || nameCell !=null || genderCell !=null )) {
 							TemplateConfiguration3 tcObj = new TemplateConfiguration3();
 							stdObj = tcObj.dataPrepration(mtongObj, stdObj, currentRow, sObj, sectionsObj, vocationObj,
 									cellStyle, correctCellStyle, lowerSector, lowerSubSector, higherSector,
 									higherSubSector, sectionMap, mObject,excelAdharMach);
 							stdList.add(stdObj);
+							++totalRows; 
 						}
-					} else if (String.valueOf(map.get("stateId")).equalsIgnoreCase("112")) {
-						mtongObj = MotherTongMaster.motherTongMap_112;
-					} else {
-
-					}
+//					} else if (String.valueOf(map.get("stateId")).equalsIgnoreCase("112")) {
+//						mtongObj = MotherTongMaster.motherTongMap_112;
+//					} else {
+//
+//					}
 				} // if end
 			} // while end
 
@@ -403,7 +413,8 @@ public class FileCtrl {
 				statusCount = finalResponse.stream()
 						.filter((e) -> e.get("fs").get("s").equalsIgnoreCase("0")).count();
 				response.put("noOfErrorRecords", statusCount);
-				response.put("noOfRecords", totalRows-7);
+//				response.put("noOfRecords", totalRows-7);
+				response.put("noOfRecords", totalRows);
 				if (statusCount > 0) {
 					return ResponseEntity.ok(new FinalResponse(response, "1",
 							"Uploaded Successfully but Some data Error check and resolve"));
@@ -430,13 +441,13 @@ public class FileCtrl {
 			@RequestParam("stateId") String stateId, HttpServletResponse response) throws Exception {
 
 		String templateName = null;
-		if (stateId.equalsIgnoreCase("116")) {
+//		if (stateId.equalsIgnoreCase("116")) {
 			templateName = "Bulk_Student_Data_tem3.xlsm";
-		} else if (stateId.equalsIgnoreCase("112")) {
-			templateName = "Bulk_Student_Data_tem2.xlsm";
-		} else {
-			templateName = "Bulk_Student_Data_template_common.xlsm";
-		}
+//		} else if (stateId.equalsIgnoreCase("112")) {
+//			templateName = "Bulk_Student_Data_tem2.xlsm";
+//		} else {
+//			templateName = "Bulk_Student_Data_template_common.xlsm";
+//		}
 		response.setContentType("application/octet-stream");
 		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 		String currentDateTime = dateFormatter.format(new Date());
@@ -447,12 +458,19 @@ public class FileCtrl {
 	}
 
 	@RequestMapping(value = "/finalUpdateStudentData", method = RequestMethod.POST)
-	public void finalUpdateStudentData(@RequestBody String data) throws Exception {
-		System.out.println(data);
+	public ResponseEntity<?> finalUpdateStudentData(@RequestBody String data) throws Exception {
+//		System.out.println(data);
 		ObjectMapper objectMapper = new ObjectMapper();
-
+        Map<String,String> mp=new HashMap<String,String>();
 		Map<String, Object> map = new ObjectMapper().readValue(data, Map.class);
-		fileServiceImpl.finalUpdateStudentData(String.valueOf(map.get("udiseCode")));
+		 mp=fileServiceImpl.finalUpdateStudentData(String.valueOf(map.get("udiseCode")));
+		
+		 if(mp.get("status").equalsIgnoreCase("0")) {
+			 throw new GenericExceptionHandler("Somthing Event Wrong and Contact with Administrator", "100006","", "",null);
+		 }
+		 
+		return ResponseEntity.ok(mp);
+		
 
 	}
 
@@ -464,7 +482,7 @@ public class FileCtrl {
 	@RequestMapping(value = "/getValidatedData", method = RequestMethod.POST)
 //	public Stream<String>  getValidatedData(@RequestBody String data) throws Exception {
 	public Map<String, Object> getValidatedData(@RequestBody String data) throws Exception {
-		System.out.println("data---->" + data);
+//		System.out.println("data---->" + data);
 		Map<String, Object> map = null;
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
@@ -475,12 +493,12 @@ public class FileCtrl {
 		Map<String, Object> mp = new HashMap<String, Object>();
 		mp.put("value", fileServiceImpl.getValidatedData((int) map.get("schoolId")));
 //		System.out.println(ConfigurableUtility.state111HeaderKey);
-		System.out.println(map.get("stateId"));
-		if ((int) map.get("stateId") == 116) {
+//		System.out.println(map.get("stateId"));
+//		if ((int) map.get("stateId") == 116) {
 			mp.put("header", ConfigurableUtility.commonHeaderKey_3);
-		} else {
-			mp.put("header", ConfigurableUtility.commonHeaderKey);
-		}
+//		} else {
+//			mp.put("header", ConfigurableUtility.commonHeaderKey);
+//		}
 
 //		return fileServiceImpl.getValidatedData((int)map.get("schoolId"));
 		return mp;
@@ -493,10 +511,10 @@ public class FileCtrl {
 		File uploadedExcel = new File(userBucketPath + File.separator + param + File.separator + param + "." + "xlsm");
 		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 		String currentDateTime = dateFormatter.format(new Date());
-		System.out.println(uploadedExcel.getAbsolutePath());
+//		System.out.println(uploadedExcel.getAbsolutePath());
 		InputStreamResource resource = new InputStreamResource(new FileInputStream(uploadedExcel));
 		HttpHeaders headers = new HttpHeaders();
-		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=SchoolBulkTemplate_" + currentDateTime + ".xlsm");
+		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Original_SchoolBulkTemplate_" + currentDateTime + ".xlsm");
 		headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
 		headers.add("Pragma", "no-cache");
 		headers.add("Expires", "0");
@@ -508,12 +526,12 @@ public class FileCtrl {
 	@RequestMapping(path = "/downloadValidatedExcel", method = RequestMethod.GET)
 	public ResponseEntity<Resource> downloadValidatedExcel(@RequestParam("schoolId") String schoolId,
 			@RequestParam("schoolId") String stateId, HttpServletResponse response) throws IOException {
-		System.out.println("called");
+//		System.out.println("called");
 		response.setContentType("application/octet-stream");
 		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 		String currentDateTime = dateFormatter.format(new Date());
 		String headerKey = "Content-Disposition";
-		String headerValue = "attachment; filename=SchoolBulkTemplate_" + currentDateTime + ".xlsm";
+		String headerValue = "attachment; filename=Validated_SchoolBulkTemplate_" + currentDateTime + ".xlsm";
 		response.setHeader(headerKey, headerValue);
 		UserExcelExporter excelExporter = new UserExcelExporter();
 		List<String> commomHeadersFromValidation = null;
@@ -524,7 +542,6 @@ public class FileCtrl {
 		}
 		excelExporter.exportValidatedExcel(response, schoolId, commomHeadersFromValidation, userBucketPath);
 		return null;
-
 	}
 
 	@RequestMapping(value = "/getSchoolDetails", method = RequestMethod.POST)

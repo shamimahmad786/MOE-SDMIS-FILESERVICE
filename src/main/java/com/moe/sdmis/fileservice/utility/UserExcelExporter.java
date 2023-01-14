@@ -402,7 +402,11 @@ public class UserExcelExporter {
 		QueryResult qrObj = null;
 		StaticReportBean sobj = new StaticReportBean();
 		try {
-			qrObj = nativeRepository.executeQueries("select class_id,max(section_id) sections from school_section_details where school_id ="+schoolId+" group by class_id");
+//			qrObj = nativeRepository.executeQueries("select class_id,max(section_id) sections from school_section_details where school_id ="+schoolId+" group by class_id");
+			qrObj = nativeRepository.executeQueries("select json_agg(section_name) section_name,class_id  from (\r\n"
+					+ "select class_id, section_name  from public.school_section_details where school_id="+schoolId+" group by class_id, section_name order by section_name\r\n"
+					+ ") sec\r\n"
+					+ "group by class_id");
     		sobj.setColumnName(qrObj.getColumnName());
     		sobj.setRowValue(qrObj.getRowValue());
     		sobj.setColumnDataType(qrObj.getColumnDataType());
@@ -462,7 +466,7 @@ public class UserExcelExporter {
 			Cell secondCel = thirdrow.getCell(1);
 			Cell sixCell = thirdrow.getCell(6);
 			secondCel.setCellValue((String) qrObj.getRowValue().get(0).get("state_name"));
-			fouthCel.setCellValue(Double.parseDouble((String) (qrObj.getRowValue().get(0).get("udise_sch_code"))));
+			fouthCel.setCellValue((String) (qrObj.getRowValue().get(0).get("udise_sch_code")));
 			sixCell.setCellValue((String) (qrObj.getRowValue().get(0).get("school_name")));
 			Row fourthrow = datatypeSheet.getRow(3);
 			Cell fourthRowfouthCel = fourthrow.getCell(4);

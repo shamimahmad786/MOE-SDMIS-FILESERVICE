@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,6 +41,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.moe.sdmis.fileservice.db.NativeRepository;
 import com.moe.sdmis.fileservice.db.QueryResult;
 import com.moe.sdmis.fileservice.db.StaticReportBean;
+import com.moe.sdmis.fileservice.errorhandler.GenericExceptionHandler;
 import com.moe.sdmis.fileservice.modal.CommonBean;
 import com.moe.sdmis.fileservice.modal.StudentBasicProfile;
 import com.moe.sdmis.fileservice.modal.StudentBasicProfileTmp;
@@ -94,7 +97,7 @@ public class FileServiceImpl {
 	String statusFlag;
 
 	public List<Map<String, HashMap<String, String>>> uploadData(List<CommonBean> lt, String userId, String address,
-			String schoolId, StaticReportBean sObj, HashMap<String, String> sectionMap, Map<Integer, Boolean> mTongObj,
+			String schoolId, StaticReportBean sObj, HashMap<String, List<String>> sectionMap, Map<Integer, Boolean> mTongObj,
 			HashMap<String, Boolean> lowerSector, HashMap<String, Boolean> lowerSubSector,
 			HashMap<String, Boolean> higherSector, HashMap<String, Boolean> higherSubSector,HashSet<String> adharMach) throws Exception {
 		statusFlag = "3";
@@ -120,7 +123,7 @@ public class FileServiceImpl {
 //				e.entrySet().contains("status=0")
 //				).count();
 //			
-			System.out.println(finalList);
+//			System.out.println(finalList);
 			long statusCount = finalList.stream()
 					.filter((e) -> e.get("fs").get("s").equalsIgnoreCase("0")).count();
 
@@ -128,9 +131,9 @@ public class FileServiceImpl {
 				statusFlag = "2";
 			}
 
-			System.out.println("final list--->" + finalList);
-
-			System.out.println("statusCount---->" + statusCount);
+//			System.out.println("final list--->" + finalList);
+//
+//			System.out.println("statusCount---->" + statusCount);
 
 			UploadHistory uObj = new UploadHistory();
 			uObj.setHost(address);
@@ -147,16 +150,20 @@ public class FileServiceImpl {
 		return finalList;
 	}
 	StaticReportBean  schoolObj=null;
-	public void finalUpdateStudentData(String data) throws Exception {
-		System.out.println("called final upload");
+	public Map<String,String> finalUpdateStudentData(String data) throws Exception {
+//		System.out.println("called final upload");
 		ObjectMapper objectMapper = new ObjectMapper();
 		Stream<String> sObj = Files
 				.lines(Paths.get(userBucketPath + File.separator + data + File.separator + data + "." + "txt"));
 
 		String string1 = null;
+		DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
+		
+		Map<String,String> resObj=new HashMap<String,String>(); 
+		
 //		System.out.println("sObj--->"+sObj.);
 		
-		try {
+//		try {
 //			FileInputStream fis = new FileInputStream(userBucketPath + File.separator + data + File.separator + data + "." + "txt");
 //			byte[] buffer = new byte[10];
 //			StringBuilder sb = new StringBuilder();
@@ -193,9 +200,9 @@ public class FileServiceImpl {
 //			 
 //			 System.out.println("Read string--->"+string1);
 			 
-		}catch(Exception ex) {
-			ex.printStackTrace();
-		}
+//		}catch(Exception ex) {
+//			ex.printStackTrace();
+//		}
 		
 		
 		
@@ -215,7 +222,7 @@ public class FileServiceImpl {
 		LinkedList<StudentBasicProfileTmp> ltStudentObj = new LinkedList<StudentBasicProfileTmp>();
 		LinkedList<StudentFacilityDetailsTmp> ltStudentFacilityObj = new LinkedList<StudentFacilityDetailsTmp>();
 		try {
-			System.out.println("before set get");
+//			System.out.println("before set get");
 			TypeReference<List<Map<String, HashMap<String, String>>>> typeRef = new TypeReference<List<Map<String, HashMap<String, String>>>>() {
 			};
 			List<Map<String, HashMap<String, String>>> obj = objectMapper.readValue(string1, typeRef);
@@ -229,12 +236,12 @@ public class FileServiceImpl {
 //			
 //			System.out.println(obj.get(0).get("classId").get("value"));
 			
-			System.out.println("After set get----->"+obj.size());
-	        ExecutorService executorService = Executors.newFixedThreadPool(obj.size());  
+//			System.out.println("After set get----->"+obj.size());
+//	        ExecutorService executorService = Executors.newFixedThreadPool(obj.size());  
 			
 		     
 			
-			ExecutorService executor = Executors.newCachedThreadPool();
+//			ExecutorService executor = Executors.newCachedThreadPool();
 //			 List<Future<List<Map<String, HashMap<String, String>>>>> futures = executor.invokeAll(obj);
 
 //			obj.parallelStream().forEach(e->{
@@ -253,24 +260,23 @@ public class FileServiceImpl {
 			for (Map<String, HashMap<String, String>> studentObj : obj) {
 				StudentBasicProfileTmp studentPojo = new StudentBasicProfileTmp();
 				try {
-//        	System.out.println(obj.get(0).get("ooscYn"));
-
 					studentPojo.setSchoolId(handleInteger(data));
 					if(nullCheck(studentObj.get("classId")).get("v").equalsIgnoreCase("PP1")) {
 						studentPojo.setClassId(-1);	
-					}else if(nullCheck(studentObj.get("classId")).get("v").equalsIgnoreCase("PP1")) {
+					}else if(nullCheck(studentObj.get("classId")).get("v").equalsIgnoreCase("PP2")) {
 						studentPojo.setClassId(-2);
-					}else if(nullCheck(studentObj.get("classId")).get("v").equalsIgnoreCase("PP1")) {
+					}else if(nullCheck(studentObj.get("classId")).get("v").equalsIgnoreCase("PP3")) {
 						studentPojo.setClassId(-3);
 					}else {
 					studentPojo.setClassId(handleInteger(nullCheck(studentObj.get("classId")).get("v")));
 					}
 					studentPojo.setRollNo(handleInteger(studentObj.get("rollNo").get("v")));
 					studentPojo.setGuardianName(studentObj.get("guardianName").get("v"));
-					studentPojo.setSectionId(handleInteger(nullCheck(studentObj.get("sectionId")).get("v")));
+//					studentPojo.setSectionId(handleInteger(nullCheck(studentObj.get("sectionId")).get("v")));
+					studentPojo.setSectionId(new GeneralUtility().sectionId(studentObj.get("sectionId").get("v").toUpperCase()));
 					studentPojo.setStudentName(studentObj.get("studentName").get("v"));
 					studentPojo.setGender(handleInteger(studentObj.get("gender").get("v")));
-					studentPojo.setDob(new Date(studentObj.get("studentDob").get("v").replaceAll("-", "/")));
+					studentPojo.setDob(sourceFormat.parse(studentObj.get("studentDob").get("v").replaceAll("-", "/")));
 					studentPojo.setMotherName(studentObj.get("motherName").get("v"));
 					studentPojo.setFatherName(studentObj.get("fatherName").get("v"));
 					studentPojo.setAadhaarNo(studentObj.get("aadhaarNo").get("v"));
@@ -293,7 +299,6 @@ public class FileServiceImpl {
 					studentPojo.setEwsYN(handleInteger(nullCheck(studentObj.get("ewsYn")).get("v")));
 					studentPojo.setCwsnYN(handleInteger(nullCheck(studentObj.get("cwsnYn")).get("v")));
 					if(studentPojo.getCwsnYN() !=null && studentPojo.getCwsnYN()==2) {
-//						studentPojo.setImpairmentType(null)
 					}else {
 					studentPojo.setImpairmentType(
 							new GeneralUtility().CustomStringMapper(studentObj.get("impairmentType").get("v")));
@@ -309,8 +314,7 @@ public class FileServiceImpl {
 					
 					
 					studentPojo.setAdmnNumber(studentObj.get("admnNumber").get("v"));
-					studentPojo.setAdmnStartDate(
-							new Date(studentObj.get("admnStartDate").get("v").replaceAll("-", "/")));
+					studentPojo.setAdmnStartDate(sourceFormat.parse(studentObj.get("admnStartDate").get("v").replaceAll("-", "/")));
 
 					if(studentPojo.getClassId() ==11 || studentPojo.getClassId() ==12) {
 						studentPojo.setAcademicStream(handleInteger(nullCheck(studentObj.get("acdemicStream")).get("v")));	
@@ -322,9 +326,25 @@ public class FileServiceImpl {
 					studentPojo.setEnrStatusPY(handleInteger(nullCheck(studentObj.get("enrStatusPy")).get("v")));
 					
 					if(studentPojo.getEnrStatusPY()==3 || studentPojo.getEnrStatusPY()==4) {
+						
 						studentPojo.setClassPY(0);
 					}else {
+						if(studentPojo.getClassId()==-1 || studentPojo.getClassId()==-2 || studentPojo.getClassId()==-3) {
+							studentPojo.setClassPY(0);
+						}else if(studentPojo.getClassId()==1) {
+							if(nullCheck(studentObj.get("classPy")).get("v").equalsIgnoreCase("PP") || nullCheck(studentObj.get("classPy")).get("v").equalsIgnoreCase("PP1") || nullCheck(studentObj.get("classPy")).get("v").equalsIgnoreCase("PP2") || nullCheck(studentObj.get("classPy")).get("v").equalsIgnoreCase("PP3")) {
+								studentPojo.setClassPY(-1);
+							}else {
+								studentPojo.setClassPY(handleInteger(nullCheck(studentObj.get("classPy")).get("v")));
+							}
+						}
+						else {
+							 if(nullCheck(studentObj.get("classPy")).get("v").equalsIgnoreCase("PP")) {
+								studentPojo.setClassPY(0);
+							}else {
 					studentPojo.setClassPY(handleInteger(nullCheck(studentObj.get("classPy")).get("v")));
+							}
+						}
 					}
 					studentPojo.setEnrTypeCy(handleInteger(nullCheck(studentObj.get("enrTypeCy")).get("v")));
 					if(studentPojo.getEnrStatusPY()==3 || studentPojo.getEnrStatusPY()==4) {
@@ -343,158 +363,191 @@ public class FileServiceImpl {
 					
 					
 					studentPojo.setAttendancePy(handleInteger(nullCheck(studentObj.get("attendencePy")).get("v")));
-//        	studentPojo.setAcYearId(Integer.parseInt(studentObj.get("acYearId").get("value")));
-					studentPojo.setAcYearId(10);
+					studentPojo.setAcYearId(9);
 					studentPojo.setIsBulkUploaded(1);
 					studentPojo.setIsProfileActive(1);
 
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-				StudentFacilityDetailsTmp stdfacility = new StudentFacilityDetailsTmp();
+					
+					StudentFacilityDetailsTmp stdfacility = new StudentFacilityDetailsTmp();
 
-				try {
-//System.out.println(nullCheck(studentObj.get("schlrshpAmount")).get("value"));
-					stdfacility.setStudentBasicProfileTmp(studentPojo);
-//        		stdfacility.setStudentId(1L);
-					stdfacility.setSchoolId(Integer.parseInt(data));
-        		    stdfacility.setFacProvided(jsonCreation(nullCheck(studentObj.get("textBoxFacProvided")).get("v"),nullCheck(studentObj.get("uniformFacProvided")).get("value")));
-//					System.out.println(studentObj.get("centralScholarshipId"));
-					stdfacility.setCentralScholarshipId(
-							handleInteger(nullCheck(studentObj.get("centrlSchlrshpId")).get("v")));
-					stdfacility.setCentralScholarshipYn(
-							handleInteger(nullCheck(studentObj.get("centrlSchlrshpYn")).get("v")));
-					stdfacility
-							.setStateScholarshipYn(handleInteger(nullCheck(studentObj.get("stateSchlrshpYn")).get("v")));
-					stdfacility
-							.setOtherScholarshipYn(handleInteger(nullCheck(studentObj.get("otherSchlrshpYn")).get("v")));
-					stdfacility
-							.setScholarshipAmount(handleInteger(nullCheck(studentObj.get("schlrshpAmount")).get("v")));
-					if((studentObj.get("facProvidedCwsn") !=null && studentObj.get("facProvidedCwsn").get("v") !=null)) {
-        		stdfacility.setFacProvidedCwsn(jsonCwsn(studentObj.get("facProvidedCwsn").get("v")));
+//					try {
+						stdfacility.setStudentBasicProfileTmp(studentPojo);
+//	        		stdfacility.setStudentId(1L);
+						stdfacility.setSchoolId(Integer.parseInt(data));
+	        		    stdfacility.setFacProvided(jsonCreation(nullCheck(studentObj.get("textBoxFacProvided")).get("v"),nullCheck(studentObj.get("uniformFacProvided")).get("value")));
+//						System.out.println(studentObj.get("centralScholarshipId"));
+	        		    
+	        		    if(stdfacility.getFacProvided() !=null && stdfacility.getFacProvided().length>0) {
+	        		    	stdfacility.setIsFacProv(1);	
+	        		    }else {
+	        		    	stdfacility.setIsFacProv(9);
+	        		    }
+	        		    
+	        		    
+						stdfacility.setCentralScholarshipId(
+								handleInteger(nullCheck(studentObj.get("centrlSchlrshpId")).get("v")));
+						stdfacility.setCentralScholarshipYn(
+								handleInteger(nullCheck(studentObj.get("centrlSchlrshpYn")).get("v")));
+						stdfacility
+								.setStateScholarshipYn(handleInteger(nullCheck(studentObj.get("stateSchlrshpYn")).get("v")));
+						stdfacility
+								.setOtherScholarshipYn(handleInteger(nullCheck(studentObj.get("otherSchlrshpYn")).get("v")));
+						
+						stdfacility
+								.setScholarshipAmount(handleInteger(nullCheck(studentObj.get("schlrshpAmount")).get("v")));
+						if((studentObj.get("facProvidedCwsn") !=null && studentObj.get("facProvidedCwsn").get("v") !=null)) {
+	        		stdfacility.setFacProvidedCwsn(jsonCwsn(studentObj.get("facProvidedCwsn").get("v")));
+						}
+						
+						if(stdfacility.getFacProvidedCwsn() !=null && stdfacility.getFacProvidedCwsn().length>0) {
+							stdfacility.setIsCwsnFacProv(1);
+						}else {
+							stdfacility.setIsCwsnFacProv(9);
+						}
+						
+						stdfacility.setScreenedForSld(handleInteger(nullCheck(studentObj.get("scrndFrSld")).get("v")));
+						stdfacility.setSldType(handleInteger(nullCheck(studentObj.get("sldType")).get("v")));
+						stdfacility.setScreenedForAsd(handleInteger(nullCheck(studentObj.get("scrndFrAsd")).get("v")));
+						stdfacility.setScreenedForAdhd(handleInteger(nullCheck(studentObj.get("scrndFrAdhd")).get("v")));
+						stdfacility.setIsEcActivity(handleInteger(nullCheck(studentObj.get("isEcActivity")).get("v")));
+//	        		stdfacility.setGiftedChildren(Integer.parseInt(studentObj.get("").get("value")));
+						stdfacility.setMentorProvided(handleInteger(nullCheck(studentObj.get("mentorProvided")).get("v")));
+						stdfacility.setNurturanceCmpsState(
+								handleInteger(nullCheck(studentObj.get("nurturanceCmpsState")).get("v")));
+						stdfacility.setNurturanceCmpsNational(
+								handleInteger(nullCheck(studentObj.get("nurturanceCmpsNational")).get("v")));
+						stdfacility.setOlympdsNlc(handleInteger(nullCheck(studentObj.get("olympdsNlc")).get("v")));
+						stdfacility.setNccNssYn(handleInteger(nullCheck(studentObj.get("nccNssYn")).get("v")));
+
+//					} catch (Exception ex) {
+//						ex.printStackTrace();
+//					}
+					
+					StudentVocationalDetailsTmp vocObj=new StudentVocationalDetailsTmp();
+//					try {
+						vocObj.setStudentBasicProfileTmp(studentPojo);
+						vocObj.setSchoolId(Integer.parseInt(data));
+						vocObj.setVocExposure(handleInteger(nullCheck(studentObj.get("vocYn")).get("v")));
+						vocObj.setSector(handleInteger(nullCheck(studentObj.get("sector")).get("v")));
+						vocObj.setJobRole(handleInteger(nullCheck(studentObj.get("jobRole")).get("v")));
+						vocObj.setAppVocPy(handleInteger(nullCheck(studentObj.get("appVocPy")).get("v")));
+//					}catch(Exception ex) {
+//						ex.printStackTrace();
+//					}
+//					
+					
+					studentPojo.setStudentFacilityDetailsTmp(stdfacility);
+					if(schoolObj.getRowValue().get(0).get("is_vocational_active") !=null && String.valueOf(schoolObj.getRowValue().get(0).get("is_vocational_active")).equalsIgnoreCase("1")) {
+					studentPojo.setStudentVocationalDetailsTmp(vocObj);
 					}
-					stdfacility.setScreenedForSld(handleInteger(nullCheck(studentObj.get("scrndFrSld")).get("v")));
-					stdfacility.setSldType(handleInteger(nullCheck(studentObj.get("sldType")).get("v")));
-					stdfacility.setScreenedForAsd(handleInteger(nullCheck(studentObj.get("scrndFrAsd")).get("v")));
-					stdfacility.setScreenedForAdhd(handleInteger(nullCheck(studentObj.get("scrndFrAdhd")).get("v")));
-					stdfacility.setIsEcActivity(handleInteger(nullCheck(studentObj.get("isEcActivity")).get("v")));
-//        		stdfacility.setGiftedChildren(Integer.parseInt(studentObj.get("").get("value")));
-					stdfacility.setMentorProvided(handleInteger(nullCheck(studentObj.get("mentorProvided")).get("v")));
-					stdfacility.setNurturanceCmpsState(
-							handleInteger(nullCheck(studentObj.get("nurturanceCmpsState")).get("v")));
-					stdfacility.setNurturanceCmpsNational(
-							handleInteger(nullCheck(studentObj.get("nurturanceCmpsNational")).get("v")));
-					stdfacility.setOlympdsNlc(handleInteger(nullCheck(studentObj.get("olympdsNlc")).get("v")));
-					stdfacility.setNccNssYn(handleInteger(nullCheck(studentObj.get("nccNssYn")).get("v")));
-
+					ltStudentObj.add(studentPojo);
+										
+					
 				} catch (Exception ex) {
 					ex.printStackTrace();
+					
 				}
+
 				
+
 				
-				StudentVocationalDetailsTmp vocObj=new StudentVocationalDetailsTmp();
-				try {
-					vocObj.setStudentBasicProfileTmp(studentPojo);
-					vocObj.setSchoolId(Integer.parseInt(data));
-					vocObj.setVocExposure(handleInteger(nullCheck(studentObj.get("vocYn")).get("v")));
-					vocObj.setSector(handleInteger(nullCheck(studentObj.get("sector")).get("v")));
-					vocObj.setJobRole(handleInteger(nullCheck(studentObj.get("jobRole")).get("v")));
-					vocObj.setAppVocPy(handleInteger(nullCheck(studentObj.get("appVocPy")).get("v")));
-				}catch(Exception ex) {
-					ex.printStackTrace();
-				}
 				
 
 //				System.out.println(stdfacility);
-				studentPojo.setStudentFacilityDetailsTmp(stdfacility);
-				if(schoolObj.getRowValue().get(0).get("is_vocational_active") !=null && String.valueOf(schoolObj.getRowValue().get(0).get("is_vocational_active")).equalsIgnoreCase("1")) {
-				studentPojo.setStudentVocationalDetailsTmp(vocObj);
-				}
-				ltStudentObj.add(studentPojo);
+			
 //			}
 				
 				
 			            }  
+			
+			
+			
+			
+			
+
+//			try {
+				List<StudentBasicProfileTmp> stdBasicList = studentBasicProfileTmpRepository.saveAll(ltStudentObj);
+//				}catch(Exception ex) {
+//					ex.printStackTrace();
+//				}
+				
+//				System.out.println("After bulk upload");
+				
+				
+				
+//				try {
+					nativeRepository.insertQueries("insert into stu_pro_enr_details  (student_id,school_id, class_id, section_id, ac_year_id, roll_no, student_name, gender, student_dob, mother_name, father_name, guardian_name, aadhaar_no, name_as_aadhaar, address, pincode, mobile_no_1, mobile_no_2, email_id, mother_tongue, soc_cat_id, minority_id, is_bpl_yn, aay_bpl_yn, ews_yn, cwsn_yn, impairment_type, nat_ind_yn, oosc_yn, oosc_mainstreamed_yn, admn_number, admn_start_date, admn_end_date, acdemic_stream, enr_status_py, class_py, enr_type_cy, exam_appeared_py_yn, exam_result_py, exam_marks_py, attendence_py, created_by, created_time, profile_status, enrol_status, pro_modified_time, pro_modified_by, enr_modified_by, enr_modified_time, student_code_nat, is_profile_active, inactive_reason, form_status, is_bulk_uploaded, temp_id)\r\n"
+							+ "select nextval('student_id_seq'), school_id, class_id, section_id, ac_year_id, roll_no, student_name, gender, student_dob, mother_name, father_name, guardian_name, aadhaar_no, name_as_aadhaar, address, pincode, mobile_no_1, mobile_no_2, email_id, mother_tongue, soc_cat_id, minority_id, is_bpl_yn, aay_bpl_yn, ews_yn, cwsn_yn, impairment_type, nat_ind_yn, oosc_yn, oosc_mainstreamed_yn, admn_number, admn_start_date, admn_end_date, acdemic_stream, enr_status_py, class_py, enr_type_cy, exam_appeared_py_yn, exam_result_py, exam_marks_py, attendence_py, created_by, created_time, profile_status, enrol_status, pro_modified_time, pro_modified_by, enr_modified_by, enr_modified_time, student_code_nat, is_profile_active, inactive_reason, form_status, is_bulk_uploaded, temp_id\r\n"
+							+ "from stu_pro_enr_details_tmp where school_id="+Integer.parseInt(data));
+//				}catch(Exception ex) {
+//					ex.printStackTrace();
+//				}
+				
+//				try {
+					nativeRepository.insertQueries("INSERT INTO public.stu_fac_othr_details\r\n"
+							+ "(student_id, school_id, fac_provided, centrl_schlrshp_yn, centrl_schlrshp_id, state_schlrshp_yn, othr_schlrshp_yn, schlrshp_amount, fac_provided_cwsn, scrnd_fr_sld, sld_type, scrnd_fr_asd, scrnd_fr_adhd, is_ec_activity, gifted_cldrn, mentor_prov, nurturance_cmps_state, nurturance_cmps_national, olympds_nlc, ncc_nss_yn, created_by, created_time, modified_by, modified_time,is_fac_prov,is_cwsn_fac_prov)\r\n"
+							+ "select sped.student_id, sfodt.school_id, sfodt.fac_provided, sfodt.centrl_schlrshp_yn, sfodt.centrl_schlrshp_id, sfodt.state_schlrshp_yn, sfodt.othr_schlrshp_yn, sfodt.schlrshp_amount, sfodt.fac_provided_cwsn, sfodt.scrnd_fr_sld, sfodt.sld_type, sfodt.scrnd_fr_asd, sfodt.scrnd_fr_adhd, sfodt.is_ec_activity, sfodt.gifted_cldrn, sfodt.mentor_prov, sfodt.nurturance_cmps_state, sfodt.nurturance_cmps_national, sfodt.olympds_nlc, sfodt.ncc_nss_yn, sfodt.created_by, sfodt.created_time, sfodt.modified_by, sfodt.modified_time,sfodt.is_fac_prov,sfodt.is_cwsn_fac_prov from stu_fac_othr_details_tmp sfodt, stu_pro_enr_details sped where sfodt.temp_id =sped.temp_id and sfodt.school_id ="+Integer.parseInt(data)
+							);
+//				}catch(Exception ex) {
+//					ex.printStackTrace();
+//				}
+				
+//				try {
+					nativeRepository.insertQueries("INSERT INTO public.stu_voc_details\r\n"
+							+ "(student_id, school_id, voc_yn, sector, job_role, app_voc_py, marks_obt, created_by, created_time, modified_by, modified_time)\r\n"
+							+ "select sped.student_id, sfodt.school_id, sfodt.voc_yn, sfodt.sector, sfodt.job_role, sfodt.app_voc_py, sfodt.marks_obt, sfodt.created_by, sfodt.created_time, sfodt.modified_by, sfodt.modified_time from stu_voc_details_tmp sfodt, stu_pro_enr_details sped where sfodt.temp_id =sped.temp_id and sfodt.school_id ="+Integer.parseInt(data)
+							);
+//				}catch(Exception ex) {
+//					ex.printStackTrace();
+//				}
+				
+				
+//		try {
+			studentFacilityDetailsTmpRepository.deleteAllBySchoolId(Integer.parseInt(data));
+			studentVocationalDetailsTmpRepository.deleteAllBySchoolId(Integer.parseInt(data));
+			studentBasicProfileTmpRepository.deleteAllBySchoolId(Integer.parseInt(data));
+			
+//				}catch(Exception ex) {
+//					ex.printStackTrace();
+//				}
+				
+
+//		try {
+//			try {
+			nativeRepository.updateQueries("update school_master_live set is_exl_active=2 where school_id="+Integer.parseInt(data));
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}catch(Exception ex) {
+//			ex.printStackTrace();
+//		}
+
 //			        }); 
 //			});
 			
-			executorService.shutdown();
+//			executorService.shutdown();
 			
-			System.out.println("After loop--->"+ltStudentObj.size());
+//			System.out.println("After loop--->"+ltStudentObj.size());
 		
-
+			resObj.put("status", "1");
 		} catch (Exception ex) {
 			ex.printStackTrace();
+			resObj.put("status", "0");
 		}
 
-		try {
-//			System.out.println("Before insert");
-			studentFacilityDetailsRepository.deleteAllBySchoolId(Integer.parseInt(data));
-			studentVocationalDetailsRepository.deleteAllBySchoolId(Integer.parseInt(data));
-			studentBasicProfileRepository.deleteAllBySchoolId(Integer.parseInt(data));
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		System.out.println(ltStudentObj);
-		System.out.println("facility size--->"+ltStudentObj.size());
+//		try {
+//			studentFacilityDetailsRepository.deleteAllBySchoolId(Integer.parseInt(data));
+//			studentVocationalDetailsRepository.deleteAllBySchoolId(Integer.parseInt(data));
+//			studentBasicProfileRepository.deleteAllBySchoolId(Integer.parseInt(data));
+//
+//		} catch (Exception ex) {
+//			ex.printStackTrace();
+//		}
 		
-		try {
-		List<StudentBasicProfileTmp> stdBasicList = studentBasicProfileTmpRepository.saveAll(ltStudentObj);
-		}catch(Exception ex) {
-			ex.printStackTrace();
-		}
-		
-		System.out.println("After bulk upload");
-		
-		
-		
-		try {
-			nativeRepository.insertQueries("insert into stu_pro_enr_details  (student_id,school_id, class_id, section_id, ac_year_id, roll_no, student_name, gender, student_dob, mother_name, father_name, guardian_name, aadhaar_no, name_as_aadhaar, address, pincode, mobile_no_1, mobile_no_2, email_id, mother_tongue, soc_cat_id, minority_id, is_bpl_yn, aay_bpl_yn, ews_yn, cwsn_yn, impairment_type, nat_ind_yn, oosc_yn, oosc_mainstreamed_yn, admn_number, admn_start_date, admn_end_date, acdemic_stream, enr_status_py, class_py, enr_type_cy, exam_appeared_py_yn, exam_result_py, exam_marks_py, attendence_py, created_by, created_time, profile_status, enrol_status, pro_modified_time, pro_modified_by, enr_modified_by, enr_modified_time, student_code_nat, is_profile_active, inactive_reason, form_status, is_bulk_uploaded, temp_id)\r\n"
-					+ "select nextval('student_id_seq'), school_id, class_id, section_id, ac_year_id, roll_no, student_name, gender, student_dob, mother_name, father_name, guardian_name, aadhaar_no, name_as_aadhaar, address, pincode, mobile_no_1, mobile_no_2, email_id, mother_tongue, soc_cat_id, minority_id, is_bpl_yn, aay_bpl_yn, ews_yn, cwsn_yn, impairment_type, nat_ind_yn, oosc_yn, oosc_mainstreamed_yn, admn_number, admn_start_date, admn_end_date, acdemic_stream, enr_status_py, class_py, enr_type_cy, exam_appeared_py_yn, exam_result_py, exam_marks_py, attendence_py, created_by, created_time, profile_status, enrol_status, pro_modified_time, pro_modified_by, enr_modified_by, enr_modified_time, student_code_nat, is_profile_active, inactive_reason, form_status, is_bulk_uploaded, temp_id\r\n"
-					+ "from stu_pro_enr_details_tmp where school_id="+Integer.parseInt(data));
-		}catch(Exception ex) {
-			ex.printStackTrace();
-		}
-		
-		try {
-			nativeRepository.insertQueries("INSERT INTO public.stu_fac_othr_details\r\n"
-					+ "(student_id, school_id, fac_provided, centrl_schlrshp_yn, centrl_schlrshp_id, state_schlrshp_yn, othr_schlrshp_yn, schlrshp_amount, fac_provided_cwsn, scrnd_fr_sld, sld_type, scrnd_fr_asd, scrnd_fr_adhd, is_ec_activity, gifted_cldrn, mentor_prov, nurturance_cmps_state, nurturance_cmps_national, olympds_nlc, ncc_nss_yn, created_by, created_time, modified_by, modified_time, other_schlrshp_yn)\r\n"
-					+ "select sped.student_id, sfodt.school_id, sfodt.fac_provided, sfodt.centrl_schlrshp_yn, sfodt.centrl_schlrshp_id, sfodt.state_schlrshp_yn, sfodt.othr_schlrshp_yn, sfodt.schlrshp_amount, sfodt.fac_provided_cwsn, sfodt.scrnd_fr_sld, sfodt.sld_type, sfodt.scrnd_fr_asd, sfodt.scrnd_fr_adhd, sfodt.is_ec_activity, sfodt.gifted_cldrn, sfodt.mentor_prov, sfodt.nurturance_cmps_state, sfodt.nurturance_cmps_national, sfodt.olympds_nlc, sfodt.ncc_nss_yn, sfodt.created_by, sfodt.created_time, sfodt.modified_by, sfodt.modified_time, sfodt.other_schlrshp_yn from stu_fac_othr_details_tmp sfodt, stu_pro_enr_details sped where sfodt.temp_id =sped.temp_id and sfodt.school_id ="+Integer.parseInt(data)
-					);
-		}catch(Exception ex) {
-			ex.printStackTrace();
-		}
-		
-		try {
-			nativeRepository.insertQueries("INSERT INTO public.stu_voc_details\r\n"
-					+ "(student_id, school_id, voc_yn, sector, job_role, app_voc_py, marks_obt, created_by, created_time, modified_by, modified_time)\r\n"
-					+ "select sped.student_id, sfodt.school_id, sfodt.voc_yn, sfodt.sector, sfodt.job_role, sfodt.app_voc_py, sfodt.marks_obt, sfodt.created_by, sfodt.created_time, sfodt.modified_by, sfodt.modified_time from stu_voc_details_tmp sfodt, stu_pro_enr_details sped where sfodt.temp_id =sped.temp_id and sfodt.school_id ="+Integer.parseInt(data)
-					);
-		}catch(Exception ex) {
-			ex.printStackTrace();
-		}
-		
-		
-try {
-	studentFacilityDetailsTmpRepository.deleteAllBySchoolId(Integer.parseInt(data));
-	studentVocationalDetailsTmpRepository.deleteAllBySchoolId(Integer.parseInt(data));
-	studentBasicProfileTmpRepository.deleteAllBySchoolId(Integer.parseInt(data));
-	
-		}catch(Exception ex) {
-			ex.printStackTrace();
-		}
+//		System.out.println(ltStudentObj);
+//		System.out.println("facility size--->"+ltStudentObj.size());
 		
 
-try {
-	try {
-	nativeRepository.updateQueries("update school_master_live set is_exl_active=2 where school_id="+Integer.parseInt(data));
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-}catch(Exception ex) {
-	ex.printStackTrace();
-}
 //		try {
 //			studentFacilityDetailsRepository.deleteAllBySchoolId(Integer.parseInt(data));
 //		}catch(Exception ex) {
@@ -502,6 +555,8 @@ try {
 //		}
 
 //		 studentBasicProfileRepository.copyStudentDataFromTemp(Integer.parseInt(data));
+		
+		return resObj;
 
 	}
 	
@@ -512,7 +567,7 @@ try {
 		StaticReportBean sobj = new StaticReportBean();
 		try {
 	
-			System.out.println(nativeRepository);
+//			System.out.println(nativeRepository);
 
 			qrObj = nativeRepository.executeQueries("select is_exl_active,is_sec_com,udise_sch_code,is_vocational_active from public.school_master_live where school_id="+schoolId);
     		sobj.setColumnName(qrObj.getColumnName());
@@ -528,7 +583,7 @@ try {
 	
 	public List<UploadHistory> getUploadedHistor(Integer schoolId) {
 //		System.out.println("SchoolId----------->"+schoolId);
-		System.out.println(uploadHistoryRepository.getBySchoolIdOrderByUploadedTimeDesc(schoolId));
+//		System.out.println(uploadHistoryRepository.getBySchoolIdOrderByUploadedTimeDesc(schoolId));
 
 		return uploadHistoryRepository.getBySchoolIdOrderByUploadedTimeDesc(schoolId);
 	}
@@ -604,50 +659,63 @@ try {
 	}
 
 	
-	public HashMap<Integer,Integer> jsonCreation(String freeText,String uniform) throws JsonProcessingException {
+	public Integer[] jsonCreation(String freeText,String uniform) throws JsonProcessingException {
 		
-		HashMap<Integer,Integer> hs=new HashMap<Integer,Integer>();
-		hs.put(3, 2);
-		hs.put(4, 2);
-		hs.put(5, 2);
-		hs.put(6, 2);
-		hs.put(7, 2);
-		if(freeText !=null && uniform !=null && !freeText.equalsIgnoreCase("") && !uniform.equalsIgnoreCase("")) {
-			hs.put(1, Integer.parseInt(freeText));
-			hs.put(2, Integer.parseInt(uniform));
-		}else if(freeText !=null && !freeText.equalsIgnoreCase("")) {
-			hs.put(1, Integer.parseInt(freeText));
-		}else if(uniform !=null && !uniform.equalsIgnoreCase("")) {
-			hs.put(2, Integer.parseInt(uniform));
+		Integer[] intArray = null;
+	
+		
+//		HashMap<Integer,Integer> hs=new HashMap<Integer,Integer>();
+//		hs.put(3, 2);
+//		hs.put(4, 2);
+//		hs.put(5, 2);
+//		hs.put(6, 2);
+//		hs.put(7, 2);
+		if(freeText !=null && uniform !=null) {
+			
+			intArray=new Integer[]{ 1,2};
+//			hs.put(1, Integer.parseInt(freeText));
+//			hs.put(2,  Integer.parseInt(uniform));
+		}else if(freeText !=null) {
+			intArray=new Integer[]{1};
+//			hs.put(1, Integer.parseInt(freeText));
+		}else if(uniform !=null) {
+			intArray=new Integer[]{2};
+//			hs.put(2, Integer.parseInt(uniform));
 		}
+//		
+//		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+//		String json = ow.writeValueAsString(hs);
 		
-		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-		String json = ow.writeValueAsString(hs);
 		
 		
-		
-		return hs;
+		return intArray;
 	}
 	
-	public HashMap<Integer,Integer> jsonCwsn(String facProvidedCwsn){
-		HashMap<Integer,Integer> hs=new HashMap<Integer,Integer>();
-		hs.put(1, 2);
-		hs.put(2, 2);
-		hs.put(3, 2);
-		hs.put(4, 2);
-		hs.put(5, 2);
-		hs.put(6, 2);
-		hs.put(7, 2);
-		hs.put(8, 2);
-		hs.put(9, 2);
-		hs.put(10, 2);
-		hs.put(11, 2);
-		hs.put(12, 2);
+	public Integer[] jsonCwsn(String facProvidedCwsn){
+//		HashMap<Integer,Integer> hs=new HashMap<Integer,Integer>();
+//		hs.put(1, 2);
+//		hs.put(2, 2);
+//		hs.put(3, 2);
+//		hs.put(4, 2);
+//		hs.put(5, 2);
+//		hs.put(6, 2);
+//		hs.put(7, 2);
+//		hs.put(8, 2);
+//		hs.put(9, 2);
+//		hs.put(10, 2);
+//		hs.put(11, 2);
+//		hs.put(12, 2);
+		
+		Integer[] intArray = null;
+		 
+		
+		
 		
 		if(facProvidedCwsn !=null && facProvidedCwsn !="") {
-			hs.put(Integer.parseInt(facProvidedCwsn), 1);
+			intArray=new Integer[]{Integer.parseInt(facProvidedCwsn)};
+//			hs.put(Integer.parseInt(facProvidedCwsn), 1);
 		}
 		
-		return hs;
+		return intArray;
 	}
 }

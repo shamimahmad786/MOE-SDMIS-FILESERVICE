@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -29,17 +30,51 @@ public class TemplateConfiguration3 {
 			StaticReportBean sObj, StaticReportBean sectionsObj, StaticReportBean vocationObj, CellStyle cellStyle,
 			CellStyle correctCellStyle, HashMap<String, Boolean> lowerSector, HashMap<String, Boolean> lowerSubSector,
 			HashMap<String, Boolean> higherSector, HashMap<String, Boolean> higherSubSector,
-			HashMap<String, String> sectionMap, Map<String, HashMap<String, String>> mObject,HashSet<String> adharMach) {
+			HashMap<String, List<String>> sectionMap, Map<String, HashMap<String, String>> mObject,HashSet<String> adharMach) {
 		CustomFxcelValidator customFxcelValidator = new CustomFxcelValidator();
 		stdObj.setClassId(df.formatCellValue(currentRow.getCell(0)));
 		try {
-			if (stdObj.getClassId() != null && !stdObj.getClassId().equalsIgnoreCase("null")
+			if(stdObj.getClassId() != null && (stdObj.getClassId().equalsIgnoreCase("PP1") || stdObj.getClassId().equalsIgnoreCase("PP2") || stdObj.getClassId().equalsIgnoreCase("PP3"))) {
+				
+				if(sObj.getRowValue().get(0).get("ppsec_yn") !=null && String.valueOf(sObj.getRowValue().get(0).get("ppsec_yn")).equalsIgnoreCase("1")) {
+					if(stdObj.getClassId().equalsIgnoreCase("PP1") ) {
+						
+					if(Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("ppsec_cls_frm"))) <=-1) {
+						setCellColors(currentRow, currentRow.getCell(0), 0, correctCellStyle);	
+					}else {
+						setCellColors(currentRow, currentRow.getCell(0), 0, cellStyle);
+					}
+					}
+					
+					
+					if(stdObj.getClassId().equalsIgnoreCase("PP2") ) {
+						if(Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("ppsec_cls_frm"))) <=-2) {
+							setCellColors(currentRow, currentRow.getCell(0), 0, correctCellStyle);	
+						}else {
+							setCellColors(currentRow, currentRow.getCell(0), 0, cellStyle);
+						}
+						
+					}
+					
+					if(stdObj.getClassId().equalsIgnoreCase("PP3") ) {
+						if(Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("ppsec_cls_frm"))) <=-3) {
+							setCellColors(currentRow, currentRow.getCell(0), 0, correctCellStyle);	
+						}else {
+							setCellColors(currentRow, currentRow.getCell(0), 0, cellStyle);
+						}
+						
+						
+					}
+					
+				}else {
+					setCellColors(currentRow, currentRow.getCell(0), 0, cellStyle);
+				}
+			}else if (stdObj.getClassId() != null && !stdObj.getClassId().equalsIgnoreCase("null")
 					&& Integer
 							.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("class_frm")))) <= Integer
 									.parseInt(classCheck(checkNull(stdObj.getClassId())))
 					&& Integer.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("class_to")))) >= Integer
 							.parseInt(classCheck(checkNull(stdObj.getClassId())))) {
-
 				setCellColors(currentRow, currentRow.getCell(0), 0, correctCellStyle);
 			} else {
 				setCellColors(currentRow, currentRow.getCell(0), 0, cellStyle);
@@ -59,14 +94,40 @@ public class TemplateConfiguration3 {
 //		}
 
 		try {
-			if (sectionMap.get(stdObj.getClassId()) != null
-					&& Integer.parseInt(checkNull(sectionMap.get(checkNull(stdObj.getClassId())))) >= Integer
-							.parseInt(checkNull(String.valueOf(checkNull(stdObj.getSectionId()))))) {
+			if(stdObj.getClassId() !=null && (stdObj.getClassId().equalsIgnoreCase("PP1") || stdObj.getClassId().equalsIgnoreCase("PP2") || stdObj.getClassId().equalsIgnoreCase("PP3") ) ) {
+				if(stdObj.getClassId().equalsIgnoreCase("PP1")) {
+//					if(Integer.parseInt(checkNull(sectionMap.get("-1"))) >= Integer
+//							.parseInt(checkNull(String.valueOf(checkNull(stdObj.getSectionId())))) && Integer.parseInt(String.valueOf(stdObj.getSectionId()))>0) {
+					if(stdObj.getSectionId() !=null && sectionMap.get("-1").contains(stdObj.getSectionId().toUpperCase())) {
+					setCellColors(currentRow, currentRow.getCell(1), 1, correctCellStyle);
+					}else {
+						setCellColors(currentRow, currentRow.getCell(1), 1, cellStyle);
+					}
+				}else if(stdObj.getClassId().equalsIgnoreCase("PP2")) {
+					if(stdObj.getSectionId() !=null && sectionMap.get("-2").contains(stdObj.getSectionId().toUpperCase())) {
+						setCellColors(currentRow, currentRow.getCell(1), 1, correctCellStyle);
+					}else {
+						setCellColors(currentRow, currentRow.getCell(1), 1, cellStyle);
+					}
+				}else if(stdObj.getClassId().equalsIgnoreCase("PP3")) {
+					if(stdObj.getSectionId() !=null && sectionMap.get("-3").contains(stdObj.getSectionId().toUpperCase())) {
+						setCellColors(currentRow, currentRow.getCell(1), 1, correctCellStyle);
+					}else {
+						setCellColors(currentRow, currentRow.getCell(1), 1, cellStyle);
+					}
+				}
+			}
+			else if
+//			(sectionMap.get(stdObj.getClassId()) != null
+//					&& Integer.parseInt(checkNull(sectionMap.get(checkNull(stdObj.getClassId())))) >= Integer
+//							.parseInt(checkNull(String.valueOf(checkNull(stdObj.getSectionId())))) && Integer.parseInt(String.valueOf(stdObj.getSectionId()))>0) {
+			(stdObj.getSectionId() !=null && sectionMap.get(checkNull(stdObj.getClassId())).contains(stdObj.getSectionId().toUpperCase())) {
 				setCellColors(currentRow, currentRow.getCell(1), 1, correctCellStyle);
 			} else {
 				setCellColors(currentRow, currentRow.getCell(1), 1, cellStyle);
 			}
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			setCellColors(currentRow, currentRow.getCell(1), 1, cellStyle);
 		}
 
@@ -91,6 +152,9 @@ public class TemplateConfiguration3 {
 		}
 
 		stdObj.setGender(df.formatCellValue(currentRow.getCell(4)));
+		
+//		System.out.println("School type--->"+sObj.getRowValue().get(0).get("sch_type"));
+		
 		if(sObj.getRowValue().get(0).get("sch_type") !=null && String.valueOf(sObj.getRowValue().get(0).get("sch_type")).equalsIgnoreCase("1") ) {
 			if(stdObj.getGender().equalsIgnoreCase("1") || stdObj.getGender().equalsIgnoreCase("3")) {
 		
@@ -135,12 +199,40 @@ public class TemplateConfiguration3 {
 					stdObj.setStudentDob(currentRow.getCell(5).getStringCellValue());
 				}
 				
-				if(stdObj.getStudentDob() !=null && sObj.getRowValue().get(0).get("session_start_date") !=null &&  getAge(stdObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date")))>0) { 
+				if(stdObj.getClassId() !=null && (stdObj.getClassId().equalsIgnoreCase("PP1") || stdObj.getClassId().equalsIgnoreCase("PP2") || stdObj.getClassId().equalsIgnoreCase("PP3"))) {
+					if(stdObj.getClassId().equalsIgnoreCase("PP1") && StudentAgeClassValidation(-1,Integer.parseInt(String.valueOf(getAge(stdObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))))) {
+						checkCellAndCreate(currentRow,5,dff.format(d));
+						setCellColors(currentRow, currentRow.getCell(5), 5, correctCellStyle);
+					}else {
+						checkCellAndCreate(currentRow,5,dff.format(d));
+						setCellColors(currentRow, currentRow.getCell(5), 5, cellStyle);
+					}
+					
+					if(stdObj.getClassId().equalsIgnoreCase("PP2") && StudentAgeClassValidation(-2,Integer.parseInt(String.valueOf(getAge(stdObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))))) {
+						checkCellAndCreate(currentRow,5,dff.format(d));	
+						setCellColors(currentRow, currentRow.getCell(5), 5, correctCellStyle);
+					}else {
+						checkCellAndCreate(currentRow,5,dff.format(d));
+						setCellColors(currentRow, currentRow.getCell(5), 5, cellStyle);
+					}
+					System.out.println(sObj);
+					System.out.println(sObj.getRowValue().get(0).get("school_id"));
+					System.out.println(sObj.getRowValue().get(0).get("session_start_date"));
+					if(stdObj.getClassId().equalsIgnoreCase("PP3") && StudentAgeClassValidation(-3,Integer.parseInt(String.valueOf(getAge(stdObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))))) {
+						checkCellAndCreate(currentRow,5,dff.format(d));
+						setCellColors(currentRow, currentRow.getCell(5), 5, correctCellStyle);
+					}else {
+						checkCellAndCreate(currentRow,5,dff.format(d));
+						setCellColors(currentRow, currentRow.getCell(5), 5, cellStyle);
+					}
+				}	
+				else if(stdObj.getStudentDob() !=null && sObj.getRowValue().get(0).get("session_start_date") !=null &&  getAge(stdObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date")))>0) { 
 				if ( !StudentAgeClassValidation(Integer.parseInt(stdObj.getClassId()),Integer.parseInt(String.valueOf(getAge(stdObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))))) {
-					System.out.println("In error age");
+//					System.out.println("In error age");
 					if (currentRow.getCell(5).getCellType() == CellType.NUMERIC) {
 //						currentRow.getCell(5).setCellValue(dff.format(d));
 						checkCellAndCreate(currentRow,5,dff.format(d));
+						setCellColors(currentRow, currentRow.getCell(5), 5, correctCellStyle);
 						
 					} else if (currentRow.getCell(5).getCellType() == CellType.STRING) {
 //						currentRow.getCell(5).setCellValue(currentRow.getCell(5).getStringCellValue());
@@ -148,7 +240,7 @@ public class TemplateConfiguration3 {
 					}
 					setCellColors(currentRow, currentRow.getCell(5), 5, cellStyle);
 				} else {
-					System.out.println("In correct age");
+//					System.out.println("In correct age");
 					
 					if (currentRow.getCell(5).getCellType() == CellType.NUMERIC) {
 //						currentRow.getCell(5).setCellValue(dff.format(d));
@@ -205,11 +297,16 @@ public class TemplateConfiguration3 {
 //		System.out.println("General--->"+currentRow.getCell(9).getCellType());
 ////		System.out.println(currentRow.getCell(9).getNumericCellValue());
 //		System.out.println(df.formatCellValue(currentRow.getCell(9)));
-		Object o = df.formatCellValue(currentRow.getCell(9));
+//		Object o = df.formatCellValue(currentRow.getCell(9));
 //		System.out.println("Adhar--->"+o.toString());
 //		System.out.println(new Double(o.toString()));
 //		System.out.println("Adhar--->"+new BigDecimal(o.toString(),MathContext.DECIMAL128).toPlainString());
-		stdObj.setAadhaarNo(new BigDecimal(o.toString()).stripTrailingZeros().toPlainString());
+		try {
+		stdObj.setAadhaarNo(df.formatCellValue(currentRow.getCell(9)));
+		}catch(Exception ex) {
+		stdObj.setAadhaarNo(df.formatCellValue(currentRow.getCell(9)));
+			ex.printStackTrace();
+		}
 	}else {
 		stdObj.setAadhaarNo("");
 	}
@@ -230,6 +327,9 @@ public class TemplateConfiguration3 {
 			} else {
 				setCellColors(currentRow, currentRow.getCell(10), 10, correctCellStyle);
 			}
+		}else {
+			checkCellAndCreate(currentRow,10,"");
+			setCellColors(currentRow, currentRow.getCell(10), 10, correctCellStyle);
 		}
 
 		stdObj.setAddress(checkNull(df.formatCellValue(currentRow.getCell(11))).replaceAll("\\s+", " "));
@@ -316,9 +416,10 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(18), 18, correctCellStyle);
 		}
 
-		System.out.println("BPL value--->" + df.formatCellValue(currentRow.getCell(19)));
+//		System.out.println("BPL value--->" + df.formatCellValue(currentRow.getCell(19)));
 		if (df.formatCellValue(currentRow.getCell(19)) == null || df.formatCellValue(currentRow.getCell(19)) == "") {
 			stdObj.setIsBplYn("2");
+			checkCellAndCreate(currentRow,19,"2");
 		} else {
 			stdObj.setIsBplYn(df.formatCellValue(currentRow.getCell(19)));
 		}
@@ -330,7 +431,7 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(19), 19, correctCellStyle);
 		}
 
-		System.out.println("stdObj.getAayBplYn()--->"+stdObj.getAayBplYn());
+//		System.out.println("stdObj.getAayBplYn()--->"+stdObj.getAayBplYn());
 		if (stdObj.getIsBplYn() != null && stdObj.getIsBplYn().equalsIgnoreCase("1")) {
 			if(df.formatCellValue(currentRow.getCell(20)) ==null || df.formatCellValue(currentRow.getCell(20))=="") {
 				stdObj.setAayBplYn("2");	
@@ -344,7 +445,7 @@ public class TemplateConfiguration3 {
 //		stdObj.setAayBplYn(df.formatCellValue(currentRow.getCell(20)));
 		if (stdObj.getIsBplYn() != null && stdObj.getIsBplYn() != "" && !stdObj.getIsBplYn().equalsIgnoreCase("null")
 				&& stdObj.getIsBplYn().equalsIgnoreCase("1")) {
-			System.out.println("get value---->"+stdObj.getAayBplYn());
+//			System.out.println("get value---->"+stdObj.getAayBplYn());
 		if(stdObj.getAayBplYn().equalsIgnoreCase("2")) {
 			
 //			currentRow.getCell(20).setCellValue("2");
@@ -404,10 +505,10 @@ public class TemplateConfiguration3 {
 		
 		if (checkNull(stdObj.getCwsnYn()).equalsIgnoreCase("1")) {
 			
-			System.out.println("stdObj.getImpairmentType()---->"+stdObj.getImpairmentType());
-			System.out.println("Check imperial---->"+customFxcelValidator
-					.jsonValidation(mObject, "impairmentType", checkNullandTrim(stdObj.getImpairmentType()))
-					.get("impairmentType").get("s"));
+//			System.out.println("stdObj.getImpairmentType()---->"+stdObj.getImpairmentType());
+//			System.out.println("Check imperial---->"+customFxcelValidator
+//					.jsonValidation(mObject, "impairmentType", checkNullandTrim(stdObj.getImpairmentType()))
+//					.get("impairmentType").get("s"));
 			
 			if (customFxcelValidator
 					.jsonValidation(mObject, "impairmentType", checkNullandTrim(stdObj.getImpairmentType()))
@@ -428,7 +529,7 @@ public class TemplateConfiguration3 {
 		}
 		if (df.formatCellValue(currentRow.getCell(24)) == null || df.formatCellValue(currentRow.getCell(24)) == "") {
 			stdObj.setNatIndYn("2");
-			System.out.println("row number--->"+currentRow.getRowNum());
+//			System.out.println("row number--->"+currentRow.getRowNum());
 //			currentRow.getCell(24).setCellValue("2");
 			checkCellAndCreate(currentRow,24,"2");
 		} else {
@@ -518,25 +619,29 @@ public class TemplateConfiguration3 {
 					LocalDate sessionStartDate = LocalDate.parse(String.valueOf(sObj.getRowValue().get(0).get("session_start_date")), dbformatter);
 					LocalDate sessionEndDate = LocalDate.parse(String.valueOf(sObj.getRowValue().get(0).get("session_end_date")), dbformatter);
 					LocalDate todayDate = LocalDate.now();
-					System.out.println("stdObj.getAdmnStartDate()--->"+stdObj.getAdmnStartDate());
+//					System.out.println("stdObj.getAdmnStartDate()--->"+stdObj.getAdmnStartDate());
 					LocalDate admisionsDate = LocalDate.parse(String.valueOf(stdObj.getAdmnStartDate()), adminsionformatter);
-				if(admisionsDate.isAfter(todayDate) &&  admisionsDate.isAfter(sessionEndDate) &&  !(admisionsDate.isAfter(sessionStartDate) || admisionsDate.isEqual(sessionStartDate))) {
-					
-					System.out.println("in if condition for admission date");
+				if(!admisionsDate.isAfter(todayDate) &&  !admisionsDate.isAfter(sessionEndDate) &&  (admisionsDate.isAfter(sessionStartDate) || admisionsDate.isEqual(sessionStartDate))) {
+//					System.out.println("in if condition for admission date");
 					if (currentRow.getCell(28).getCellType() == CellType.NUMERIC) {
 						checkCellAndCreate(currentRow,28,dff.format(admisionDate));
 					} else if (currentRow.getCell(28).getCellType() == CellType.STRING) {
 
 						checkCellAndCreate(currentRow,28,currentRow.getCell(28).getStringCellValue());
 					}
-					setCellColors(currentRow, currentRow.getCell(28), 28, cellStyle);
+					setCellColors(currentRow, currentRow.getCell(28), 28, correctCellStyle);
+					
+					
+					System.out.println("Adminsion date false");
+					
 				}else {
 					if (currentRow.getCell(28).getCellType() == CellType.NUMERIC) {
 						checkCellAndCreate(currentRow,28,dff.format(admisionDate));
 					} else if (currentRow.getCell(28).getCellType() == CellType.STRING) {
 						checkCellAndCreate(currentRow,28,currentRow.getCell(28).getStringCellValue());
 					}
-					setCellColors(currentRow, currentRow.getCell(28), 28, correctCellStyle);
+					setCellColors(currentRow, currentRow.getCell(28), 28, cellStyle);
+					System.out.println("Adminsion date true");
 				}
 				}
 				
@@ -572,10 +677,12 @@ public class TemplateConfiguration3 {
 		}
 
 		
-		if(stdObj.getClassId() !=null && stdObj.getClassId().equalsIgnoreCase("11") && stdObj.getClassId().equalsIgnoreCase("12")) {
+		if(stdObj.getClassId() !=null && (stdObj.getClassId().equalsIgnoreCase("11") || stdObj.getClassId().equalsIgnoreCase("12"))) {
 		stdObj.setAcdemicStream(df.formatCellValue(currentRow.getCell(29)));
 		}else {
-		stdObj.setAcdemicStream(df.formatCellValue(currentRow.getCell(29)));
+			
+//			System.out.println();
+		stdObj.setAcdemicStream("0");
 		checkCellAndCreate(currentRow,29,"0");
 		}
 
@@ -642,8 +749,14 @@ public class TemplateConfiguration3 {
 		stdObj.setEnrStatusPy(df.formatCellValue(currentRow.getCell(30)));
 
 		
-		
-		if (customFxcelValidator.numberValidation(mObject, "enrStatusPy", checkNullandTrim(stdObj.getEnrStatusPy()), 4)
+		if(stdObj.getEnrStatusPy() !=null && stdObj.getEnrStatusPy().equalsIgnoreCase("3")) {
+			if(stdObj.getClassId().equalsIgnoreCase("PP1") || stdObj.getClassId().equalsIgnoreCase("PP2") || stdObj.getClassId().equalsIgnoreCase("PP3") || stdObj.getClassId().equalsIgnoreCase("1")) {
+				setCellColors(currentRow, currentRow.getCell(30), 30, correctCellStyle);
+			}else {
+				setCellColors(currentRow, currentRow.getCell(30), 30, cellStyle);
+			}
+		}
+		else if (customFxcelValidator.numberValidation(mObject, "enrStatusPy", checkNullandTrim(stdObj.getEnrStatusPy()), 4)
 				.get("enrStatusPy").get("s").equalsIgnoreCase("0")) {
 //			System.out.println("In set color---->31");
 //			currentRow.getCell(29).setCellStyle(cellStyle);
@@ -652,12 +765,28 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(30), 30, correctCellStyle);
 		}
 
+		
+		if(stdObj.getEnrStatusPy().equalsIgnoreCase("4") || stdObj.getEnrStatusPy().equalsIgnoreCase("3")) {
+			stdObj.setClassPy("");
+			checkCellAndCreate(currentRow,31,"");
+		}else {
 		stdObj.setClassPy(df.formatCellValue(currentRow.getCell(31)));
-
+		}
+		
 		if (stdObj.getEnrStatusPy().equalsIgnoreCase("1") || stdObj.getEnrStatusPy().equalsIgnoreCase("2")) {
-			if ((stdObj.getClassId().equalsIgnoreCase("0") || stdObj.getClassId().equalsIgnoreCase("1"))
-					&& (stdObj.getClassPy().equalsIgnoreCase("0") || stdObj.getClassPy().equalsIgnoreCase("PP"))) {
+			
+			if ((stdObj.getClassId().equalsIgnoreCase("0") || stdObj.getClassId().equalsIgnoreCase("PP1") || stdObj.getClassId().equalsIgnoreCase("PP2") || stdObj.getClassId().equalsIgnoreCase("PP3"))
+					&& (stdObj.getClassPy().equalsIgnoreCase("0") || stdObj.getClassPy().equalsIgnoreCase("PP") || stdObj.getClassPy().equalsIgnoreCase("PP1") || stdObj.getClassPy().equalsIgnoreCase("PP2") || stdObj.getClassPy().equalsIgnoreCase("PP3"))) {
 				setCellColors(currentRow, currentRow.getCell(31), 31, correctCellStyle);
+			}else if(stdObj.getClassId().equalsIgnoreCase("1") ) {
+				
+				if((stdObj.getClassPy().equalsIgnoreCase("0") || stdObj.getClassPy().equalsIgnoreCase("1") || stdObj.getClassPy().equalsIgnoreCase("PP") || stdObj.getClassPy().equalsIgnoreCase("PP1") || stdObj.getClassPy().equalsIgnoreCase("PP2") || stdObj.getClassPy().equalsIgnoreCase("PP3"))) {
+//					checkCellAndCreate(currentRow,31,df.formatCellValue(currentRow.getCell(31)));
+					setCellColors(currentRow, currentRow.getCell(31), 31, correctCellStyle);	
+				}else {
+					setCellColors(currentRow, currentRow.getCell(31), 31, cellStyle);
+				}
+				
 			} else {
 				try {
 					int stClass = Integer.parseInt(classCheck(stdObj.getClassId()));
@@ -699,7 +828,7 @@ public class TemplateConfiguration3 {
 		
 		
 		
-		if(stdObj.getClassPy() !=null &&  (stdObj.getClassPy().equalsIgnoreCase("3") || stdObj.getClassPy().equalsIgnoreCase("4")) ) {
+		if(stdObj.getEnrTypeCy() !=null &&  (stdObj.getEnrTypeCy().equalsIgnoreCase("3") || stdObj.getEnrTypeCy().equalsIgnoreCase("4")) ) {
 			stdObj.setExamAppearedPyYn("9");
 			checkCellAndCreate(currentRow,33,"9");
 		}else {
@@ -707,7 +836,20 @@ public class TemplateConfiguration3 {
 		}
 		
 		if(stdObj.getEnrStatusPy() !=null && (stdObj.getEnrStatusPy().equalsIgnoreCase("1") || stdObj.getEnrStatusPy().equalsIgnoreCase("2")) ) {
-		if (customFxcelValidator
+		
+			if((stdObj.getClassId().equalsIgnoreCase("0") || stdObj.getClassId().equalsIgnoreCase("PP1") || stdObj.getClassId().equalsIgnoreCase("PP2") || stdObj.getClassId().equalsIgnoreCase("PP3"))) {
+				if(stdObj.getExamAppearedPyYn() ==null || stdObj.getExamAppearedPyYn().equalsIgnoreCase("")) {
+					setCellColors(currentRow, currentRow.getCell(33), 33, correctCellStyle);
+					
+				}else {
+					if(customFxcelValidator
+							.numberValidation(mObject, "examAppearedPyYn", checkNullandTrim(stdObj.getExamAppearedPyYn()), 2)
+							.get("examAppearedPyYn").get("s").equalsIgnoreCase("0")) {
+						setCellColors(currentRow, currentRow.getCell(33), 33, cellStyle);
+					}
+				}
+			}
+			else if (customFxcelValidator
 				.numberValidation(mObject, "examAppearedPyYn", checkNullandTrim(stdObj.getExamAppearedPyYn()), 2)
 				.get("examAppearedPyYn").get("s").equalsIgnoreCase("0")) {
 
@@ -723,14 +865,27 @@ public class TemplateConfiguration3 {
 			
 		}
 
-		if(stdObj.getClassPy() !=null &&  (stdObj.getClassPy().equalsIgnoreCase("3") || stdObj.getClassPy().equalsIgnoreCase("4")) ) {
+		if(stdObj.getEnrStatusPy() !=null &&  (stdObj.getEnrStatusPy().equalsIgnoreCase("3") || stdObj.getEnrStatusPy().equalsIgnoreCase("4")) ) {
 		stdObj.setExamResultPy("0");
 		checkCellAndCreate(currentRow,34,"0");
 		}else {
 			stdObj.setExamResultPy(df.formatCellValue(currentRow.getCell(34)));
 		}
 		if(stdObj.getEnrStatusPy() !=null && (stdObj.getEnrStatusPy().equalsIgnoreCase("1") || stdObj.getEnrStatusPy().equalsIgnoreCase("2")) ) {
-		if (customFxcelValidator
+	if((stdObj.getClassId().equalsIgnoreCase("0") || stdObj.getClassId().equalsIgnoreCase("PP1") || stdObj.getClassId().equalsIgnoreCase("PP2") || stdObj.getClassId().equalsIgnoreCase("PP3"))) {
+		
+		if(stdObj.getExamResultPy()==null || stdObj.getExamResultPy().equalsIgnoreCase("")) {
+			setCellColors(currentRow, currentRow.getCell(34), 34, correctCellStyle);
+		}else {
+			if (customFxcelValidator
+					.numberValidation(mObject, "examResultPy", checkNullandTrim(stdObj.getExamResultPy()), 4)
+					.get("examResultPy").get("s").equalsIgnoreCase("0")) {
+				setCellColors(currentRow, currentRow.getCell(34), 34, cellStyle);
+			}
+		}
+	}
+			
+		else if (customFxcelValidator
 				.numberValidation(mObject, "examResultPy", checkNullandTrim(stdObj.getExamResultPy()), 4)
 				.get("examResultPy").get("s").equalsIgnoreCase("0")) {
 			setCellColors(currentRow, currentRow.getCell(34), 34, cellStyle);
@@ -745,14 +900,31 @@ public class TemplateConfiguration3 {
 		}
 
 		if(stdObj.getEnrStatusPy() !=null && (stdObj.getEnrStatusPy().equalsIgnoreCase("1") || stdObj.getEnrStatusPy().equalsIgnoreCase("2")) ) {
-			if(stdObj.getClassPy() !=null &&  (stdObj.getClassPy().equalsIgnoreCase("3") || stdObj.getClassPy().equalsIgnoreCase("4")) ) {
+			if(stdObj.getClassPy() !=null &&  (stdObj.getEnrStatusPy().equalsIgnoreCase("3") || stdObj.getEnrStatusPy().equalsIgnoreCase("4")) ) {
 			stdObj.setExamMarksPy("0");
 			checkCellAndCreate(currentRow,35,"0");
 			}else {
-				stdObj.setExamMarksPy(df.formatCellValue(currentRow.getCell(35)));
+				try {
+				stdObj.setExamMarksPy(String.valueOf(Math.round(Float.parseFloat(df.formatCellValue(currentRow.getCell(35))))));
+				}catch(Exception ex) {
+					stdObj.setExamMarksPy(df.formatCellValue(currentRow.getCell(35)));
+					ex.printStackTrace();
+				}
 			}
-		
-			if (customFxcelValidator
+		if((stdObj.getClassId().equalsIgnoreCase("0") || stdObj.getClassId().equalsIgnoreCase("PP1") || stdObj.getClassId().equalsIgnoreCase("PP2") || stdObj.getClassId().equalsIgnoreCase("PP3"))) {
+			
+			if(stdObj.getExamMarksPy()==null || stdObj.getExamMarksPy().equalsIgnoreCase("")) {
+				setCellColors(currentRow, currentRow.getCell(35), 35, correctCellStyle);	
+			}else {
+			 if (customFxcelValidator
+						.numberValidation(mObject, "examMarksPy", checkNullandTrim(stdObj.getExamMarksPy()), 100)
+						.get("examMarksPy").get("s").equalsIgnoreCase("0")) {
+					setCellColors(currentRow, currentRow.getCell(35), 35, cellStyle);
+			 }
+			}
+			
+		}
+		else if (customFxcelValidator
 				.numberValidation(mObject, "examMarksPy", checkNullandTrim(stdObj.getExamMarksPy()), 100)
 				.get("examMarksPy").get("s").equalsIgnoreCase("0")) {
 			setCellColors(currentRow, currentRow.getCell(35), 35, cellStyle);
@@ -774,7 +946,20 @@ public class TemplateConfiguration3 {
 			stdObj.setAttendencePy(df.formatCellValue(currentRow.getCell(36)));
 		}
 		
-		if (customFxcelValidator
+		if((stdObj.getClassId().equalsIgnoreCase("0") || stdObj.getClassId().equalsIgnoreCase("PP1") || stdObj.getClassId().equalsIgnoreCase("PP2") || stdObj.getClassId().equalsIgnoreCase("PP3"))) {
+			
+			
+			if(stdObj.getAttendencePy()==null || stdObj.getAttendencePy().equalsIgnoreCase("")) {
+				setCellColors(currentRow, currentRow.getCell(36), 36, correctCellStyle);
+			}else {
+				 if (customFxcelValidator
+						.numberValidation(mObject, "attendencePy", checkNullandTrim(stdObj.getAttendencePy()), 365)
+						.get("attendencePy").get("s").equalsIgnoreCase("0")) {
+					setCellColors(currentRow, currentRow.getCell(36), 36, cellStyle);
+				}
+			}
+		}
+		else if (customFxcelValidator
 				.numberValidation(mObject, "attendencePy", checkNullandTrim(stdObj.getAttendencePy()), 365)
 				.get("attendencePy").get("s").equalsIgnoreCase("0")) {
 			setCellColors(currentRow, currentRow.getCell(36), 36, cellStyle);
@@ -782,7 +967,7 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(36), 36, correctCellStyle);
 		}
 
-		System.out.println("before uniform default check----"+sObj.getRowValue().get(0).get("sch_mgmt_center_id"));
+//		System.out.println("before uniform default check----"+sObj.getRowValue().get(0).get("sch_mgmt_center_id"));
 		if (sObj.getRowValue().get(0).get("sch_mgmt_center_id") !=null && (Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("sch_mgmt_center_id"))) != 5 && Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("sch_mgmt_center_id"))) != 8)) {
 		if (df.formatCellValue(currentRow.getCell(37)) == null || df.formatCellValue(currentRow.getCell(37)) == "") {
 			stdObj.setUniformFacProvided("2");
@@ -835,13 +1020,13 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(38), 38, correctCellStyle);
 		}
 
-		System.out.println("Is central scholor ship"+df.formatCellValue(currentRow.getCell(39)));
+//		System.out.println("Is central scholor ship"+df.formatCellValue(currentRow.getCell(39)));
 		if (df.formatCellValue(currentRow.getCell(39)) == null || df.formatCellValue(currentRow.getCell(39)) == "") {
 			stdObj.setCentrlSchlrshpYn("2");
 			checkCellAndCreate(currentRow,39,"2");
-			System.out.println("in true");
+//			System.out.println("in true");
 		} else {
-			System.out.println("in false");
+//			System.out.println("in false");
 			checkCellAndCreate(currentRow,39,df.formatCellValue(currentRow.getCell(39)));
 			stdObj.setCentrlSchlrshpYn(df.formatCellValue(currentRow.getCell(39)));
 		}
@@ -855,12 +1040,19 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(39), 39, correctCellStyle);
 		}
 
+		if(stdObj.getCentrlSchlrshpYn().equalsIgnoreCase("2")) {
+			stdObj.setCentrlSchlrshpId("0");
+			checkCellAndCreate(currentRow,40,"0");
+		}else {
 		if (df.formatCellValue(currentRow.getCell(40)) == null || df.formatCellValue(currentRow.getCell(40)) == "") {
 			stdObj.setCentrlSchlrshpId("0");
 			checkCellAndCreate(currentRow,40,"0");
 		} else {
 			stdObj.setCentrlSchlrshpId(df.formatCellValue(currentRow.getCell(40)));
 		}
+		}
+		
+		
 		if (checkNull(stdObj.getCentrlSchlrshpYn()).equalsIgnoreCase("1")) {
 			if (customFxcelValidator
 					.numberValidation(mObject, "centrlSchlrshpId", checkNullandTrim(stdObj.getCentrlSchlrshpId()), 15)
@@ -938,15 +1130,21 @@ public class TemplateConfiguration3 {
 		if (sObj.getRowValue().get(0).get("sch_mgmt_center_id") !=null && (Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("sch_mgmt_center_id"))) != 5 && Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("sch_mgmt_center_id"))) != 8)) {
 		stdObj.setFacProvidedCwsn(df.formatCellValue(currentRow.getCell(44)));
 		}
+		
+		
+		
 		if (checkNull(stdObj.getCwsnYn()).equalsIgnoreCase("1") && (Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("sch_mgmt_center_id"))) != 5 && Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("sch_mgmt_center_id"))) != 8)) {
 			if (customFxcelValidator
 					.numberValidation(mObject, "facProvidedCwsn", checkNullandTrim(stdObj.getFacProvidedCwsn()), 12)
-					.get("facProvidedCwsn").get("s").equalsIgnoreCase("0") ) {
+					.get("facProvidedCwsn").get("s").equalsIgnoreCase("0")) {
 //				currentRow.getCell(43).setCellStyle(cellStyle);
 				setCellColors(currentRow, currentRow.getCell(44), 44, cellStyle);
 			} else {
 				setCellColors(currentRow, currentRow.getCell(44), 44, correctCellStyle);
 			}
+		}else if(checkNull(stdObj.getCwsnYn()).equalsIgnoreCase("2")) {
+			checkCellAndCreate(currentRow,44,"");
+//			setCellColors(currentRow, currentRow.getCell(44), 44, correctCellStyle);
 		}
 		
 
@@ -1079,9 +1277,16 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(50), 50, correctCellStyle);	
 		}
 		
+if(stdObj.getVocYn().equalsIgnoreCase("1")) {
 		stdObj.setSector(df.formatCellValue(currentRow.getCell(51)));
+}else {
+	stdObj.setSector("");
+}
+//		System.out.println("vocational true---->"+sObj.getRowValue().get(0).get("is_vocational_active"));
+//		System.out.println("Vocational--->"+stdObj.getVocYn());
+		
 		try {
-			if(Integer.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("is_vocational_active"))))==1) {
+			if(stdObj.getVocYn() !=null && stdObj.getVocYn() !="" && stdObj.getVocYn().equalsIgnoreCase("1") && Integer.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("is_vocational_active"))))==1) {
 			if (sObj.getRowValue().get(0).get("is_vocational_active") != null && sObj.getRowValue().get(0).get("vocational_grade") !=null 
 					&& (Integer.parseInt(
 							checkNull(String.valueOf(sObj.getRowValue().get(0).get("is_vocational_active")))) == 1) 
@@ -1089,7 +1294,7 @@ public class TemplateConfiguration3 {
 							checkNull(String.valueOf(sObj.getRowValue().get(0).get("vocational_grade")))) == 1 ) ||  Integer.parseInt(
 									checkNull(String.valueOf(sObj.getRowValue().get(0).get("vocational_grade")))) == 3 ) && (checkNull(stdObj.getClassId()).equalsIgnoreCase("9")
 							|| checkNull(stdObj.getClassId()).equalsIgnoreCase("10"))) {
-				System.out.println("lower sector true");
+//				System.out.println("lower sector true");
 				try {
 				if (lowerSector.get(String.valueOf(checkNull(stdObj.getSector())))) {
 					checkCellAndCreate(currentRow,51,"");
@@ -1110,7 +1315,7 @@ public class TemplateConfiguration3 {
 						checkNull(String.valueOf(sObj.getRowValue().get(0).get("vocational_grade")))) == 2 || Integer.parseInt(
 								checkNull(String.valueOf(sObj.getRowValue().get(0).get("vocational_grade")))) == 3)	&& (checkNull(stdObj.getClassId()).equalsIgnoreCase("11")
 							|| checkNull(stdObj.getClassId()).equalsIgnoreCase("12"))) {
-				System.out.println("higher sector true");
+//				System.out.println("higher sector true");
 				try {
 				if (higherSector.get(String.valueOf(checkNull(stdObj.getSector())))) {
 					checkCellAndCreate(currentRow,51,"");
@@ -1127,8 +1332,9 @@ public class TemplateConfiguration3 {
 				setCellColors(currentRow, currentRow.getCell(51), 51, cellStyle);
 			}
 			}else {
+//				System.out.println("sector else");
 				checkCellAndCreate(currentRow,51,"");
-				setCellColors(currentRow, currentRow.getCell(51), 51, correctCellStyle);	
+//				setCellColors(currentRow, currentRow.getCell(51), 51, correctCellStyle);	
 //				setCellColors(currentRow, currentRow.getCell(51), 51, cellStyle);
 			}
 
@@ -1138,9 +1344,13 @@ public class TemplateConfiguration3 {
 			ex.printStackTrace();
 		}
 		
-		stdObj.setJobRole(df.formatCellValue(currentRow.getCell(52)));	
+		if(stdObj.getVocYn().equalsIgnoreCase("1")) {
+		stdObj.setJobRole(df.formatCellValue(currentRow.getCell(52)));
+		}else {
+			stdObj.setJobRole("");
+		}
 	try {
-			if(Integer.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("is_vocational_active"))))==1) {
+			if(stdObj.getVocYn() !=null && stdObj.getVocYn() !="" && stdObj.getVocYn().equalsIgnoreCase("1") && Integer.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("is_vocational_active"))))==1) {
 			if (sObj.getRowValue().get(0).get("is_vocational_active") != null && sObj.getRowValue().get(0).get("vocational_grade") !=null
 					&& (Integer.parseInt(
 							checkNull(String.valueOf(sObj.getRowValue().get(0).get("is_vocational_active")))) == 1) 
@@ -1148,8 +1358,8 @@ public class TemplateConfiguration3 {
 							checkNull(String.valueOf(sObj.getRowValue().get(0).get("vocational_grade")))) == 1 || Integer.parseInt(
 									checkNull(String.valueOf(sObj.getRowValue().get(0).get("vocational_grade")))) == 3) && (checkNull(stdObj.getClassId()).equalsIgnoreCase("9")
 							|| checkNull(stdObj.getClassId()).equalsIgnoreCase("10"))
-					&& stdObj.getJobRole() != null) {
-				System.out.println("JOb-1");
+					&& stdObj.getJobRole() != null &&  stdObj.getJobRole() !="") {
+//				System.out.println("JOb-1");
 				try {
 				if (lowerSubSector.get(String.valueOf(checkNull(stdObj.getJobRole())))) {
 					checkCellAndCreate(currentRow,52,"");
@@ -1169,10 +1379,10 @@ public class TemplateConfiguration3 {
 							checkNull(String.valueOf(sObj.getRowValue().get(0).get("vocational_grade")))) == 2 || Integer.parseInt(
 									checkNull(String.valueOf(sObj.getRowValue().get(0).get("vocational_grade")))) == 3)  && (checkNull(stdObj.getClassId()).equalsIgnoreCase("11")
 							|| checkNull(stdObj.getClassId()).equalsIgnoreCase("12"))
-					&& stdObj.getJobRole() != null) {
+					&& stdObj.getJobRole() != null && stdObj.getJobRole() != "") {
 				try {
-					System.out.println("Job-2");
-				if (higherSubSector.get(String.valueOf(checkNull(stdObj.getJobRole())))) {
+//					System.out.println("Job-2-->"+stdObj.getJobRole());
+				if (stdObj.getJobRole() !=null && higherSubSector.get(String.valueOf(checkNull(stdObj.getJobRole())))) {
 					checkCellAndCreate(currentRow,52,"");
 					setCellColors(currentRow, currentRow.getCell(52), 52, correctCellStyle);
 					
@@ -1186,9 +1396,9 @@ public class TemplateConfiguration3 {
 			}
 
 			}else {
-				System.out.println("in else job");
+//				System.out.println("in else job");
 				checkCellAndCreate(currentRow,52,"");
-				setCellColors(currentRow, currentRow.getCell(52), 52, correctCellStyle);			
+//				setCellColors(currentRow, currentRow.getCell(52), 52, correctCellStyle);			
 			}
 		} catch (Exception ex) {
 			setCellColors(currentRow, currentRow.getCell(52), 52, cellStyle);
@@ -1258,7 +1468,7 @@ public class TemplateConfiguration3 {
 	}
 	
 	public long getAge(String dob,String dbDate) {
-		
+		System.out.println("dob--->"+dob+"-------"+dbDate);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		DateTimeFormatter dbformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String date = dob.replaceAll("-", "/");

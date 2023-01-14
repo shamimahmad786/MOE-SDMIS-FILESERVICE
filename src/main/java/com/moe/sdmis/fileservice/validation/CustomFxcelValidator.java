@@ -40,7 +40,7 @@ public class CustomFxcelValidator {
 
 	
 	public Map<String, HashMap<String, String>> validateStudent(CommonBean stObj, StaticReportBean sObj,
-			HashMap<String, String> sectionMap, Map<Integer, Boolean> mTongObj, HashMap<String, Boolean> lowerSector,
+			HashMap<String, List<String>> sectionMap, Map<Integer, Boolean> mTongObj, HashMap<String, Boolean> lowerSector,
 			HashMap<String, Boolean> lowerSubSector, HashMap<String, Boolean> higherSector,
 			HashMap<String, Boolean> higherSubSector,HashSet<String> adharMach) {
 
@@ -56,11 +56,49 @@ public class CustomFxcelValidator {
 
 //			System.out.println("From-->"+Integer.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("class_frm")))) +"---class----->"+stObj.getClassId()+"-------To-----"+Integer.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("class_to")))));
 
-			if (stObj.getClassId() != null && stObj.getClassId() != "" && !stObj.getClassId().equalsIgnoreCase("null")
-					&& (stObj.getClassId().equalsIgnoreCase("PP1") || stObj.getClassId().equalsIgnoreCase("PP2")
-							|| stObj.getClassId().equalsIgnoreCase("PP3"))) {
-				blankAndTrueValidation(mObject, "classId", stObj.getClassId());
-			} else if (stObj.getClassId() != null && stObj.getClassId() != ""
+//			if (stObj.getClassId() != null && stObj.getClassId() != "" && !stObj.getClassId().equalsIgnoreCase("null")
+//					&& (stObj.getClassId().equalsIgnoreCase("PP1") || stObj.getClassId().equalsIgnoreCase("PP2")
+//							|| stObj.getClassId().equalsIgnoreCase("PP3"))) {
+//				blankAndTrueValidation(mObject, "classId", stObj.getClassId());
+//			}
+			
+if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || stObj.getClassId().equalsIgnoreCase("PP2") || stObj.getClassId().equalsIgnoreCase("PP3"))) {
+				
+				if(sObj.getRowValue().get(0).get("ppsec_yn") !=null && String.valueOf(sObj.getRowValue().get(0).get("ppsec_yn")).equalsIgnoreCase("1")) {
+					if(stObj.getClassId().equalsIgnoreCase("PP1") ) {
+//						setCellColors(currentRow, currentRow.getCell(0), 0, correctCellStyle);	
+						if(Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("ppsec_cls_frm"))) <=-1) {
+							blankAndTrueValidation(mObject, "classId", stObj.getClassId());
+						}else {
+							blankAndFalseValidation(mObject, "classId", stObj.getClassId(),"(Invalid Grade/Class or Invalid Format)");
+						}
+						
+					}
+					
+					if(stObj.getClassId().equalsIgnoreCase("PP2") ) {
+						
+						if(Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("ppsec_cls_frm"))) <=-2) {
+							blankAndTrueValidation(mObject, "classId", stObj.getClassId());
+						}else {
+							blankAndFalseValidation(mObject, "classId", stObj.getClassId(),"(Invalid Grade/Class or Invalid Format)");
+						}
+						
+					}
+					
+					if(stObj.getClassId().equalsIgnoreCase("PP3") ) {
+						if(Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("ppsec_cls_frm"))) <=-3) {
+							blankAndTrueValidation(mObject, "classId", stObj.getClassId());	
+						}else {
+							blankAndFalseValidation(mObject, "classId", stObj.getClassId(),"(Invalid Grade/Class or Invalid Format)");
+						}
+						
+						
+					}
+					
+				}else {
+					blankAndFalseValidation(mObject, "classId", stObj.getClassId(),"(Invalid Grade/Class or Invalid Format)");
+				}
+			}else if (stObj.getClassId() != null && stObj.getClassId() != ""
 					&& !stObj.getClassId().equalsIgnoreCase("null")
 					&& Integer
 							.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("class_frm")))) <= Integer
@@ -70,24 +108,46 @@ public class CustomFxcelValidator {
 //		numberValidation(mObject, "classId", checkNullandTrim(stObj.getClassId()), 12);
 				blankAndTrueValidation(mObject, "classId", stObj.getClassId());
 			} else {
-				System.out.println("called class--->" + stObj.getClassId());
-				blankAndFalseValidation(mObject, "classId", stObj.getClassId());
+//				System.out.println("called class--->" + stObj.getClassId());
+				blankAndFalseValidation(mObject, "classId", stObj.getClassId(),"(Invalid Grade/Class or Invalid Format)");
 			}
 		} catch (Exception ex) {
-			blankAndFalseValidation(mObject, "classId", stObj.getClassId());
+			blankAndFalseValidation(mObject, "classId", stObj.getClassId(),"(Invalid Grade/Class or Invalid Format)");
 			ex.printStackTrace();
 		}
 
 		try {
-			if (sectionMap.get(stObj.getClassId()) != null
-					&& Integer.parseInt(checkNull(sectionMap.get(checkNull(stObj.getClassId())))) >= Integer
-							.parseInt(checkNull(String.valueOf(checkNull(stObj.getSectionId()))))) {
+			if(stObj.getClassId() !=null && (stObj.getClassId().equalsIgnoreCase("PP1") || stObj.getClassId().equalsIgnoreCase("PP2") || stObj.getClassId().equalsIgnoreCase("PP3") ) ) {
+				if(stObj.getClassId().equalsIgnoreCase("PP1")) {
+//					System.out.println("Condition for PP1--->"+stObj.getSectionId());
+					if(stObj.getSectionId() !=null && sectionMap.get("-1").contains(stObj.getSectionId().toUpperCase())) {
+//					System.out.println("In if condition--->"+Integer.parseInt(checkNull(sectionMap.get("-1"))));
+						blankAndTrueValidation(mObject, "sectionId", stObj.getSectionId());
+					}else {
+//						System.out.println("In else");
+						blankAndFalseValidation(mObject, "sectionId", stObj.getSectionId(),"(Invalid Section or Invalid Format)");
+					}
+				}else if(stObj.getClassId().equalsIgnoreCase("PP2")) {
+					if(stObj.getSectionId() !=null && sectionMap.get("-1").contains(stObj.getSectionId().toUpperCase())) {
+						blankAndTrueValidation(mObject, "sectionId", stObj.getSectionId());
+					}else {
+						blankAndFalseValidation(mObject, "sectionId", stObj.getSectionId(),"(Invalid Section or Invalid Format)");
+					}
+				}else if(stObj.getClassId().equalsIgnoreCase("PP3")) {
+					if(stObj.getSectionId() !=null && sectionMap.get("-1").contains(stObj.getSectionId().toUpperCase())) {
+						blankAndTrueValidation(mObject, "sectionId", stObj.getSectionId());
+					}else {
+						blankAndFalseValidation(mObject, "sectionId", stObj.getSectionId(),"(Invalid Section or Invalid Format)");
+					}
+				}
+			}
+			else if (stObj.getSectionId() !=null && sectionMap.get(checkNull(stObj.getClassId())).contains(stObj.getSectionId().toUpperCase())) {
 				blankAndTrueValidation(mObject, "sectionId", stObj.getSectionId());
 			} else {
-				blankAndFalseValidation(mObject, "sectionId", stObj.getSectionId());
+				blankAndFalseValidation(mObject, "sectionId", stObj.getSectionId(),"(Invalid Section or Invalid Format)");
 			}
 		} catch (Exception ex) {
-			blankAndFalseValidation(mObject, "sectionId", stObj.getSectionId());
+			blankAndFalseValidation(mObject, "sectionId", stObj.getSectionId(),"(Invalid Section or Invalid Format)");
 			ex.printStackTrace();
 		}
 
@@ -98,19 +158,19 @@ public class CustomFxcelValidator {
 //			numberValidation(mObject, "gender", checkNullandTrim(stObj.getGender()), 3);
 			blankAndTrueValidation(mObject, "gender", stObj.getGender());
 		}else {
-			blankAndFalseValidation(mObject, "gender", stObj.getGender());
+			blankAndFalseValidation(mObject, "gender", stObj.getGender(),"(Invalid Gender or Invalid Format)");
 		}
 		}else if(sObj.getRowValue().get(0).get("sch_type") !=null && String.valueOf(sObj.getRowValue().get(0).get("sch_type")).equalsIgnoreCase("2") ) {
 			if(stObj.getGender().equalsIgnoreCase("2") || stObj.getGender().equalsIgnoreCase("3")) {
 				blankAndTrueValidation(mObject, "gender", stObj.getGender());
 			}else {
-				blankAndFalseValidation(mObject, "gender", stObj.getGender());
+				blankAndFalseValidation(mObject, "gender", stObj.getGender(),"(Invalid Gender or Invalid Format)");
 			}
 		}else if(sObj.getRowValue().get(0).get("sch_type") !=null && String.valueOf(sObj.getRowValue().get(0).get("sch_type")).equalsIgnoreCase("3")) {
 			if(stObj.getGender().equalsIgnoreCase("2") || stObj.getGender().equalsIgnoreCase("3") || stObj.getGender().equalsIgnoreCase("1") ) {
 				blankAndTrueValidation(mObject, "gender", stObj.getGender());
 			}else {
-				blankAndFalseValidation(mObject, "gender", stObj.getGender());
+				blankAndFalseValidation(mObject, "gender", stObj.getGender(),"(Invalid Format)");
 			}
 		}
 		
@@ -118,18 +178,47 @@ public class CustomFxcelValidator {
 		if(stObj.getClassId() !=null && stObj.getStudentDob() !=null && sObj.getRowValue().get(0).get("session_start_date") !=null && getAge(stObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date")))>0) {		
 //System.out.println("Age chack");
 			//			dateValidation(mObject, "studentDob", stObj.getStudentDob());
-		if(StudentAgeClassValidation(Integer.parseInt(stObj.getClassId()),Integer.parseInt(String.valueOf(getAge(stObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))))) {
+		if(stObj.getClassId() !=null && (stObj.getClassId().equalsIgnoreCase("PP1") || stObj.getClassId().equalsIgnoreCase("PP2") || stObj.getClassId().equalsIgnoreCase("PP3"))) {
+			if(stObj.getClassId().equalsIgnoreCase("PP1")) {
+				if(StudentAgeClassValidation(-1,Integer.parseInt(String.valueOf(getAge(stObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))))) {
+					blankAndTrueValidation(mObject, "studentDob", stObj.getStudentDob());	
+				}else {
+					blankAndFalseValidation(mObject, "studentDob", stObj.getStudentDob(),"(Age is not according to the class as on the Session Start Date)");
+				}
+				
+			}
+			
+			if(stObj.getClassId().equalsIgnoreCase("PP2")) {
+				if(StudentAgeClassValidation(-2,Integer.parseInt(String.valueOf(getAge(stObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))))) {
+					blankAndTrueValidation(mObject, "studentDob", stObj.getStudentDob());	
+				}else {
+					blankAndFalseValidation(mObject, "studentDob", stObj.getStudentDob(),"(Age is not according to the class as on the Session Start Date)");
+				}
+				
+			}
+			
+			if(stObj.getClassId().equalsIgnoreCase("PP3")) {
+				if(StudentAgeClassValidation(-3,Integer.parseInt(String.valueOf(getAge(stObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))))) {
+					blankAndTrueValidation(mObject, "studentDob", stObj.getStudentDob());		
+				}else {
+					blankAndFalseValidation(mObject, "studentDob", stObj.getStudentDob(),"(Age is not according to the class as on the Session Start Date)");
+				}
+				
+			}
+		}	
+			
+		else if(StudentAgeClassValidation(Integer.parseInt(stObj.getClassId()),Integer.parseInt(String.valueOf(getAge(stObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))))) {
 			blankAndTrueValidation(mObject, "studentDob", stObj.getStudentDob());
 		}else {
-			blankAndFalseValidation(mObject, "studentDob", stObj.getStudentDob());
+			blankAndFalseValidation(mObject, "studentDob", stObj.getStudentDob(),"(Age is not according to the class as on the Session Start Date)");
 		}
 		}else {
-			System.out.println("Age else");
-			blankAndFalseValidation(mObject, "studentDob", stObj.getStudentDob());
+//			System.out.println("Age else");
+			blankAndFalseValidation(mObject, "studentDob", stObj.getStudentDob(),"(Invalid Age)");
 		}
 
 		}catch(Exception ex) {
-			blankAndFalseValidation(mObject, "studentDob", stObj.getStudentDob());
+			blankAndFalseValidation(mObject, "studentDob", stObj.getStudentDob(),"(Invalid Age)");
 			ex.printStackTrace();
 		}
 		
@@ -155,10 +244,10 @@ public class CustomFxcelValidator {
 					&& mTongObj.get(Integer.parseInt(String.valueOf(stObj.getMotherTongue())))) {
 				blankAndTrueValidation(mObject, "motherTongue", checkNullandTrim(stObj.getMotherTongue()));
 			} else {
-				blankAndFalseValidation(mObject, "motherTongue", checkNullandTrim(stObj.getMotherTongue()));
+				blankAndFalseValidation(mObject, "motherTongue", checkNullandTrim(stObj.getMotherTongue()),"");
 			}
 		} catch (Exception ex) {
-			blankAndFalseValidation(mObject, "motherTongue", checkNullandTrim(stObj.getMotherTongue()));
+			blankAndFalseValidation(mObject, "motherTongue", checkNullandTrim(stObj.getMotherTongue()),"");
 			ex.printStackTrace();
 		}
 		numberValidation(mObject, "socCatId", checkNullandTrim(stObj.getSocCatId()), 4);
@@ -177,12 +266,12 @@ public class CustomFxcelValidator {
 		numberValidation(mObject, "cwsnYn", checkNullandTrim(stObj.getCwsnYn()), 2);
 		if (stObj.getImpairmentType() !=null && checkNull(stObj.getCwsnYn()).equalsIgnoreCase("1")) {
 			
-			System.out.println("check JSON---->"+GeneralUtility.ImperialMapping.get(String.valueOf(stObj.getImpairmentType())));
+//			System.out.println("check JSON---->"+GeneralUtility.ImperialMapping.get(String.valueOf(stObj.getImpairmentType())));
 			
 			if(GeneralUtility.ImperialMapping.get(String.valueOf(stObj.getImpairmentType())) !=null && GeneralUtility.ImperialMapping.get(String.valueOf(stObj.getImpairmentType()))) {
 			jsonValidation(mObject, "impairmentType", checkNullandTrim(stObj.getImpairmentType()));
 			}else {
-				blankAndFalseValidation(mObject, "impairmentType", stObj.getImpairmentType());
+				blankAndFalseValidation(mObject, "impairmentType", stObj.getImpairmentType(),"(Invalid Format/IMPAIRMENT TYPE)");
 			}
 		} else {
 			blankAndTrueValidation(mObject, "impairmentType", "");
@@ -209,12 +298,15 @@ public class CustomFxcelValidator {
 			LocalDate admisionDate = LocalDate.parse(String.valueOf(stObj.getAdmnStartDate()), adminsionformatter);
 
 		if(! admisionDate.isAfter(todayDate) && ! admisionDate.isAfter(sessionEndDate) &&  (admisionDate.isAfter(sessionStartDate) || admisionDate.isEqual(sessionStartDate))) {
+//		System.out.println("Admission date truessssssssss");
 			blankAndTrueValidation(mObject, "admnStartDate", stObj.getAdmnStartDate());
 		}else {
-			blankAndFalseValidation(mObject, "admnStartDate", stObj.getAdmnStartDate());
+//			System.out.println("Admission date falsessssssssss");
+			blankAndFalseValidation(mObject, "admnStartDate", stObj.getAdmnStartDate(),"(Invalid Date or Admission Date is not between Session Start and End Date)");
 		}
 		}catch(Exception ex) {
-			blankAndFalseValidation(mObject, "admnStartDate", stObj.getAdmnStartDate());
+//			System.out.println("Admission date exception falsessssssssss");
+			blankAndFalseValidation(mObject, "admnStartDate", stObj.getAdmnStartDate(),"(Invalid Date or Admission Date is not between Session Start and End Date)");
 			ex.printStackTrace();
 		}
 		
@@ -231,7 +323,7 @@ public class CustomFxcelValidator {
 //			numberValidation(mObject, "acdemicStream", checkNullandTrim(stObj.getAcdemicStream()), 5);
 					blankAndTrueValidation(mObject, "acdemicStream", stObj.getAcdemicStream());
 				} else {
-					blankAndFalseValidation(mObject, "acdemicStream", stObj.getAcdemicStream());
+					blankAndFalseValidation(mObject, "acdemicStream", stObj.getAcdemicStream(),"");
 				}
 			} else if (stObj.getAcdemicStream() != null && stObj.getAcdemicStream().equalsIgnoreCase("2")) {
 				if (sObj.getRowValue().get(0).get("strm_science") != null
@@ -239,7 +331,7 @@ public class CustomFxcelValidator {
 						&& Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("strm_science"))) == 1) {
 					blankAndTrueValidation(mObject, "acdemicStream", stObj.getAcdemicStream());
 				} else {
-					blankAndFalseValidation(mObject, "acdemicStream", stObj.getAcdemicStream());
+					blankAndFalseValidation(mObject, "acdemicStream", stObj.getAcdemicStream(),"");
 				}
 			} else if (stObj.getAcdemicStream() != null && stObj.getAcdemicStream().equalsIgnoreCase("3")) {
 				if (sObj.getRowValue().get(0).get("strm_commerce") != null
@@ -247,7 +339,7 @@ public class CustomFxcelValidator {
 						&& Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("strm_commerce"))) == 1) {
 					blankAndTrueValidation(mObject, "acdemicStream", stObj.getAcdemicStream());
 				} else {
-					blankAndFalseValidation(mObject, "acdemicStream", stObj.getAcdemicStream());
+					blankAndFalseValidation(mObject, "acdemicStream", stObj.getAcdemicStream(),"");
 				}
 			} else if (stObj.getAcdemicStream() != null && stObj.getAcdemicStream().equalsIgnoreCase("4")) {
 				if (sObj.getRowValue().get(0).get("strm_vocational") != null
@@ -255,7 +347,7 @@ public class CustomFxcelValidator {
 						&& Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("strm_vocational"))) == 1) {
 					blankAndTrueValidation(mObject, "acdemicStream", stObj.getAcdemicStream());
 				} else {
-					blankAndFalseValidation(mObject, "acdemicStream", stObj.getAcdemicStream());
+					blankAndFalseValidation(mObject, "acdemicStream", stObj.getAcdemicStream(),"");
 				}
 			} else if (stObj.getAcdemicStream() != null && stObj.getAcdemicStream().equalsIgnoreCase("5")) {
 				if (sObj.getRowValue().get(0).get("strm_other") != null
@@ -263,37 +355,54 @@ public class CustomFxcelValidator {
 						&& Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("strm_other"))) == 1) {
 					blankAndTrueValidation(mObject, "acdemicStream", stObj.getAcdemicStream());
 				} else {
-					blankAndFalseValidation(mObject, "acdemicStream", stObj.getAcdemicStream());
+					blankAndFalseValidation(mObject, "acdemicStream", stObj.getAcdemicStream(),"");
 				}
 			} else {
-				blankAndFalseValidation(mObject, "acdemicStream", stObj.getAcdemicStream());
+				blankAndFalseValidation(mObject, "acdemicStream", stObj.getAcdemicStream(),"");
 			}
 
 		} else {
 			blankAndTrueValidation(mObject, "acdemicStream", "");
 		}
 
+		
+		if(stObj.getEnrStatusPy() !=null && stObj.getEnrStatusPy().equalsIgnoreCase("3")) {
+			if(stObj.getClassId().equalsIgnoreCase("PP1") || stObj.getClassId().equalsIgnoreCase("PP2") || stObj.getClassId().equalsIgnoreCase("PP3") || stObj.getClassId().equalsIgnoreCase("1")) {
+				blankAndTrueValidation(mObject, "enrStatusPy", stObj.getEnrStatusPy());
+			}else {
+				blankAndFalseValidation(mObject, "enrStatusPy", stObj.getEnrStatusPy(),"(Anganwadi/ECCE Center didn't have class greater than 1)");
+			}
+		}else {
 		numberValidation(mObject, "enrStatusPy", checkNullandTrim(stObj.getEnrStatusPy()), 4);
+		}
 //System.out.println(stObj.getClassId());
 //		System.out.println(stObj.getClassPy());
 		if (stObj.getEnrStatusPy().equalsIgnoreCase("1") || stObj.getEnrStatusPy().equalsIgnoreCase("2")) {
-			if ((( stObj.getClassId().equalsIgnoreCase("1"))
-					&& ( stObj.getClassPy().equalsIgnoreCase("PP")))
-					|| stObj.getClassId().equalsIgnoreCase("PP")) {
+			
+			if ((stObj.getClassId().equalsIgnoreCase("0") || stObj.getClassId().equalsIgnoreCase("PP1") || stObj.getClassId().equalsIgnoreCase("PP2") || stObj.getClassId().equalsIgnoreCase("PP3"))
+					&& (stObj.getClassPy().equalsIgnoreCase("0") || stObj.getClassPy().equalsIgnoreCase("PP") || stObj.getClassPy().equalsIgnoreCase("PP1") || stObj.getClassPy().equalsIgnoreCase("PP2") || stObj.getClassPy().equalsIgnoreCase("PP3"))) {
 				blankAndTrueValidation(mObject, "classPy", stObj.getClassPy());
+			}else if(stObj.getClassId().equalsIgnoreCase("1") ) {
+				
+				if((stObj.getClassPy().equalsIgnoreCase("0") || stObj.getClassPy().equalsIgnoreCase("1") || stObj.getClassPy().equalsIgnoreCase("PP") || stObj.getClassPy().equalsIgnoreCase("PP1") || stObj.getClassPy().equalsIgnoreCase("PP2") || stObj.getClassPy().equalsIgnoreCase("PP3"))) {
+					blankAndTrueValidation(mObject, "classPy", stObj.getClassPy());	
+				}else {
+					blankAndFalseValidation(mObject, "classPy", stObj.getClassPy(),"");
+				}
+				
 			} else {
 				try {
-					System.out.println("Previous Academic class-->"+stObj.getClassPy());
+//					System.out.println("Previous Academic class-->"+stObj.getClassPy());
 					int stClass = Integer.parseInt(classCheck(stObj.getClassId()));
 					if (stClass > 0 && stClass <= 12 && (stClass == Integer.parseInt(stObj.getClassPy())
 							|| stClass == Integer.parseInt(stObj.getClassPy()) + 1)) {
-						System.out.println("in if condition");
+//						System.out.println("in if condition");
 						blankAndTrueValidation(mObject, "classPy", stObj.getClassPy());
 					} else {
-						blankAndFalseValidation(mObject, "classPy", stObj.getClassPy());
+						blankAndFalseValidation(mObject, "classPy", stObj.getClassPy(),"");
 					}
 				} catch (Exception ex) {
-					blankAndFalseValidation(mObject, "classPy", stObj.getClassPy());
+					blankAndFalseValidation(mObject, "classPy", stObj.getClassPy(),"");
 					ex.printStackTrace();
 				}
 			}
@@ -308,11 +417,40 @@ public class CustomFxcelValidator {
 		}
 
 		if (stObj.getEnrStatusPy().equalsIgnoreCase("1") || stObj.getEnrStatusPy().equalsIgnoreCase("2")) {
+			
+			if((stObj.getClassId().equalsIgnoreCase("0") || stObj.getClassId().equalsIgnoreCase("PP1") || stObj.getClassId().equalsIgnoreCase("PP2") || stObj.getClassId().equalsIgnoreCase("PP3"))) {
+//				blankAndTrueValidation(mObject, "examAppearedPyYn", stObj.getExamAppearedPyYn());
+				if(stObj.getExamAppearedPyYn() ==null || stObj.getExamAppearedPyYn().equalsIgnoreCase("")) {
+					blankAndTrueValidation(mObject, "examAppearedPyYn", stObj.getExamAppearedPyYn());
+				}else {
+				numberValidation(mObject, "examAppearedPyYn", checkNullandTrim(stObj.getExamAppearedPyYn()), 2);
+				}
+//				blankAndTrueValidation(mObject, "examResultPy", stObj.getExamResultPy());
+//				blankAndTrueValidation(mObject, "examMarksPy", stObj.getExamMarksPy());
+			}else {
 			numberValidation(mObject, "examAppearedPyYn", checkNullandTrim(stObj.getExamAppearedPyYn()), 2);
-
+			}
+			
 			if (stObj.getExamAppearedPyYn().equalsIgnoreCase("1")) {
+				if((stObj.getClassId().equalsIgnoreCase("0") || stObj.getClassId().equalsIgnoreCase("PP1") || stObj.getClassId().equalsIgnoreCase("PP2") || stObj.getClassId().equalsIgnoreCase("PP3"))) {
+					
+					if(stObj.getExamResultPy() ==null || stObj.getExamResultPy().equalsIgnoreCase("")) {
+						blankAndTrueValidation(mObject, "examResultPy", stObj.getExamAppearedPyYn());
+					}else {
+					numberValidation(mObject, "examResultPy", checkNullandTrim(stObj.getExamResultPy()), 4);
+					}
+					
+					if(stObj.getExamMarksPy()==null || stObj.getExamMarksPy().equalsIgnoreCase("")) {
+						blankAndTrueValidation(mObject, "examMarksPy", stObj.getExamMarksPy());
+					}else {
+						numberValidation(mObject, "examMarksPy", checkNullandTrim(stObj.getExamMarksPy()), 100);
+					}
+					
+					
+				}else {			
 				numberValidation(mObject, "examResultPy", checkNullandTrim(stObj.getExamResultPy()), 4);
 				numberValidation(mObject, "examMarksPy", checkNullandTrim(stObj.getExamMarksPy()), 100);
+				}
 			} else {
 				blankAndTrueValidation(mObject, "examResultPy", "");
 				blankAndTrueValidation(mObject, "examMarksPy", "");
@@ -324,9 +462,19 @@ public class CustomFxcelValidator {
 			blankAndTrueValidation(mObject, "examMarksPy", "");
 		}
 
+		if((stObj.getClassId().equalsIgnoreCase("0") || stObj.getClassId().equalsIgnoreCase("PP1") || stObj.getClassId().equalsIgnoreCase("PP2") || stObj.getClassId().equalsIgnoreCase("PP3"))) {
+			
+			if(stObj.getAttendencePy() ==null || stObj.getAttendencePy().equalsIgnoreCase("")) {
+				blankAndTrueValidation(mObject, "attendencePy", stObj.getAttendencePy());
+			}else {
+				numberValidation(mObject, "attendencePy", checkNullandTrim(stObj.getAttendencePy()), 365);
+			}
+			
+		}else {
 		numberValidation(mObject, "attendencePy", checkNullandTrim(stObj.getAttendencePy()), 365);
+		}
 //		numberValidation(mObject,"acYearId",checkNullandTrim(stObj.getAcYearId()));
-		numberValidation(mObject, "rollNo", checkNullandTrim(stObj.getRollNo()), 999);
+		numberValidation(mObject, "rollNo", checkNullandTrim(stObj.getRollNo()), 150);
 
 		
 		if (sObj.getRowValue().get(0).get("sch_mgmt_center_id") !=null && (Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("sch_mgmt_center_id"))) != 5 && Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("sch_mgmt_center_id"))) != 8)) {
@@ -340,6 +488,7 @@ public class CustomFxcelValidator {
 		} else {
 			blankAndTrueValidation(mObject, "centrlSchlrshpId", "");
 		}
+		
 		numberValidation(mObject, "stateSchlrshpYn", checkNullandTrim(stObj.getStateSchlrshpYn()), 2);
 		numberValidation(mObject, "otherSchlrshpYn", checkNullandTrim(stObj.getOtherSchlrshpYn()), 2);
 
@@ -387,13 +536,13 @@ public class CustomFxcelValidator {
 				blankAndTrueValidation(mObject, "vocYn", "");
 			}
 		} else {
-			System.out.println("Vocational false condition-->");
+//			System.out.println("Vocational false condition-->");
 			blankAndTrueValidation(mObject, "vocYn", "");
 		}
 
 		try {
 		
-			if(Integer.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("is_vocational_active"))))==1) {
+			if(stObj.getVocYn() !=null && stObj.getVocYn() !="" && stObj.getVocYn().equalsIgnoreCase("1") && Integer.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("is_vocational_active"))))==1) {
 			if (sObj.getRowValue().get(0).get("is_vocational_active") != null && sObj.getRowValue().get(0).get("vocational_grade") !=null 
 					&& (Integer.parseInt(
 							checkNull(String.valueOf(sObj.getRowValue().get(0).get("is_vocational_active")))) == 1) 
@@ -401,15 +550,15 @@ public class CustomFxcelValidator {
 							checkNull(String.valueOf(sObj.getRowValue().get(0).get("vocational_grade")))) == 1 ) ||  Integer.parseInt(
 									checkNull(String.valueOf(sObj.getRowValue().get(0).get("vocational_grade")))) == 3 ) && (checkNull(stObj.getClassId()).equalsIgnoreCase("9")
 							|| checkNull(stObj.getClassId()).equalsIgnoreCase("10"))) {
-				System.out.println("lower sector true");
+//				System.out.println("lower sector true");
 				try {
 				if (lowerSector.get(String.valueOf(checkNull(stObj.getSector())))) {
 					blankAndTrueValidation(mObject, "sector", stObj.getSector());
 				} else {
-					blankAndFalseValidation(mObject, "sector", stObj.getSector());
+					blankAndFalseValidation(mObject, "sector", stObj.getSector(),"(Invalid Trade/Sector Id)");
 				}
 				}catch(Exception ex) {
-					Map<String, HashMap<String, String>> mp=blankAndFalseValidation(mObject, "sector", stObj.getSector());
+					Map<String, HashMap<String, String>> mp=blankAndFalseValidation(mObject, "sector", stObj.getSector(),"");
 					mp.get("sector").put("message", "Sector Id not available");
 					ex.printStackTrace();
 				}
@@ -421,30 +570,30 @@ public class CustomFxcelValidator {
 						checkNull(String.valueOf(sObj.getRowValue().get(0).get("vocational_grade")))) == 2 || Integer.parseInt(
 								checkNull(String.valueOf(sObj.getRowValue().get(0).get("vocational_grade")))) == 3)	&& (checkNull(stObj.getClassId()).equalsIgnoreCase("11")
 							|| checkNull(stObj.getClassId()).equalsIgnoreCase("12"))) {
-				System.out.println("higher sector true");
+//				System.out.println("higher sector true");
 				try {
 				if (higherSector.get(String.valueOf(checkNull(stObj.getSector())))) {
 					blankAndTrueValidation(mObject, "sector", stObj.getSector());
 				} else {
-					blankAndFalseValidation(mObject, "sector", stObj.getSector());
+					blankAndFalseValidation(mObject, "sector", stObj.getSector(),"(Invalid Trade/Sector Id)");
 				}
 				}catch(Exception ex) {
-					Map<String, HashMap<String, String>> mp=blankAndFalseValidation(mObject, "sector", stObj.getSector());
+					Map<String, HashMap<String, String>> mp=blankAndFalseValidation(mObject, "sector", stObj.getSector(),"");
 					mp.get("sector").put("message", "Sector Id not available");
 					
 				}
 			}
 			else {
-				System.out.println("4");
+//				System.out.println("4");
 				blankAndTrueValidation(mObject, "sector","");
 			}
 			}else {
-				System.out.println("in else sector");
+//				System.out.println("in else sector");
 				blankAndTrueValidation(mObject, "sector", "");
 			}
 
 		} catch (Exception ex) {
-			blankAndFalseValidation(mObject, "sector", stObj.getSector());
+			blankAndFalseValidation(mObject, "sector", stObj.getSector(),"(Invalid Trade/Sector Id)");
 			ex.printStackTrace();
 		}
 
@@ -453,7 +602,7 @@ public class CustomFxcelValidator {
 		try {
 			
 			
-			if(Integer.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("is_vocational_active"))))==1) {
+			if(stObj.getVocYn() !=null && stObj.getVocYn() !="" && stObj.getVocYn().equalsIgnoreCase("1") && Integer.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("is_vocational_active"))))==1) {
 			if (sObj.getRowValue().get(0).get("is_vocational_active") != null && sObj.getRowValue().get(0).get("vocational_grade") !=null
 					&& (Integer.parseInt(
 							checkNull(String.valueOf(sObj.getRowValue().get(0).get("is_vocational_active")))) == 1) 
@@ -462,15 +611,15 @@ public class CustomFxcelValidator {
 									checkNull(String.valueOf(sObj.getRowValue().get(0).get("vocational_grade")))) == 3) && (checkNull(stObj.getClassId()).equalsIgnoreCase("9")
 							|| checkNull(stObj.getClassId()).equalsIgnoreCase("10"))
 					&& stObj.getJobRole() != null) {
-				System.out.println("JOb-1");
+//				System.out.println("JOb-1");
 				try {
 				if (lowerSubSector.get(String.valueOf(checkNull(stObj.getJobRole())))) {
 					blankAndTrueValidation(mObject, "jobRole", stObj.getJobRole());
 				} else {
-					blankAndFalseValidation(mObject, "jobRole", stObj.getJobRole());
+					blankAndFalseValidation(mObject, "jobRole", stObj.getJobRole(),"(Invalid Job/Role Id)");
 				}
 				}catch(Exception ex) {
-					Map<String, HashMap<String, String>> mp=blankAndFalseValidation(mObject, "jobRole", stObj.getJobRole());
+					Map<String, HashMap<String, String>> mp=blankAndFalseValidation(mObject, "jobRole", stObj.getJobRole(),"(Invalid Job/Role Id)");
 					mp.get("jobRole").put("message", "Role Id not available");
 					ex.printStackTrace();
 				}
@@ -481,26 +630,26 @@ public class CustomFxcelValidator {
 							checkNull(String.valueOf(sObj.getRowValue().get(0).get("vocational_grade")))) == 2 || Integer.parseInt(
 									checkNull(String.valueOf(sObj.getRowValue().get(0).get("vocational_grade")))) == 3)  && (checkNull(stObj.getClassId()).equalsIgnoreCase("11")
 							|| checkNull(stObj.getClassId()).equalsIgnoreCase("12"))
-					&& stObj.getJobRole() != null) {
+					&& stObj.getJobRole() != null &&  stObj.getJobRole() != "") {
 				try {
-					System.out.println("Job-2");
+//					System.out.println("Job-2--"+stObj.getJobRole());
 				if (higherSubSector.get(String.valueOf(checkNull(stObj.getJobRole())))) {
 					blankAndTrueValidation(mObject, "jobRole", stObj.getJobRole());
 				} else {
-					blankAndFalseValidation(mObject, "jobRole", stObj.getJobRole());
+					blankAndFalseValidation(mObject, "jobRole", stObj.getJobRole(),"(Invalid Job/Role Id)");
 				}
 				}catch(Exception ex) {
-					Map<String, HashMap<String, String>> mp=blankAndFalseValidation(mObject, "jobRole", stObj.getJobRole());
+					Map<String, HashMap<String, String>> mp=blankAndFalseValidation(mObject, "jobRole", stObj.getJobRole(),"");
 					mp.get("jobRole").put("message", "Role Id not available");
 					ex.printStackTrace();
 				}
 			}
 			}else {
-				System.out.println("in else job");
+//				System.out.println("in else job");
 				blankAndTrueValidation(mObject, "jobRole", "");
 			}
 		} catch (Exception ex) {
-			blankAndFalseValidation(mObject, "jobRole", stObj.getJobRole());
+			blankAndFalseValidation(mObject, "jobRole", stObj.getJobRole(),"(Invalid Job/Role Id)");
 			ex.printStackTrace();
 		}
 
@@ -520,12 +669,13 @@ public class CustomFxcelValidator {
 	}
 
 	public Map<String, HashMap<String, String>> blankAndFalseValidation(Map<String, HashMap<String, String>> mp,
-			String mapKey, String value) {
+			String mapKey, String value,String message) {
 		HashMap<String, String> hs = new HashMap<String, String>();
 		HashMap<String, String> fs = new HashMap<String, String>();
 		fs.put("s", "0");
 		mp.put("fs", fs);
 		hs.put("v", value);
+		hs.put("m", message);
 		hs.put("s", "0");
 		mp.put(mapKey, hs);
 		return mp;
@@ -549,6 +699,9 @@ public class CustomFxcelValidator {
 			hs.put("s", "1");
 
 			if (mapKey.equalsIgnoreCase("examMarksPy")) {
+				
+//				System.out.println();
+				
 				if (Integer.parseInt(value) > 100) {
 					hs.put("s", "0");
 					hs.put("m", "invalid marks");
@@ -582,7 +735,7 @@ public class CustomFxcelValidator {
 			mp.put("fs", fs);
 		} else {
 			hs.put("s", "0");
-			hs.put("m", "invalid number formate");
+			hs.put("m", "(invalid number format)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		}
@@ -610,7 +763,7 @@ public class CustomFxcelValidator {
 			mp.put("fs", fs);
 		}else {
 			hs.put("s", "0");
-			hs.put("m", "invalid string formate");
+			hs.put("m", "(invalid string formate and special characters allowed -,.\\)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		}
@@ -624,7 +777,7 @@ public class CustomFxcelValidator {
 			String value) {
 		HashMap<String, String> fs = new HashMap<String, String>();
 		HashMap<String, String> hs = new HashMap<String, String>();
-		System.out.println(GeneralUtility.ImperialMapping.get(value));
+//		System.out.println(GeneralUtility.ImperialMapping.get(value));
 		hs.put("v", value);
 		if (value != null && GeneralUtility.ImperialMapping.get(value) !=null && !GeneralUtility.ImperialMapping.get(value)) {
 			hs.put("s", "0");
@@ -754,7 +907,7 @@ public class CustomFxcelValidator {
 		HashMap<String, String> fs = new HashMap<String, String>();
 		HashMap<String, String> hs = new HashMap<String, String>();
 
-		System.out.println("lenth--->" + value);
+//		System.out.println("lenth--->" + value);
 		if (value != null && (value.length() < 3 || value.length() > 50) ) {
 			if(mapKey.equalsIgnoreCase("guardianName") && value.length()==0) {
 				hs.put("s", "1");	
@@ -857,9 +1010,9 @@ public class CustomFxcelValidator {
 
 //		System.out.println("value-->"+value);
 //		System.out.println(value.matches(adharRegex));
-if(value != null &&  (value.length()<=3 || value.length()>20)) {
+if(value != null &&  (value.length()<3 || value.length()>40)) {
 	hs.put("s", "0");
-	hs.put("m", "Invalid Admision Number");
+	hs.put("m", "(Min length should be 3 and Max length will be 40)");
 	fs.put("s", "0");
 	mp.put("fs", fs);
 }
@@ -912,7 +1065,7 @@ else	if (value != null && value.matches(admisionnumericRegax) && value != "") {
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		DateTimeFormatter dbformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		System.out.println("month--->"+dbDate);
+//		System.out.println("month--->"+dbDate);
 //		String months="";
 //		if(month.length()==1) {
 //			months="0"+month;
@@ -920,38 +1073,42 @@ else	if (value != null && value.matches(admisionnumericRegax) && value != "") {
 //		String date = "01/"+months+"/2022".replaceAll("-", "/");
 		String date = dob.replaceAll("-", "/");
 //		dbDate=dbDate.replaceAll("-", "/");
+		
+//		System.out.println("dob--->"+dob +"---db date---"+dbDate);
 	
 		LocalDate localDate = LocalDate.parse(date, formatter);
 		LocalDate today = LocalDate.parse(dbDate, dbformatter);
 		
-		System.out.println("today--->"+today);
+//		System.out.println("today--->"+today);
 		
 		long age = ChronoUnit.YEARS.between(localDate, today);
-		System.out.println("Age cal--->"+age);
+//		System.out.println("Age cal--->"+age);
 		return age;
 	}
 
 	public static boolean StudentAgeClassValidation(Integer grade, Integer age) {
-		System.out.println("grad---->"+grade +"age---->"+age);
+//		System.out.println("grad---->"+grade +"age---->"+age);
 		boolean status = false;
 		if (grade != null && age != null) {
 			switch (grade) {
 			case -3:
+//				System.out.println("PP3 age---->"+age);
 				if (age >= 3 && age <= 5) {
 					status = true;
 				}
 				break;
 			case -2:
+//				System.out.println("PP2 age---->"+age);
 				if (age >= 3 && age <= 6) {
 					status = true;
 				}
 				break;
 			case -1:
+//				System.out.println("PP1 age---->"+age);
 				if (age >= 4 && age <= 8) {
 					status = true;
 				}
 				break;
-
 			case 1:
 				if (age >= 5 && age <= 12) {
 					status = true;

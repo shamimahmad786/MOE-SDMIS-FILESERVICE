@@ -454,7 +454,7 @@ public class UserExcelExporter {
 			e.printStackTrace();
 		}
 		String headerKey = "Content-Disposition";
-		String headerValue = "attachment; filename=SchoolBulkTemplate_" + (String) (qrObj.getRowValue().get(0).get("udise_sch_code")) + ".xlsm";
+		String headerValue = "attachment; filename=SDMS_Excel_" + (String) (qrObj.getRowValue().get(0).get("udise_sch_code")) + ".xlsm";
 		response.setHeader(headerKey, headerValue);
 		try {
 			FileInputStream excelFile = new FileInputStream(new File(tempPath+File.separator+templateName));

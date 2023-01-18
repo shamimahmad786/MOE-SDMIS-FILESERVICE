@@ -117,6 +117,9 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 		}
 
 		try {
+			
+			System.out.println("Section Map--->"+sectionMap);
+			
 			if(stObj.getClassId() !=null && (stObj.getClassId().equalsIgnoreCase("PP1") || stObj.getClassId().equalsIgnoreCase("PP2") || stObj.getClassId().equalsIgnoreCase("PP3") ) ) {
 				if(stObj.getClassId().equalsIgnoreCase("PP1")) {
 //					System.out.println("Condition for PP1--->"+stObj.getSectionId());
@@ -128,13 +131,13 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 						blankAndFalseValidation(mObject, "sectionId", stObj.getSectionId(),"(Invalid Section or Invalid Format)");
 					}
 				}else if(stObj.getClassId().equalsIgnoreCase("PP2")) {
-					if(stObj.getSectionId() !=null && sectionMap.get("-1").contains(stObj.getSectionId().toUpperCase())) {
+					if(stObj.getSectionId() !=null && sectionMap.get("-2").contains(stObj.getSectionId().toUpperCase())) {
 						blankAndTrueValidation(mObject, "sectionId", stObj.getSectionId());
 					}else {
 						blankAndFalseValidation(mObject, "sectionId", stObj.getSectionId(),"(Invalid Section or Invalid Format)");
 					}
 				}else if(stObj.getClassId().equalsIgnoreCase("PP3")) {
-					if(stObj.getSectionId() !=null && sectionMap.get("-1").contains(stObj.getSectionId().toUpperCase())) {
+					if(stObj.getSectionId() !=null && sectionMap.get("-3").contains(stObj.getSectionId().toUpperCase())) {
 						blankAndTrueValidation(mObject, "sectionId", stObj.getSectionId());
 					}else {
 						blankAndFalseValidation(mObject, "sectionId", stObj.getSectionId(),"(Invalid Section or Invalid Format)");

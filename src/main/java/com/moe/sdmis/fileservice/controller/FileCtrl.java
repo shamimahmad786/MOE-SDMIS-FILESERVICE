@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -65,7 +66,9 @@ import com.moe.sdmis.fileservice.modal.StudentBasicProfile;
 //import com.moe.rad.transfer.modal.SurplusSchoolTeacherDetails;
 //import com.moe.rad.transfer.util.CustomResponse;
 import com.moe.sdmis.fileservice.modal.StudentTempTable;
+import com.moe.sdmis.fileservice.modal.UploadExcelStatus;
 import com.moe.sdmis.fileservice.modal.UploadHistory;
+import com.moe.sdmis.fileservice.repository.UploadExcelStatusRepository;
 import com.moe.sdmis.fileservice.service.FileServiceImpl;
 import com.moe.sdmis.fileservice.utility.ConfigurableUtility;
 import com.moe.sdmis.fileservice.utility.MotherTongMaster;
@@ -98,6 +101,10 @@ public class FileCtrl {
 
 	@Autowired
 	NativeRepository nativeRepository;
+	
+	@Autowired
+	UploadExcelStatusRepository uploadExcelStatusRepository;
+	
 
 	@RequestMapping(value = "/uploadDoc", method = RequestMethod.POST)
 	public ResponseEntity<?> uploadDoc(@RequestParam("file") MultipartFile multifile,
@@ -255,6 +262,7 @@ public class FileCtrl {
 		// Update History
 
 		fileServiceImpl.updateHistory(request.getRemoteHost(), schoolId, userid, "1");
+		fileServiceImpl.updateExcelStatus(request.getRemoteHost(), schoolId, userid, "1");
 		
 		return ResponseEntity.ok(new FinalResponse(new HashMap<String, Object>(), "1", "Success"));
 	}
@@ -478,6 +486,12 @@ public class FileCtrl {
 	public List<UploadHistory> getUploadedHistor(@RequestBody Integer data) throws Exception {
 		return fileServiceImpl.getUploadedHistor(data);
 	}
+	
+	@RequestMapping(value = "/getUploadStatus", method = RequestMethod.POST)
+	public Optional<UploadExcelStatus> getUploadStatus(@RequestBody Integer data) throws Exception {
+		return fileServiceImpl.getUploadStatus(data);
+	}
+	
 
 	@RequestMapping(value = "/getValidatedData", method = RequestMethod.POST)
 //	public Stream<String>  getValidatedData(@RequestBody String data) throws Exception {
@@ -509,12 +523,12 @@ public class FileCtrl {
 
 		// ...
 		File uploadedExcel = new File(userBucketPath + File.separator + param + File.separator + param + "." + "xlsm");
-		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy_MM_dd_HH:mm:ss");
 		String currentDateTime = dateFormatter.format(new Date());
 //		System.out.println(uploadedExcel.getAbsolutePath());
 		InputStreamResource resource = new InputStreamResource(new FileInputStream(uploadedExcel));
 		HttpHeaders headers = new HttpHeaders();
-		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Original_SchoolBulkTemplate_" + currentDateTime + ".xlsm");
+		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Original_SDMS_Excel_" + currentDateTime + ".xlsm");
 		headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
 		headers.add("Pragma", "no-cache");
 		headers.add("Expires", "0");
@@ -528,10 +542,10 @@ public class FileCtrl {
 			@RequestParam("schoolId") String stateId, HttpServletResponse response) throws IOException {
 //		System.out.println("called");
 		response.setContentType("application/octet-stream");
-		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy_MM_dd_HH:mm:ss");
 		String currentDateTime = dateFormatter.format(new Date());
 		String headerKey = "Content-Disposition";
-		String headerValue = "attachment; filename=Validated_SchoolBulkTemplate_" + currentDateTime + ".xlsm";
+		String headerValue = "attachment; filename=Validated_SDMS_Excel_" + currentDateTime + ".xlsm";
 		response.setHeader(headerKey, headerValue);
 		UserExcelExporter excelExporter = new UserExcelExporter();
 		List<String> commomHeadersFromValidation = null;

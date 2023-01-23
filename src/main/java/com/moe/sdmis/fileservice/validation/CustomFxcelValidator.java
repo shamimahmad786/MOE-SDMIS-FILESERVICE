@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 import com.moe.sdmis.fileservice.db.StaticReportBean;
 import com.moe.sdmis.fileservice.modal.CommonBean;
-import com.moe.sdmis.fileservice.modal.StudentTempTable;
+//import com.moe.sdmis.fileservice.modal.StudentTempTable;
 import com.moe.sdmis.fileservice.utility.GeneralUtility;
 
 @Component
@@ -234,7 +234,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 		} else {
 			blankAndTrueValidation(mObject, "nameAsAadhaar", "");
 		}
-		stringValidation(mObject, "address", checkNullandTrim(stObj.getAddress()), 20, 100);
+		stringValidation(mObject, "address", checkNullandTrim(stObj.getAddress()), 20, 150);
 		pincodeValidation(mObject, "pincode", checkNullandTrim(stObj.getPincode()));
 		mobileValidation(mObject, "mobileNo_1", checkNullandTrim(stObj.getMobileNo_1()));
 		mobileValidation(mObject, "mobileNo_2", checkNullandTrim(stObj.getMobileNo_2()));
@@ -383,7 +383,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 		if (stObj.getEnrStatusPy().equalsIgnoreCase("1") || stObj.getEnrStatusPy().equalsIgnoreCase("2")) {
 			
 			if ((stObj.getClassId().equalsIgnoreCase("0") || stObj.getClassId().equalsIgnoreCase("PP1") || stObj.getClassId().equalsIgnoreCase("PP2") || stObj.getClassId().equalsIgnoreCase("PP3"))
-					&& (stObj.getClassPy().equalsIgnoreCase("0") || stObj.getClassPy().equalsIgnoreCase("PP") || stObj.getClassPy().equalsIgnoreCase("PP1") || stObj.getClassPy().equalsIgnoreCase("PP2") || stObj.getClassPy().equalsIgnoreCase("PP3"))) {
+					&& ((stObj.getClassPy().equalsIgnoreCase("0") || stObj.getClassPy().equalsIgnoreCase("PP") || stObj.getClassPy().equalsIgnoreCase("PP1") || stObj.getClassPy().equalsIgnoreCase("PP2") || stObj.getClassPy().equalsIgnoreCase("PP3")) || (stObj.getClassPy() ==null || stObj.getClassPy().equalsIgnoreCase(""))) ) {
 				blankAndTrueValidation(mObject, "classPy", stObj.getClassPy());
 			}else if(stObj.getClassId().equalsIgnoreCase("1") ) {
 				
@@ -477,7 +477,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 		numberValidation(mObject, "attendencePy", checkNullandTrim(stObj.getAttendencePy()), 365);
 		}
 //		numberValidation(mObject,"acYearId",checkNullandTrim(stObj.getAcYearId()));
-		numberValidation(mObject, "rollNo", checkNullandTrim(stObj.getRollNo()), 150);
+		numberValidation(mObject, "rollNo", checkNullandTrim(stObj.getRollNo()), 9999); 
 
 		
 		if (sObj.getRowValue().get(0).get("sch_mgmt_center_id") !=null && (Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("sch_mgmt_center_id"))) != 5 && Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("sch_mgmt_center_id"))) != 8)) {

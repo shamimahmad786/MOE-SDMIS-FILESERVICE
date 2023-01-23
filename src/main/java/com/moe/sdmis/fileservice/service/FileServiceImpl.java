@@ -48,7 +48,7 @@ import com.moe.sdmis.fileservice.modal.StudentBasicProfile;
 import com.moe.sdmis.fileservice.modal.StudentBasicProfileTmp;
 import com.moe.sdmis.fileservice.modal.StudentFacilityDetails;
 import com.moe.sdmis.fileservice.modal.StudentFacilityDetailsTmp;
-import com.moe.sdmis.fileservice.modal.StudentTempTable;
+//import com.moe.sdmis.fileservice.modal.StudentTempTable;
 import com.moe.sdmis.fileservice.modal.StudentVocationalDetails;
 import com.moe.sdmis.fileservice.modal.StudentVocationalDetailsTmp;
 import com.moe.sdmis.fileservice.modal.UploadExcelStatus;
@@ -57,7 +57,7 @@ import com.moe.sdmis.fileservice.repository.StudentBasicProfileRepository;
 import com.moe.sdmis.fileservice.repository.StudentBasicProfileTmpRepository;
 import com.moe.sdmis.fileservice.repository.StudentFacilityDetailsRepository;
 import com.moe.sdmis.fileservice.repository.StudentFacilityDetailsTmpRepository;
-import com.moe.sdmis.fileservice.repository.StudentTempTableRepository;
+//import com.moe.sdmis.fileservice.repository.StudentTempTableRepository;
 import com.moe.sdmis.fileservice.repository.StudentVocationalDetailsRepository;
 import com.moe.sdmis.fileservice.repository.StudentVocationalDetailsTmpRepository;
 import com.moe.sdmis.fileservice.repository.UploadExcelStatusRepository;
@@ -68,8 +68,8 @@ import com.moe.sdmis.fileservice.validation.CustomFxcelValidator;
 @Service
 public class FileServiceImpl {
 
-	@Autowired
-	StudentTempTableRepository studentTempTableRepository;
+//	@Autowired
+//	StudentTempTableRepository studentTempTableRepository;
 
 	@Autowired
 	StudentBasicProfileRepository studentBasicProfileRepository;
@@ -106,7 +106,7 @@ public class FileServiceImpl {
 			Map<Integer, Boolean> mTongObj, HashMap<String, Boolean> lowerSector,
 			HashMap<String, Boolean> lowerSubSector, HashMap<String, Boolean> higherSector,
 			HashMap<String, Boolean> higherSubSector, HashSet<String> adharMach) throws Exception {
-		statusFlag = "3";
+		statusFlag = "4";
 //		System.out.println("Before save list size--->"+lt.size());
 
 //		List<StudentTempTable> response=studentTempTableRepository.saveAll(lt);
@@ -133,7 +133,7 @@ public class FileServiceImpl {
 			long statusCount = finalList.stream().filter((e) -> e.get("fs").get("s").equalsIgnoreCase("0")).count();
 
 			if (statusCount > 0) {
-				statusFlag = "2";
+				statusFlag = "3";
 			}
 
 //			System.out.println("final list--->" + finalList);
@@ -143,19 +143,18 @@ public class FileServiceImpl {
 			UploadHistory uObj = new UploadHistory();
 			uObj.setHost(address);
 			uObj.setSchoolId(Integer.parseInt(schoolId));
-
 			uObj.setUploadedBy(userId);
 			uObj.setStatus(statusFlag);
 			uObj.setUploadedTime(new Date());
 			uploadHistoryRepository.save(uObj);
 
-			UploadExcelStatus statusObj = new UploadExcelStatus();
-			statusObj.setHost(address);
-			statusObj.setSchoolId(Integer.parseInt(schoolId));
-			statusObj.setUploadedBy(userId);
-			statusObj.setStatus(statusFlag);
-			statusObj.setUploadedDateTime(new Date());
-			uploadExcelStatusRepository.save(statusObj);
+//			UploadExcelStatus statusObj = new UploadExcelStatus();
+//			statusObj.setHost(address);
+//			statusObj.setSchoolId(Integer.parseInt(schoolId));
+//			statusObj.setUploadedBy(userId);
+//			statusObj.setStatus(statusFlag);
+//			statusObj.setUploadedDateTime(new Date());
+			uploadExcelStatusRepository.updateStatusAfterValidation(statusFlag, Integer.parseInt(schoolId));
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -484,7 +483,7 @@ public class FileServiceImpl {
 			nativeRepository.updateQueries(
 					"update school_master_live set is_exl_active=2 where school_id=" + Integer.parseInt(data));
 			nativeRepository.updateQueries(
-					"update moe_sdmis_uploadexcelstatus set status=4 where school_id=" + Integer.parseInt(data));
+					"update moe_sdmis_uploadexcelstatus set status=5 where school_id=" + Integer.parseInt(data));
 
 			resObj.put("status", "1");
 		} catch (Exception ex) {
@@ -546,6 +545,42 @@ public class FileServiceImpl {
 
 	public Optional<UploadExcelStatus> getUploadStatus(Integer schoolId) {
 		return uploadExcelStatusRepository.findById(schoolId);
+	}
+	
+	
+	public Map<String,String>  docProcess(Integer schoolId,String userId,String requestAddr){
+		
+		Map<String,String> mp=new HashMap<String,String>();
+		
+		try {
+			UploadHistory hisObj=new UploadHistory();
+			UploadExcelStatus staObj=new UploadExcelStatus();
+			
+			hisObj.setHost(requestAddr);
+			hisObj.setSchoolId(schoolId);
+			hisObj.setStatus("2");
+			hisObj.setUploadedBy(userId);
+			hisObj.setUploadedTime(new Date());
+			uploadHistoryRepository.save(hisObj);
+			
+			
+			staObj.setHost(requestAddr);
+			staObj.setSchoolId(schoolId);
+			staObj.setStatus("2");
+			staObj.setUploadedBy(userId);
+			staObj.setUploadedDateTime(new Date());
+			uploadExcelStatusRepository.save(staObj);
+			
+			mp.put("status", "1");
+			mp.put("message", "Excel Queued for validation check. Please check the status after half an hour");
+		}catch(Exception ex) {
+			mp.put("status", "0");
+			mp.put("message", "Error in processing. Please contact with admin");
+			ex.printStackTrace();
+		}
+		
+		return mp;
+		
 	}
 
 	public Stream<String> getValidatedData(Integer schoolId) throws IOException, ClassNotFoundException {

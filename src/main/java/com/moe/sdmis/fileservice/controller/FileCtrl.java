@@ -65,7 +65,7 @@ import com.moe.sdmis.fileservice.modal.CommonBean;
 import com.moe.sdmis.fileservice.modal.StudentBasicProfile;
 //import com.moe.rad.transfer.modal.SurplusSchoolTeacherDetails;
 //import com.moe.rad.transfer.util.CustomResponse;
-import com.moe.sdmis.fileservice.modal.StudentTempTable;
+//import com.moe.sdmis.fileservice.modal.StudentTempTable;
 import com.moe.sdmis.fileservice.modal.UploadExcelStatus;
 import com.moe.sdmis.fileservice.modal.UploadHistory;
 import com.moe.sdmis.fileservice.repository.UploadExcelStatusRepository;
@@ -119,7 +119,8 @@ public class FileCtrl {
 		if (!cF.exists()) {
 			cF.mkdir();
 		}
-		File oldFile = new File(userBucketPath + File.separator + schoolId + File.separator + "old");
+//		File oldFile = new File(userBucketPath + File.separator + schoolId + File.separator + "old");
+		File oldFile = new File(userBucketPath  + File.separator + "old");
 		if (!oldFile.exists()) {
 			oldFile.mkdir();
 		}
@@ -130,14 +131,18 @@ public class FileCtrl {
 		if (uploadedExcel.exists()) {
 			try {
 				Files.copy(uploadedExcel.toPath(),
-						new File(userBucketPath + File.separator + schoolId + File.separator + "old" + File.separator
+						new File(userBucketPath + File.separator + "old" + File.separator
 								+ schoolId + "_" + ((oldFile.list().length) / 2 + 1) + "." + "xlsm").toPath());
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 			try {
+//				Files.copy(uploadedResponse.toPath(),
+//						new File(userBucketPath + File.separator + schoolId + File.separator + "old" + File.separator
+//								+ schoolId + "_" + ((oldFile.list().length) / 2 + 1) + "." + "txt").toPath());
+				
 				Files.copy(uploadedResponse.toPath(),
-						new File(userBucketPath + File.separator + schoolId + File.separator + "old" + File.separator
+						new File(userBucketPath  + File.separator + "old" + File.separator
 								+ schoolId + "_" + ((oldFile.list().length) / 2 + 1) + "." + "txt").toPath());
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -267,17 +272,35 @@ public class FileCtrl {
 		return ResponseEntity.ok(new FinalResponse(new HashMap<String, Object>(), "1", "Success"));
 	}
 
-	@RequestMapping(value = "/docValidate", method = RequestMethod.POST)
-	public ResponseEntity<?> docValidate(@RequestBody String data, HttpServletRequest request) throws Exception {
+	@RequestMapping(value = "/docProcess", method = RequestMethod.POST)
+	public ResponseEntity<?> docProcess(@RequestBody String data, HttpServletRequest request) throws Exception {
+		
+		System.out.println("Process call");
+		
+		Map<String, Object> map = null;
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			map = new ObjectMapper().readValue(data, Map.class);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return ResponseEntity.ok(fileServiceImpl.docProcess(Integer.parseInt(String.valueOf(map.get("schoolId"))),String.valueOf(map.get("userId")), request.getRemoteAddr() ));
+	}
+	
+	
+//	@RequestMapping(value = "/docValidate", method = RequestMethod.POST)
+//	public ResponseEntity<?> docValidate(@RequestBody String data, HttpServletRequest request) throws Exception {
+		public ResponseEntity<?> docValidate(Map<String, String> map, String request) throws Exception {
 //		System.out.println("Called");
 		DataFormatter df = new DataFormatter();
 //		System.out.println("Before call");
-		Map<String, Object> map = null;
+//		Map<String, Object> map = null;
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		long statusCount = 0;
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
-			map = new ObjectMapper().readValue(data, Map.class);
+//			map = new ObjectMapper().readValue(data, Map.class);
 			File tempFile = new File(userBucketPath + File.separator + map.get("schoolId") + File.separator
 					+ map.get("schoolId") + ".xlsm");
 			FileInputStream excelFile = new FileInputStream(tempFile);
@@ -385,7 +408,7 @@ public class FileCtrl {
 			workbook.write(outFile);
 			outFile.close();
 			List<Map<String, HashMap<String, String>>> finalResponse = fileServiceImpl.uploadData(stdList,
-					String.valueOf(map.get("userId")), request.getRemoteAddr(), String.valueOf(map.get("schoolId")),
+					String.valueOf(map.get("userId")), request, String.valueOf(map.get("schoolId")),
 					sObj, sectionMap, mtongObj, lowerSector, lowerSubSector, higherSector, higherSubSector,adharMach);
 		
 			// temporary comment

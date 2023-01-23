@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.moe.sdmis.fileservice.modal.StudentBasicProfile;
-import com.moe.sdmis.fileservice.modal.StudentTempTable;
+//import com.moe.sdmis.fileservice.modal.StudentTempTable;
 
 public interface StudentBasicProfileRepository extends JpaRepository<StudentBasicProfile, Long>{
 	 @Modifying

@@ -382,7 +382,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 //		System.out.println(stObj.getClassPy());
 		if (stObj.getEnrStatusPy().equalsIgnoreCase("1") || stObj.getEnrStatusPy().equalsIgnoreCase("2")) {
 			
-			if ((stObj.getClassId().equalsIgnoreCase("0") || stObj.getClassId().equalsIgnoreCase("PP1") || stObj.getClassId().equalsIgnoreCase("PP2") || stObj.getClassId().equalsIgnoreCase("PP3"))
+			if ((stObj.getClassId().equalsIgnoreCase("0") || stObj.getClassId().equalsIgnoreCase("PP") || stObj.getClassId().equalsIgnoreCase("PP1") || stObj.getClassId().equalsIgnoreCase("PP2") || stObj.getClassId().equalsIgnoreCase("PP3"))
 					&& ((stObj.getClassPy().equalsIgnoreCase("0") || stObj.getClassPy().equalsIgnoreCase("PP") || stObj.getClassPy().equalsIgnoreCase("PP1") || stObj.getClassPy().equalsIgnoreCase("PP2") || stObj.getClassPy().equalsIgnoreCase("PP3")) || (stObj.getClassPy() ==null || stObj.getClassPy().equalsIgnoreCase(""))) ) {
 				blankAndTrueValidation(mObject, "classPy", stObj.getClassPy());
 			}else if(stObj.getClassId().equalsIgnoreCase("1") ) {
@@ -435,7 +435,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 			}
 			
 			if (stObj.getExamAppearedPyYn().equalsIgnoreCase("1")) {
-				if((stObj.getClassId().equalsIgnoreCase("0") || stObj.getClassId().equalsIgnoreCase("PP1") || stObj.getClassId().equalsIgnoreCase("PP2") || stObj.getClassId().equalsIgnoreCase("PP3"))) {
+				if((stObj.getClassId().equalsIgnoreCase("0") || stObj.getClassId().equalsIgnoreCase("PP") || stObj.getClassId().equalsIgnoreCase("PP1") || stObj.getClassId().equalsIgnoreCase("PP2") || stObj.getClassId().equalsIgnoreCase("PP3"))) {
 					
 					if(stObj.getExamResultPy() ==null || stObj.getExamResultPy().equalsIgnoreCase("")) {
 						blankAndTrueValidation(mObject, "examResultPy", stObj.getExamAppearedPyYn());
@@ -513,7 +513,11 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 
 		numberValidation(mObject, "scrndFrSld", checkNullandTrim(stObj.getScrndFrSld()), 2);
 
+		if(stObj.getScrndFrSld().equalsIgnoreCase("2")) {
+			blankAndTrueValidation(mObject, "sldType", "");
+		}else {
 		numberValidation(mObject, "sldType", checkNullandTrim(stObj.getSldType()), 3);
+		}
 		numberValidation(mObject, "scrndFrAsd", checkNullandTrim(stObj.getScrndFrAsd()), 2);
 		numberValidation(mObject, "scrndFrAdhd", checkNullandTrim(stObj.getScrndFrAdhd()), 2);
 		numberValidation(mObject, "isEcActivity", checkNullandTrim(stObj.getIsEcActivity()), 2);
@@ -656,7 +660,18 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 			ex.printStackTrace();
 		}
 
-		numberValidation(mObject, "appVocPy", checkNullandTrim(stObj.getAppVocPy()), 2);
+//		numberValidation(mObject, "appVocPy", checkNullandTrim(stObj.getAppVocPy()), 2);
+		
+		if(stObj.getClassId() !=null && (stObj.getClassId().equalsIgnoreCase("PP") || stObj.getClassId().equalsIgnoreCase("PP1") || stObj.getClassId().equalsIgnoreCase("PP2") || stObj.getClassId().equalsIgnoreCase("PP3") || (Integer.parseInt((String.valueOf(stObj.getClassId())))>0 && Integer.parseInt((String.valueOf(stObj.getClassId())))<9))) {
+			//			setCellColors(currentRow, currentRow.getCell(53), 53, correctCellStyle);
+			blankAndTrueValidation(mObject, "appVocPy", "0");
+		}else if (stObj.getClassId() !=null &&   (Integer.parseInt(String.valueOf(stObj.getClassId()))>8 && Integer.parseInt(String.valueOf(stObj.getClassId()))<=12)) {
+//			setCellColors(currentRow, currentRow.getCell(53), 53, cellStyle);
+			numberValidation(mObject, "appVocPy", checkNullandTrim(stObj.getAppVocPy()), 2);
+		} else {
+			blankAndFalseValidation(mObject, "appVocPy", stObj.getAppVocPy(),"(Invalid Number/Format)");
+//			setCellColors(currentRow, currentRow.getCell(53), 53, correctCellStyle);
+		}
 
 		return mObject;
 

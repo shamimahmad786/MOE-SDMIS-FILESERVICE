@@ -372,6 +372,7 @@ public class FileCtrl {
 			}
 			HashSet<String> adharMach=new HashSet<String>();
 			HashSet<String> excelAdharMach=new HashSet<String>();
+//			System.out.println("Before while condition");
 			while (iterator.hasNext()) {
 				Row currentRow = iterator.next();
 				Iterator<Cell> cellIterator = currentRow.iterator();
@@ -401,12 +402,15 @@ public class FileCtrl {
 //					}
 				} // if end
 			} // while end
-
+//System.out.println("After wile condition");
 			File uploadedExcel1 = new File(userBucketPath + File.separator + map.get("schoolId") + File.separator
 					+ String.valueOf(map.get("schoolId")) + "_validated." + "xlsm");
 			FileOutputStream outFile = new FileOutputStream(uploadedExcel1);
 			workbook.write(outFile);
 			outFile.close();
+			
+			System.out.println("Before upload status called");
+			
 			List<Map<String, HashMap<String, String>>> finalResponse = fileServiceImpl.uploadData(stdList,
 					String.valueOf(map.get("userId")), request, String.valueOf(map.get("schoolId")),
 					sObj, sectionMap, mtongObj, lowerSector, lowerSubSector, higherSector, higherSubSector,adharMach);

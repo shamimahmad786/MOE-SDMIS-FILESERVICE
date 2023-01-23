@@ -132,6 +132,8 @@ public class FileServiceImpl {
 //			System.out.println(finalList);
 			long statusCount = finalList.stream().filter((e) -> e.get("fs").get("s").equalsIgnoreCase("0")).count();
 
+//			System.out.println("Status count--->"+statusCount);
+			
 			if (statusCount > 0) {
 				statusFlag = "3";
 			}
@@ -154,6 +156,9 @@ public class FileServiceImpl {
 //			statusObj.setUploadedBy(userId);
 //			statusObj.setStatus(statusFlag);
 //			statusObj.setUploadedDateTime(new Date());
+			
+			System.out.println("Before update status--->"+statusFlag);
+			
 			uploadExcelStatusRepository.updateStatusAfterValidation(statusFlag, Integer.parseInt(schoolId));
 
 		} catch (Exception ex) {

@@ -361,7 +361,7 @@ public class TemplateConfiguration3 {
 		}
 
 		stdObj.setAddress(checkNull(df.formatCellValue(currentRow.getCell(11))).replaceAll("\\s+", " "));
-		if (customFxcelValidator.stringValidation(mObject, "address", checkNullandTrim(stdObj.getAddress()),20,150)
+		if (customFxcelValidator.stringValidation(mObject, "address", checkNullandTrim(stdObj.getAddress()),10,150)
 				.get("address").get("s").equalsIgnoreCase("0")) {
 //			System.out.println("In set color---->13");
 			setCellColors(currentRow, currentRow.getCell(11), 11, cellStyle);

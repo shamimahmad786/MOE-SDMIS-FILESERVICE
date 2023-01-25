@@ -48,24 +48,24 @@ public class NativeRepository {
 	    }
 	  
 	  public int updateQueries(String queryData){  
-		  try {
+//		  try {
 	      return  jdbcTemplate.update(queryData);
-		  }catch(Exception ex) {
-			  ex.printStackTrace();
-			  return 0;
-		  }
+//		  }catch(Exception ex) {
+//			  ex.printStackTrace();
+//			  return 0;
+//		  }
 			
 	    }
 	  
 	  public Map<String,Object> insertQueries(String queryData){    
 		  Map<String,Object> mp=new HashMap<String,Object>();
-		  try {
+//		  try {
 	        jdbcTemplate.execute(queryData);
 	        mp.put("status", 1);
-		  }catch(Exception ex) {
-			  ex.printStackTrace();
-			  mp.put("status", 0);
-		  }
+//		  }catch(Exception ex) {
+//			  ex.printStackTrace();
+//			  mp.put("status", 0);
+//		  }
 			return mp;
 	    }
 }

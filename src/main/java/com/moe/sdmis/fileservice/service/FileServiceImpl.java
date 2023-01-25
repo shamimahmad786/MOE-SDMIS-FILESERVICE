@@ -466,7 +466,7 @@ public class FileServiceImpl {
 
 			List<StudentBasicProfileTmp> stdBasicList = studentBasicProfileTmpRepository.saveAll(ltStudentObj);
 			nativeRepository.updateQueries(
-					"update school_master_live set is_profile_active=2 where school_id=" + Integer.parseInt(data));
+					"update stu_pro_enr_details set is_profile_active=2 where school_id=" + Integer.parseInt(data));
 			nativeRepository.insertQueries(
 					"insert into stu_pro_enr_details  (student_id,school_id, class_id, section_id, ac_year_id, roll_no, student_name, gender, student_dob, mother_name, father_name, guardian_name, aadhaar_no, name_as_aadhaar, address, pincode, mobile_no_1, mobile_no_2, email_id, mother_tongue, soc_cat_id, minority_id, is_bpl_yn, aay_bpl_yn, ews_yn, cwsn_yn, impairment_type, nat_ind_yn, oosc_yn, oosc_mainstreamed_yn, admn_number, admn_start_date, admn_end_date, acdemic_stream, enr_status_py, class_py, enr_type_cy, exam_appeared_py_yn, exam_result_py, exam_marks_py, attendence_py, created_by, created_time, profile_status, enrol_status, pro_modified_time, pro_modified_by, enr_modified_by, enr_modified_time, student_code_nat, is_profile_active, inactive_reason, form_status, is_bulk_uploaded, temp_id)\r\n"
 							+ "select nextval('student_id_seq'), school_id, class_id, section_id, ac_year_id, roll_no, student_name, gender, student_dob, mother_name, father_name, guardian_name, aadhaar_no, name_as_aadhaar, address, pincode, mobile_no_1, mobile_no_2, email_id, mother_tongue, soc_cat_id, minority_id, is_bpl_yn, aay_bpl_yn, ews_yn, cwsn_yn, impairment_type, nat_ind_yn, oosc_yn, oosc_mainstreamed_yn, admn_number, admn_start_date, admn_end_date, acdemic_stream, enr_status_py, class_py, enr_type_cy, exam_appeared_py_yn, exam_result_py, exam_marks_py, attendence_py, created_by, created_time, profile_status, enrol_status, pro_modified_time, pro_modified_by, enr_modified_by, enr_modified_time, student_code_nat, is_profile_active, inactive_reason, form_status, is_bulk_uploaded, temp_id\r\n"
@@ -577,7 +577,7 @@ public class FileServiceImpl {
 			uploadExcelStatusRepository.save(staObj);
 			
 			mp.put("status", "1");
-			mp.put("message", "Excel Queued for validation check. Please check the status after half an hour");
+			mp.put("message", "Excel will be process sortly. Please check status after 15 minutes");
 		}catch(Exception ex) {
 			mp.put("status", "0");
 			mp.put("message", "Error in processing. Please contact with admin");

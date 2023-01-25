@@ -234,7 +234,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 		} else {
 			blankAndTrueValidation(mObject, "nameAsAadhaar", "");
 		}
-		stringValidation(mObject, "address", checkNullandTrim(stObj.getAddress()), 20, 150);
+		stringValidation(mObject, "address", checkNullandTrim(stObj.getAddress()), 10, 150);
 		pincodeValidation(mObject, "pincode", checkNullandTrim(stObj.getPincode()));
 		mobileValidation(mObject, "mobileNo_1", checkNullandTrim(stObj.getMobileNo_1()));
 		mobileValidation(mObject, "mobileNo_2", checkNullandTrim(stObj.getMobileNo_2()));
@@ -769,7 +769,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 		hs.put("v", value);
 		if (value != null && (value.length() < minRange || value.length() > maxRange)) {
 			hs.put("s", "0");
-			hs.put("m", "Invalid string length");
+			hs.put("m", "Invalid string length. Minimum lenght will be "+minRange+" and Maximum length will be "+maxRange);
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		} else if (value != null && value.matches(alphanumericRegax) && value != "") {

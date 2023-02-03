@@ -168,7 +168,14 @@ public class FileCtrl {
 //		try {
 		FileInputStream excelFile = new FileInputStream(tempFile);
 		Workbook workbook = new XSSFWorkbook(excelFile);
-		Sheet datatypeSheet = workbook.getSheetAt(1);
+		Sheet datatypeSheet=null;
+		try {
+		datatypeSheet = workbook.getSheetAt(1);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			throw new GenericExceptionHandler("Template sheet deleted or tempared",
+					"100005", request.getRemoteAddr(), userid, schoolId);
+		}
 		Iterator<Row> iterator = datatypeSheet.iterator();
 		Integer totalRows = datatypeSheet.getPhysicalNumberOfRows();
 
@@ -498,10 +505,12 @@ public class FileCtrl {
 		ObjectMapper objectMapper = new ObjectMapper();
         Map<String,String> mp=new HashMap<String,String>();
 		Map<String, Object> map = new ObjectMapper().readValue(data, Map.class);
-		 mp=fileServiceImpl.finalUpdateStudentData(String.valueOf(map.get("udiseCode")));
+		 mp=fileServiceImpl.finalUpdateStudentData(String.valueOf(map.get("udiseCode")),String.valueOf(map.get("userid")));
 		
 		 if(mp.get("status").equalsIgnoreCase("0")) {
 			 throw new GenericExceptionHandler("Somthing Event Wrong and Contact with Administrator", "100006","", "",null);
+		 }else if(mp.get("status").equalsIgnoreCase("6")) {
+			 throw new GenericExceptionHandler("Your data is processing. Please don't click final upload button", "100007","", "",null);
 		 }
 		 
 		return ResponseEntity.ok(mp);

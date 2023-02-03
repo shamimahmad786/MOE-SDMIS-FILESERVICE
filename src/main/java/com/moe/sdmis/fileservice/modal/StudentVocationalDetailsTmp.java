@@ -11,6 +11,8 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -50,7 +52,8 @@ public class StudentVocationalDetailsTmp {
 	@Column(name = "created_by")
 	private String createdBy;
 	
-	@Column(name = "created_time")
+	 @CreationTimestamp
+	 @Column(name = "created_time" , nullable = false, updatable = false)
 	private Date createdTime;
 	
 	@Column(name = "modified_by")

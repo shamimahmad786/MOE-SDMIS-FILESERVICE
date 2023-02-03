@@ -6,8 +6,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.moe.sdmis.fileservice.controller.FileCtrl;
 import com.moe.sdmis.fileservice.modal.UploadExcelStatus;
@@ -19,6 +22,15 @@ public class MoeSdmisFileserviceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MoeSdmisFileserviceApplication.class, args);
 	}
+	
+//	@Bean
+//	public MultipartResolver multipartResolver() {
+//	    CommonsMultipartResolver multipartResolver
+//	      = new CommonsMultipartResolver();
+//	    multipartResolver.setMaxUploadSize(5242880);
+//	    return multipartResolver;
+//	}
+	
 	
 	@Autowired
 	UploadExcelStatusRepository uploadExcelStatusRepository;
@@ -33,11 +45,12 @@ public class MoeSdmisFileserviceApplication {
         if(schoolObj !=null) {
         uploadExcelStatusRepository.updateStatusForProcess(Integer.parseInt(String.valueOf(schoolObj.getSchoolId())));
         schoolMap.put("schoolId", String.valueOf(schoolObj.getSchoolId()));
-        schoolMap.put("userId", "System");
-//        System.out.println("SchoolId for validation--->"+schoolObj.getSchoolId());
+        schoolMap.put("userId", schoolObj.getUploadedBy());
+        System.out.println("SchoolId for validation--->"+schoolObj.getSchoolId());
         fileCtrl.docValidate(schoolMap, "10.247.141.227");
         }else {
         	System.out.println("Validation completed");
         }
     }
+	
 }

@@ -24,6 +24,7 @@ public class CustomFxcelValidator {
 
 //	String numberRegex ="^\\d+\\.\\d+$";
 	String numberRegex = "^[0-9]{0,12}$";
+//	String numberRegex ="\\d{0,12}(\\.\\d{1,2})?";
 //	String alphanumericRegax = "^[a-zA-Z0-9-,./]([\\w-,./]*[a-zA-Z0-9,.-])?$";
 	String alphanumericRegax = "^[\\-,-./a-zA-Z0-9 ]+$";
 
@@ -234,7 +235,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 		} else {
 			blankAndTrueValidation(mObject, "nameAsAadhaar", "");
 		}
-		stringValidation(mObject, "address", checkNullandTrim(stObj.getAddress()), 10, 150);
+		stringValidation(mObject, "address", checkNullandTrim(stObj.getAddress()), 5, 150);
 		pincodeValidation(mObject, "pincode", checkNullandTrim(stObj.getPincode()));
 		mobileValidation(mObject, "mobileNo_1", checkNullandTrim(stObj.getMobileNo_1()));
 		mobileValidation(mObject, "mobileNo_2", checkNullandTrim(stObj.getMobileNo_2()));
@@ -247,10 +248,10 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 					&& mTongObj.get(Integer.parseInt(String.valueOf(stObj.getMotherTongue())))) {
 				blankAndTrueValidation(mObject, "motherTongue", checkNullandTrim(stObj.getMotherTongue()));
 			} else {
-				blankAndFalseValidation(mObject, "motherTongue", checkNullandTrim(stObj.getMotherTongue()),"");
+				blankAndFalseValidation(mObject, "motherTongue", checkNullandTrim(stObj.getMotherTongue()),"(Invalid Mother Tongue)");
 			}
 		} catch (Exception ex) {
-			blankAndFalseValidation(mObject, "motherTongue", checkNullandTrim(stObj.getMotherTongue()),"");
+			blankAndFalseValidation(mObject, "motherTongue", checkNullandTrim(stObj.getMotherTongue()),"(Invalid Mother Tongue)");
 			ex.printStackTrace();
 		}
 		numberValidation(mObject, "socCatId", checkNullandTrim(stObj.getSocCatId()), 4);
@@ -505,7 +506,8 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 
 		if (sObj.getRowValue().get(0).get("sch_mgmt_center_id") !=null && (Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("sch_mgmt_center_id"))) != 5 && Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("sch_mgmt_center_id"))) != 8)) {
 		if (checkNull(stObj.getCwsnYn()).equalsIgnoreCase("1")) {
-			numberValidation(mObject, "facProvidedCwsn", checkNullandTrim(stObj.getFacProvidedCwsn()), 12);
+			blankAndTrueValidation(mObject, "facProvidedCwsn",  checkNullandTrim(stObj.getFacProvidedCwsn()));
+//			numberValidation(mObject, "facProvidedCwsn", checkNullandTrim(stObj.getFacProvidedCwsn()), 12);
 		} else {
 			blankAndTrueValidation(mObject, "facProvidedCwsn", "");
 		}
@@ -607,7 +609,8 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 
 
 		try {
-			
+			System.out.println("lowerSubSector--->"+lowerSubSector);
+			System.out.println("higherSubSector--->"+higherSubSector);
 			
 			if(stObj.getVocYn() !=null && stObj.getVocYn() !="" && stObj.getVocYn().equalsIgnoreCase("1") && Integer.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("is_vocational_active"))))==1) {
 			if (sObj.getRowValue().get(0).get("is_vocational_active") != null && sObj.getRowValue().get(0).get("vocational_grade") !=null
@@ -639,7 +642,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 							|| checkNull(stObj.getClassId()).equalsIgnoreCase("12"))
 					&& stObj.getJobRole() != null &&  stObj.getJobRole() != "") {
 				try {
-//					System.out.println("Job-2--"+stObj.getJobRole());
+					System.out.println("Job-2--"+stObj.getJobRole());
 				if (higherSubSector.get(String.valueOf(checkNull(stObj.getJobRole())))) {
 					blankAndTrueValidation(mObject, "jobRole", stObj.getJobRole());
 				} else {
@@ -661,7 +664,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 		}
 
 //		numberValidation(mObject, "appVocPy", checkNullandTrim(stObj.getAppVocPy()), 2);
-		
+		try {
 		if(stObj.getClassId() !=null && (stObj.getClassId().equalsIgnoreCase("PP") || stObj.getClassId().equalsIgnoreCase("PP1") || stObj.getClassId().equalsIgnoreCase("PP2") || stObj.getClassId().equalsIgnoreCase("PP3") || (Integer.parseInt((String.valueOf(stObj.getClassId())))>0 && Integer.parseInt((String.valueOf(stObj.getClassId())))<9))) {
 			//			setCellColors(currentRow, currentRow.getCell(53), 53, correctCellStyle);
 			blankAndTrueValidation(mObject, "appVocPy", "0");
@@ -671,6 +674,9 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 		} else {
 			blankAndFalseValidation(mObject, "appVocPy", stObj.getAppVocPy(),"(Invalid Number/Format)");
 //			setCellColors(currentRow, currentRow.getCell(53), 53, correctCellStyle);
+		}
+		}catch(Exception ex) {
+			ex.printStackTrace();
 		}
 
 		return mObject;
@@ -710,7 +716,15 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 
 		if (value != "" && value != null && !value.equalsIgnoreCase("PP1") && !value.equalsIgnoreCase("PP2")
 				&& !value.equalsIgnoreCase("PP3") && value.matches(numberRegex)) {
+			try {
 			originalValue = Long.parseLong(value);
+			}catch(Exception ex) {
+				try {
+			originalValue = Math.round(Float.parseFloat(value));
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 
 		if (value != null && value.matches(numberRegex) && value != "" && originalValue <= valueRange) {
@@ -1028,13 +1042,15 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 
 //		System.out.println("value-->"+value);
 //		System.out.println(value.matches(adharRegex));
-if(value != null &&  (value.length()<3 || value.length()>40)) {
-	hs.put("s", "0");
-	hs.put("m", "(Min length should be 3 and Max length will be 40)");
-	fs.put("s", "0");
-	mp.put("fs", fs);
-}
-else	if (value != null && value.matches(admisionnumericRegax) && value != "") {
+//if(value != null &&  (value.length()<3 || value.length()>40)) {
+//	hs.put("s", "0");
+//	hs.put("m", "(Min length should be 3 and Max length will be 40)");
+//	fs.put("s", "0");
+//	mp.put("fs", fs);
+//}
+//else	
+	
+	if (value != null && value.matches(admisionnumericRegax) && value != "") {
 			hs.put("s", "1");
 		}else if(value==null || value =="") {
 			hs.put("s", "0");
@@ -1105,102 +1121,99 @@ else	if (value != null && value.matches(admisionnumericRegax) && value != "") {
 	}
 
 	public static boolean StudentAgeClassValidation(Integer grade, Integer age) {
-//		System.out.println("grad---->"+grade +"age---->"+age);
-		boolean status = false;
-		if (grade != null && age != null) {
-			switch (grade) {
-			case -3:
-//				System.out.println("PP3 age---->"+age);
-				if (age >= 3 && age <= 5) {
-					status = true;
-				}
-				break;
-			case -2:
-//				System.out.println("PP2 age---->"+age);
-				if (age >= 3 && age <= 6) {
-					status = true;
-				}
-				break;
-			case -1:
-//				System.out.println("PP1 age---->"+age);
-				if (age >= 4 && age <= 8) {
-					status = true;
-				}
-				break;
-			case 1:
-				if (age >= 5 && age <= 12) {
-					status = true;
-				}
-				break;
-
-			case 2:
-				if (age >= 5 && age <= 13) {
-					status = true;
-				}
-				break;
-
-			case 3:
-				if (age >= 6 && age <= 14) {
-					status = true;
-				}
-				break;
-
-			case 4:
-				if (age >= 7 && age <= 15) {
-					status = true;
-				}
-				break;
-
-			case 5:
-				if (age >= 8 && age <= 16) {
-					status = true;
-				}
-				break;
-
-			case 6:
-				if (age >= 9 && age <= 17) {
-					status = true;
-				}
-				break;
-
-			case 7:
-				if (age >= 10 && age <= 18) {
-					status = true;
-				}
-				break;
-
-			case 8:
-				if (age >= 11 && age <= 19) {
-					status = true;
-				}
-				break;
-
-			case 9:
-				if (age >= 12 && age <= 20) {
-					status = true;
-				}
-				break;
-
-			case 10:
-				if (age >= 13) {
-					status = true;
-				}
-				break;
-
-			case 11:
-				if (age >= 14) {
-					status = true;
-				}
-				break;
-
-			case 12:
-				if (age >= 15) {
-					status = true;
-				}
-				break;
-			}
-		}
-		return status;
+		  boolean status = false;
+	        if(grade != null) {
+	            switch(grade) {
+	            case -3:
+	                if(age >= 2 && age <= 5) {
+	                    status = true;
+	                }
+	                break;
+	            case -2:
+	                if(age >= 2 && age <= 6) {
+	                    status = true;
+	                }
+	                break;
+	            case -1:
+	                if(age >= 3 && age <= 8) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 1:
+	                if(age >= 4 && age <= 12) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 2:
+	                if(age >= 5 && age <= 13) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 3:
+	                if(age >= 6 && age <= 14) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 4:
+	                if(age >= 7 && age <= 15) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 5:
+	                if(age >= 8 && age <= 16) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 6:
+	                if(age >= 9 && age <= 17) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 7:
+	                if(age >= 10 && age <= 18) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 8:
+	                if(age >= 11 && age <= 19) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 9:
+	                if(age >= 12 && age <= 20) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 10:
+	                if(age >= 13 && age <= 25) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 11:
+	                if(age >= 14 && age <= 25) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 12:
+	                if(age >= 15 && age <= 25) {
+	                    status = true;
+	                }
+	                break;
+	            }
+	        }
+	        return status;
 	}
 
 }

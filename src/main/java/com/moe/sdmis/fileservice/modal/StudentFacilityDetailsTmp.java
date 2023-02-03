@@ -11,6 +11,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
@@ -109,7 +110,8 @@ public class StudentFacilityDetailsTmp {
 	@Column(name = "created_by")
 	private String createdBy;
 	
-	@Column(name = "created_time")
+	 @CreationTimestamp
+	 @Column(name = "created_time" , nullable = false, updatable = false)
 	private Date createdTime;
 	
 	@Column(name = "modified_by")

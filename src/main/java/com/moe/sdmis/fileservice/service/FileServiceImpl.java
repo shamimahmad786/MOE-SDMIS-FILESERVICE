@@ -26,6 +26,8 @@ import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.transaction.Transactional;
+
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -170,8 +172,10 @@ public class FileServiceImpl {
 
 	StaticReportBean schoolObj = null;
 
-	public Map<String, String> finalUpdateStudentData(String data) throws Exception {
+//	@Transactional
+	public Map<String, String> finalUpdateStudentData(String data,String userid) throws Exception {
 //		System.out.println("called final upload");
+		String status;
 		ObjectMapper objectMapper = new ObjectMapper();
 		Stream<String> sObj = Files
 				.lines(Paths.get(userBucketPath + File.separator + data + File.separator + data + "." + "txt"));
@@ -234,6 +238,23 @@ public class FileServiceImpl {
 			ex.printStackTrace();
 		}
 
+		try {
+			Optional<UploadExcelStatus> obj=	getUploadStatus(Integer.parseInt(data));
+			status=obj.get().getStatus();
+			
+			if(!status.equalsIgnoreCase("4")) {
+				resObj.put("status", "6");
+				return resObj;
+			}else if(status.equalsIgnoreCase("4")) {
+				nativeRepository.updateQueries(
+						"update moe_sdmis_uploadexcelstatus set status=6 where school_id=" + Integer.parseInt(data));
+			}
+			
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		
 		LinkedList<StudentBasicProfileTmp> ltStudentObj = new LinkedList<StudentBasicProfileTmp>();
 		LinkedList<StudentFacilityDetailsTmp> ltStudentFacilityObj = new LinkedList<StudentFacilityDetailsTmp>();
 		try {
@@ -300,7 +321,7 @@ public class FileServiceImpl {
 				studentPojo.setSocCatId(handleInteger(nullCheck(studentObj.get("socCatId")).get("v")));
 				studentPojo.setMinorityId(handleInteger(nullCheck(studentObj.get("minorityId")).get("v")));
 				studentPojo.setIsBplYN(handleInteger(nullCheck(studentObj.get("isBplYn")).get("v")));
-
+				studentPojo.setCreatedBy(userid);
 				if (studentPojo.getIsBplYN() == 2) {
 					studentPojo.setAayBplYN(9);
 				} else {
@@ -385,6 +406,7 @@ public class FileServiceImpl {
 
 //					try {
 				stdfacility.setStudentBasicProfileTmp(studentPojo);
+				stdfacility.setCreatedBy(userid);
 //	        		stdfacility.setStudentId(1L);
 				stdfacility.setSchoolId(Integer.parseInt(data));
 				stdfacility.setFacProvided(jsonCreation(nullCheck(studentObj.get("textBoxFacProvided")).get("v"),
@@ -436,6 +458,7 @@ public class FileServiceImpl {
 				StudentVocationalDetailsTmp vocObj = new StudentVocationalDetailsTmp();
 //					try {
 				vocObj.setStudentBasicProfileTmp(studentPojo);
+				vocObj.setCreatedBy(userid);
 				vocObj.setSchoolId(Integer.parseInt(data));
 				vocObj.setVocExposure(handleInteger(nullCheck(studentObj.get("vocYn")).get("v")));
 				vocObj.setSector(handleInteger(nullCheck(studentObj.get("sector")).get("v")));
@@ -465,8 +488,8 @@ public class FileServiceImpl {
 			}
 
 			List<StudentBasicProfileTmp> stdBasicList = studentBasicProfileTmpRepository.saveAll(ltStudentObj);
-			nativeRepository.updateQueries(
-					"update stu_pro_enr_details set is_profile_active=2 where school_id=" + Integer.parseInt(data));
+//			nativeRepository.updateQueries(
+//					"update stu_pro_enr_details set is_profile_active=2 where school_id=" + Integer.parseInt(data));
 			nativeRepository.insertQueries(
 					"insert into stu_pro_enr_details  (student_id,school_id, class_id, section_id, ac_year_id, roll_no, student_name, gender, student_dob, mother_name, father_name, guardian_name, aadhaar_no, name_as_aadhaar, address, pincode, mobile_no_1, mobile_no_2, email_id, mother_tongue, soc_cat_id, minority_id, is_bpl_yn, aay_bpl_yn, ews_yn, cwsn_yn, impairment_type, nat_ind_yn, oosc_yn, oosc_mainstreamed_yn, admn_number, admn_start_date, admn_end_date, acdemic_stream, enr_status_py, class_py, enr_type_cy, exam_appeared_py_yn, exam_result_py, exam_marks_py, attendence_py, created_by, created_time, profile_status, enrol_status, pro_modified_time, pro_modified_by, enr_modified_by, enr_modified_time, student_code_nat, is_profile_active, inactive_reason, form_status, is_bulk_uploaded, temp_id)\r\n"
 							+ "select nextval('student_id_seq'), school_id, class_id, section_id, ac_year_id, roll_no, student_name, gender, student_dob, mother_name, father_name, guardian_name, aadhaar_no, name_as_aadhaar, address, pincode, mobile_no_1, mobile_no_2, email_id, mother_tongue, soc_cat_id, minority_id, is_bpl_yn, aay_bpl_yn, ews_yn, cwsn_yn, impairment_type, nat_ind_yn, oosc_yn, oosc_mainstreamed_yn, admn_number, admn_start_date, admn_end_date, acdemic_stream, enr_status_py, class_py, enr_type_cy, exam_appeared_py_yn, exam_result_py, exam_marks_py, attendence_py, created_by, created_time, profile_status, enrol_status, pro_modified_time, pro_modified_by, enr_modified_by, enr_modified_time, student_code_nat, is_profile_active, inactive_reason, form_status, is_bulk_uploaded, temp_id\r\n"
@@ -577,7 +600,7 @@ public class FileServiceImpl {
 			uploadExcelStatusRepository.save(staObj);
 			
 			mp.put("status", "1");
-			mp.put("message", "Excel will be process sortly. Please check status after 15 minutes");
+			mp.put("message", "Excel will be process shortly. Please check status after 15 minutes");
 		}catch(Exception ex) {
 			mp.put("status", "0");
 			mp.put("message", "Error in processing. Please contact with admin");

@@ -117,7 +117,7 @@ public class GeneralUtility {
 	        typeMapping =  Collections.unmodifiableMap(aMap);
 	    }
 	 
-	 public static final List<String> INVALID_MOBILE_NUMBERS = new ArrayList<>(Arrays.asList("9999999999", "9000000000", "6000000000", "7000000000", "8000000000", "9876543210",
+	 public static final List<String> INVALID_MOBILE_NUMBERS = new ArrayList<>(Arrays.asList("9000000000", "6000000000", "7000000000", "8000000000", "9876543210",
 	            "9876543210", "9100000000", "9800000000", "9700000000", "9898989898", "9111111111", "9900000000", "9511111111",
 	            "9812345678", "9400000000", "9500000000", "7800000000", "6500000000", "6111111111", "9123456789", "9000000000", "8888888888", "7777777777", "6666666666")) ;
 	 

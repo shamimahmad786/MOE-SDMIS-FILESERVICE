@@ -15,6 +15,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
@@ -140,7 +141,9 @@ public class StudentBasicProfileTmp {
     @Column(name = "created_by")
     private String createdBy;
     
-    @Column(name = "created_time")
+   
+    @CreationTimestamp
+    @Column(name = "created_time" , nullable = false, updatable = false)
     private Date createdTime;
     
     @Column(name = "pro_modified_by")
@@ -223,11 +226,11 @@ public class StudentBasicProfileTmp {
     @Column(name = "enr_modified_time")
     private Date enrModifiedTime;
     
-	@Column(name = "is_fac_prov")
-	private Integer isFacProv;
-	
-	@Column(name = "is_cwsn_fac_prov")
-	private Integer isCwsnFacProv;
+//	@Column(name = "is_fac_prov")
+//	private Integer isFacProv;
+//	
+//	@Column(name = "is_cwsn_fac_prov")
+//	private Integer isCwsnFacProv;
     
     
     

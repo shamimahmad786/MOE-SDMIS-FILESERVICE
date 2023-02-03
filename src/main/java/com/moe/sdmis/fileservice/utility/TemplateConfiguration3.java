@@ -361,7 +361,7 @@ public class TemplateConfiguration3 {
 		}
 
 		stdObj.setAddress(checkNull(df.formatCellValue(currentRow.getCell(11))).replaceAll("\\s+", " "));
-		if (customFxcelValidator.stringValidation(mObject, "address", checkNullandTrim(stdObj.getAddress()),10,150)
+		if (customFxcelValidator.stringValidation(mObject, "address", checkNullandTrim(stdObj.getAddress()),5,150)
 				.get("address").get("s").equalsIgnoreCase("0")) {
 //			System.out.println("In set color---->13");
 			setCellColors(currentRow, currentRow.getCell(11), 11, cellStyle);
@@ -794,7 +794,7 @@ public class TemplateConfiguration3 {
 		}
 
 		
-		if(stdObj.getEnrStatusPy().equalsIgnoreCase("4") || stdObj.getEnrStatusPy().equalsIgnoreCase("3")) {
+		if(stdObj.getClassId() !=null && (stdObj.getEnrStatusPy().equalsIgnoreCase("4") || stdObj.getEnrStatusPy().equalsIgnoreCase("3") || stdObj.getClassId().equalsIgnoreCase("PP") || stdObj.getClassId().equalsIgnoreCase("PP1") || stdObj.getClassId().equalsIgnoreCase("PP2") || stdObj.getClassId().equalsIgnoreCase("PP3"))) {
 			stdObj.setClassPy("");
 			checkCellAndCreate(currentRow,31,"");
 		}else {
@@ -881,11 +881,12 @@ public class TemplateConfiguration3 {
 				.numberValidation(mObject, "examAppearedPyYn", checkNullandTrim(stdObj.getExamAppearedPyYn()), 2)
 				.get("examAppearedPyYn").get("s").equalsIgnoreCase("0")) {
 
-//			currentRow.getCell(32).setCellStyle(cellStyle);
 			setCellColors(currentRow, currentRow.getCell(33), 33, cellStyle);
-		} else {
-			setCellColors(currentRow, currentRow.getCell(33), 33, correctCellStyle);
-		}
+		} 
+			
+//			else {
+//			setCellColors(currentRow, currentRow.getCell(33), 33, correctCellStyle);
+//		}
 		}else {
 			checkCellAndCreate(currentRow,33,"");
 			setCellColors(currentRow, currentRow.getCell(33), 33, correctCellStyle);
@@ -893,12 +894,16 @@ public class TemplateConfiguration3 {
 			
 		}
 
+		
+		
+		
 		if(stdObj.getEnrStatusPy() !=null &&  (stdObj.getEnrStatusPy().equalsIgnoreCase("3") || stdObj.getEnrStatusPy().equalsIgnoreCase("4")) ) {
 		stdObj.setExamResultPy("0");
 		checkCellAndCreate(currentRow,34,"0");
 		}else {
 			stdObj.setExamResultPy(df.formatCellValue(currentRow.getCell(34)));
 		}
+		if (stdObj.getExamAppearedPyYn().equalsIgnoreCase("1")) {
 		if(stdObj.getEnrStatusPy() !=null && (stdObj.getEnrStatusPy().equalsIgnoreCase("1") || stdObj.getEnrStatusPy().equalsIgnoreCase("2")) ) {
 	if((stdObj.getClassId().equalsIgnoreCase("0") || stdObj.getClassId().equalsIgnoreCase("PP1") || stdObj.getClassId().equalsIgnoreCase("PP2") || stdObj.getClassId().equalsIgnoreCase("PP3"))) {
 		
@@ -926,6 +931,11 @@ public class TemplateConfiguration3 {
 //			currentRow.getCell(34).setCellValue("");
 		
 		}
+		
+	}else {
+		checkCellAndCreate(currentRow,34,"");
+		setCellColors(currentRow, currentRow.getCell(34), 34, correctCellStyle);
+	}
 
 		if(stdObj.getEnrStatusPy() !=null && (stdObj.getEnrStatusPy().equalsIgnoreCase("1") || stdObj.getEnrStatusPy().equalsIgnoreCase("2")) ) {
 			if(stdObj.getClassPy() !=null &&  (stdObj.getEnrStatusPy().equalsIgnoreCase("3") || stdObj.getEnrStatusPy().equalsIgnoreCase("4")) ) {
@@ -939,6 +949,8 @@ public class TemplateConfiguration3 {
 					ex.printStackTrace();
 				}
 			}
+			
+			if (stdObj.getExamAppearedPyYn().equalsIgnoreCase("1")) {	
 		if((stdObj.getClassId().equalsIgnoreCase("0") || stdObj.getClassId().equalsIgnoreCase("PP1") || stdObj.getClassId().equalsIgnoreCase("PP2") || stdObj.getClassId().equalsIgnoreCase("PP3"))) {
 			
 			if(stdObj.getExamMarksPy()==null || stdObj.getExamMarksPy().equalsIgnoreCase("")) {
@@ -959,13 +971,18 @@ public class TemplateConfiguration3 {
 		} else {
 			setCellColors(currentRow, currentRow.getCell(35), 35, correctCellStyle);
 		}
-		
+		}
 		}else {
 			checkCellAndCreate(currentRow,35,"");
 			setCellColors(currentRow, currentRow.getCell(35), 35, correctCellStyle);
 //			currentRow.getCell(35).setCellValue("");
 			
 		}
+		
+		
+		
+		
+		
 
 		if(stdObj.getEnrStatusPy() !=null &&  (stdObj.getEnrStatusPy().equalsIgnoreCase("3") || stdObj.getEnrStatusPy().equalsIgnoreCase("4")) ) {
 		stdObj.setAttendencePy("0");
@@ -1162,14 +1179,13 @@ public class TemplateConfiguration3 {
 		
 		
 		if (checkNull(stdObj.getCwsnYn()).equalsIgnoreCase("1") && (Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("sch_mgmt_center_id"))) != 5 && Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("sch_mgmt_center_id"))) != 8)) {
-			if (customFxcelValidator
-					.numberValidation(mObject, "facProvidedCwsn", checkNullandTrim(stdObj.getFacProvidedCwsn()), 12)
-					.get("facProvidedCwsn").get("s").equalsIgnoreCase("0")) {
-//				currentRow.getCell(43).setCellStyle(cellStyle);
-				setCellColors(currentRow, currentRow.getCell(44), 44, cellStyle);
-			} else {
+//			if (customFxcelValidator
+//					.numberValidation(mObject, "facProvidedCwsn", checkNullandTrim(stdObj.getFacProvidedCwsn()), 12)
+//					.get("facProvidedCwsn").get("s").equalsIgnoreCase("0")) {
+//				setCellColors(currentRow, currentRow.getCell(44), 44, cellStyle);
+//			} else {
 				setCellColors(currentRow, currentRow.getCell(44), 44, correctCellStyle);
-			}
+//			}
 		}else if(checkNull(stdObj.getCwsnYn()).equalsIgnoreCase("2")) {
 			checkCellAndCreate(currentRow,44,"");
 //			setCellColors(currentRow, currentRow.getCell(44), 44, correctCellStyle);
@@ -1443,13 +1459,18 @@ if(stdObj.getVocYn().equalsIgnoreCase("1")) {
 		
 		
 		
-
-		if (stdObj.getClassId() !=null && df.formatCellValue(currentRow.getCell(53)) == null || df.formatCellValue(currentRow.getCell(53)) == "" || (stdObj.getClassId().equalsIgnoreCase("PP") || stdObj.getClassId().equalsIgnoreCase("PP1") || stdObj.getClassId().equalsIgnoreCase("PP2") || stdObj.getClassId().equalsIgnoreCase("PP3") || (Integer.parseInt((String.valueOf(stdObj.getClassId())))>0 && Integer.parseInt((String.valueOf(stdObj.getClassId())))>9))) {
+try {
+		if (stdObj.getClassId() !=null && df.formatCellValue(currentRow.getCell(53)) == null || df.formatCellValue(currentRow.getCell(53)) == "" || (stdObj.getClassId().equalsIgnoreCase("PP") || stdObj.getClassId().equalsIgnoreCase("PP1") || stdObj.getClassId().equalsIgnoreCase("PP2") || stdObj.getClassId().equalsIgnoreCase("PP3") || (Integer.parseInt((String.valueOf(stdObj.getClassId())))>0 && Integer.parseInt((String.valueOf(stdObj.getClassId())))<9))) {
 			stdObj.setAppVocPy("0");
 			checkCellAndCreate(currentRow,53,"0");
 		} else {
 			stdObj.setAppVocPy(df.formatCellValue(currentRow.getCell(53)));
 		}
+}catch(Exception ex) {
+	stdObj.setAppVocPy(df.formatCellValue(currentRow.getCell(53)));
+	ex.printStackTrace();
+}	
+		try {
 		
 		if(stdObj.getClassId() !=null && df.formatCellValue(currentRow.getCell(53)) == null || df.formatCellValue(currentRow.getCell(53)) == "" || (stdObj.getClassId().equalsIgnoreCase("PP") || stdObj.getClassId().equalsIgnoreCase("PP1") || stdObj.getClassId().equalsIgnoreCase("PP2") || stdObj.getClassId().equalsIgnoreCase("PP3") || (Integer.parseInt((String.valueOf(stdObj.getClassId())))>0 && Integer.parseInt((String.valueOf(stdObj.getClassId())))<9))) {
 			setCellColors(currentRow, currentRow.getCell(53), 53, correctCellStyle);
@@ -1458,6 +1479,10 @@ if(stdObj.getVocYn().equalsIgnoreCase("1")) {
 			setCellColors(currentRow, currentRow.getCell(53), 53, cellStyle);
 		} else {
 			setCellColors(currentRow, currentRow.getCell(53), 53, correctCellStyle);
+		}
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			
 		}
 
 		return stdObj;
@@ -1515,99 +1540,99 @@ if(stdObj.getVocYn().equalsIgnoreCase("1")) {
 
 
 	public static boolean StudentAgeClassValidation(Integer grade, Integer age) {
-		boolean status = false;
-		if (grade != null && age != null) {
-			switch (grade) {
-			case -3:
-				if (age >= 3 && age <= 5) {
-					status = true;
-				}
-				break;
-			case -2:
-				if (age >= 3 && age <= 6) {
-					status = true;
-				}
-				break;
-			case -1:
-				if (age >= 4 && age <= 8) {
-					status = true;
-				}
-				break;
-
-			case 1:
-				if (age >= 5 && age <= 12) {
-					status = true;
-				}
-				break;
-
-			case 2:
-				if (age >= 5 && age <= 13) {
-					status = true;
-				}
-				break;
-
-			case 3:
-				if (age >= 6 && age <= 14) {
-					status = true;
-				}
-				break;
-
-			case 4:
-				if (age >= 7 && age <= 15) {
-					status = true;
-				}
-				break;
-
-			case 5:
-				if (age >= 8 && age <= 16) {
-					status = true;
-				}
-				break;
-
-			case 6:
-				if (age >= 9 && age <= 17) {
-					status = true;
-				}
-				break;
-
-			case 7:
-				if (age >= 10 && age <= 18) {
-					status = true;
-				}
-				break;
-
-			case 8:
-				if (age >= 11 && age <= 19) {
-					status = true;
-				}
-				break;
-
-			case 9:
-				if (age >= 12 && age <= 20) {
-					status = true;
-				}
-				break;
-
-			case 10:
-				if (age >= 13) {
-					status = true;
-				}
-				break;
-
-			case 11:
-				if (age >= 14) {
-					status = true;
-				}
-				break;
-
-			case 12:
-				if (age >= 15) {
-					status = true;
-				}
-				break;
-			}
-		}
-		return status;
+		  boolean status = false;
+	        if(grade != null) {
+	            switch(grade) {
+	            case -3:
+	                if(age >= 2 && age <= 5) {
+	                    status = true;
+	                }
+	                break;
+	            case -2:
+	                if(age >= 2 && age <= 6) {
+	                    status = true;
+	                }
+	                break;
+	            case -1:
+	                if(age >= 3 && age <= 8) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 1:
+	                if(age >= 4 && age <= 12) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 2:
+	                if(age >= 5 && age <= 13) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 3:
+	                if(age >= 6 && age <= 14) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 4:
+	                if(age >= 7 && age <= 15) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 5:
+	                if(age >= 8 && age <= 16) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 6:
+	                if(age >= 9 && age <= 17) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 7:
+	                if(age >= 10 && age <= 18) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 8:
+	                if(age >= 11 && age <= 19) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 9:
+	                if(age >= 12 && age <= 20) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 10:
+	                if(age >= 13 && age <= 25) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 11:
+	                if(age >= 14 && age <= 25) {
+	                    status = true;
+	                }
+	                break;
+	                 
+	            case 12:
+	                if(age >= 15 && age <= 25) {
+	                    status = true;
+	                }
+	                break;
+	            }
+	        }
+	        return status;
 	}
 	
 	public void checkCellAndCreate(Row currentRow,Integer cellNumber,String value){

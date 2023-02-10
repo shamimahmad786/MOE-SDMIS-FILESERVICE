@@ -705,18 +705,31 @@ public class FileServiceImpl {
 //		hs.put(5, 2);
 //		hs.put(6, 2);
 //		hs.put(7, 2);
-		if (freeText != null && uniform != null) {
-
+//		if (freeText != null && uniform != null) {
+//
+//			intArray = new Integer[] { 1, 2 };
+////			hs.put(1, Integer.parseInt(freeText));
+////			hs.put(2,  Integer.parseInt(uniform));
+//		} else if (freeText != null) {
+//			intArray = new Integer[] { 1 };
+////			hs.put(1, Integer.parseInt(freeText));
+//		} else if (uniform != null) {
+//			intArray = new Integer[] { 2 };
+////			hs.put(2, Integer.parseInt(uniform));
+//		}
+		
+		
+		if (freeText != null && uniform != null && freeText.equalsIgnoreCase("1") && uniform.equalsIgnoreCase("1")) {
 			intArray = new Integer[] { 1, 2 };
-//			hs.put(1, Integer.parseInt(freeText));
-//			hs.put(2,  Integer.parseInt(uniform));
-		} else if (freeText != null) {
+		} else if (freeText != null && freeText.equalsIgnoreCase("1")) {
 			intArray = new Integer[] { 1 };
-//			hs.put(1, Integer.parseInt(freeText));
-		} else if (uniform != null) {
+		} else if (uniform != null  && uniform.equalsIgnoreCase("1")) {
 			intArray = new Integer[] { 2 };
-//			hs.put(2, Integer.parseInt(uniform));
 		}
+		
+		
+		
+		
 //		
 //		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 //		String json = ow.writeValueAsString(hs);

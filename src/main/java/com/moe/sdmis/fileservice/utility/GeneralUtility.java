@@ -160,7 +160,7 @@ public class GeneralUtility {
 	        aMap.put("G",7);
 	        aMap.put("H",8);
 	        aMap.put("I",9);
-	        aMap.put("F",10);
+	        aMap.put("J",10);
 	        aMap.put("K",11);
 	        aMap.put("L",12);
 	        aMap.put("M",13);

@@ -62,4 +62,102 @@ public class StudentVocationalDetailsTmp {
 	@Column(name = "modified_time")
 	private Date modifiedTime;
 
+	public Long getTempId() {
+		return tempId;
+	}
+
+	public void setTempId(Long tempId) {
+		this.tempId = tempId;
+	}
+
+	public StudentBasicProfileTmp getStudentBasicProfileTmp() {
+		return studentBasicProfileTmp;
+	}
+
+	public void setStudentBasicProfileTmp(StudentBasicProfileTmp studentBasicProfileTmp) {
+		this.studentBasicProfileTmp = studentBasicProfileTmp;
+	}
+
+	public Integer getSchoolId() {
+		return schoolId;
+	}
+
+	public void setSchoolId(Integer schoolId) {
+		this.schoolId = schoolId;
+	}
+
+	public Integer getVocExposure() {
+		return vocExposure;
+	}
+
+	public void setVocExposure(Integer vocExposure) {
+		this.vocExposure = vocExposure;
+	}
+
+	public Integer getSector() {
+		return sector;
+	}
+
+	public void setSector(Integer sector) {
+		this.sector = sector;
+	}
+
+	public Integer getJobRole() {
+		return jobRole;
+	}
+
+	public void setJobRole(Integer jobRole) {
+		this.jobRole = jobRole;
+	}
+
+	public Integer getAppVocPy() {
+		return appVocPy;
+	}
+
+	public void setAppVocPy(Integer appVocPy) {
+		this.appVocPy = appVocPy;
+	}
+
+	public Integer getMarksObt() {
+		return marksObt;
+	}
+
+	public void setMarksObt(Integer marksObt) {
+		this.marksObt = marksObt;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Date getModifiedTime() {
+		return modifiedTime;
+	}
+
+	public void setModifiedTime(Date modifiedTime) {
+		this.modifiedTime = modifiedTime;
+	}
+	
+	
+
 }

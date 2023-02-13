@@ -388,8 +388,8 @@ public class FileServiceImpl {
 							.setExamAppearedPyYn(handleInteger(nullCheck(studentObj.get("examAppearedPyYn")).get("v")));
 				}
 
-				if (studentPojo.getEnrStatusPY() == 3 || studentPojo.getEnrStatusPY() == 4
-						|| studentPojo.getExamAppearedPyYn() == 2) {
+				if ((studentPojo.getEnrStatusPY() !=null   && ( studentPojo.getEnrStatusPY() == 3 || studentPojo.getEnrStatusPY() == 4))
+						|| (studentPojo.getExamAppearedPyYn() !=null && studentPojo.getExamAppearedPyYn() == 2)) {
 					studentPojo.setExamResultPy(0);
 					studentPojo.setExamMarksPy(0);
 				} else {

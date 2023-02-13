@@ -32,7 +32,13 @@ public class TemplateConfiguration3 {
 			HashMap<String, Boolean> higherSector, HashMap<String, Boolean> higherSubSector,
 			HashMap<String, List<String>> sectionMap, Map<String, HashMap<String, String>> mObject,HashSet<String> adharMach) {
 		CustomFxcelValidator customFxcelValidator = new CustomFxcelValidator();
-		stdObj.setClassId(df.formatCellValue(currentRow.getCell(0)));
+		stdObj.setClassId(getCellValue(currentRow.getCell(0)));
+		Integer cwsnFlag=0;
+		try {
+			cwsnFlag=Integer.parseInt(df.formatCellValue(currentRow.getCell(22)));
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
 		try {
 			if(stdObj.getClassId() != null && (stdObj.getClassId().equalsIgnoreCase("PP1") || stdObj.getClassId().equalsIgnoreCase("PP2") || stdObj.getClassId().equalsIgnoreCase("PP3"))) {
 				
@@ -85,7 +91,7 @@ public class TemplateConfiguration3 {
 			ex.printStackTrace();
 		}
 
-		stdObj.setSectionId(df.formatCellValue(currentRow.getCell(1)));
+		stdObj.setSectionId(getCellValue(currentRow.getCell(1)));
 //		if (customFxcelValidator
 //				.numberValidation(mObject, "sectionId", checkNullandTrim(stdObj.getSectionId()), 4)
 //				.get("sectionId").get("s").equalsIgnoreCase("0")) {
@@ -131,7 +137,7 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(1), 1, cellStyle);
 		}
 
-		stdObj.setRollNo(df.formatCellValue(currentRow.getCell(2)));
+		stdObj.setRollNo(getCellValue(currentRow.getCell(2)));
 		if (customFxcelValidator.numberValidation(mObject, "rollNo", checkNullandTrim(stdObj.getRollNo()), 9999)
 				.get("rollNo").get("s").equalsIgnoreCase("0")) {
 //			System.out.println("In set color---->4");
@@ -141,7 +147,7 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(2), 2, correctCellStyle);
 		}
 
-		stdObj.setStudentName(checkNull(df.formatCellValue(currentRow.getCell(3))).replaceAll("\\s+", " "));
+		stdObj.setStudentName(checkNull(getCellValue(currentRow.getCell(3))).replaceAll("\\s+", " "));
 		if (customFxcelValidator
 				.stringNonSpecialValidation(mObject, "studentName", checkNullandTrim(stdObj.getStudentName()),3,50)
 				.get("studentName").get("s").equalsIgnoreCase("0")) {
@@ -151,7 +157,7 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(3), 3, correctCellStyle);
 		}
 
-		stdObj.setGender(df.formatCellValue(currentRow.getCell(4)));
+		stdObj.setGender(getCellValue(currentRow.getCell(4)));
 		
 //		System.out.println("School type--->"+sObj.getRowValue().get(0).get("sch_type"));
 		
@@ -197,12 +203,18 @@ public class TemplateConfiguration3 {
 					stdObj.setStudentDob(dff.format(d).trim());
 					System.out.println("date Dob---->"+(currentRow.getCell(5).getStringCellValue()));
 				} else if (currentRow.getCell(5).getCellType() == CellType.STRING) {
-					System.out.println("String Dob---->"+(currentRow.getCell(5).getStringCellValue()));
+//<<<<<<< HEAD
+//					System.out.println("String Dob---->"+(currentRow.getCell(5).getStringCellValue()));
+//					stdObj.setStudentDob(currentRow.getCell(5).getStringCellValue().trim());
+//=======
+					
 					stdObj.setStudentDob(currentRow.getCell(5).getStringCellValue().trim());
+					System.out.println("Date String --->"+stdObj.getStudentDob());
+//>>>>>>> c10fd8d144575a79f575f0f48636147f7140c02e
 				}
 				
 				if(stdObj.getClassId() !=null && (stdObj.getClassId().equalsIgnoreCase("PP1") || stdObj.getClassId().equalsIgnoreCase("PP2") || stdObj.getClassId().equalsIgnoreCase("PP3"))) {
-					if(stdObj.getClassId().equalsIgnoreCase("PP1") && StudentAgeClassValidation(-1,Integer.parseInt(String.valueOf(getAge(stdObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))))) {
+					if(stdObj.getClassId().equalsIgnoreCase("PP1") && StudentAgeClassValidation(-1,Integer.parseInt(String.valueOf(getAge(stdObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))),cwsnFlag)) {
 					if(d !=null) {
 						checkCellAndCreate(currentRow,5,dff.format(d));
 					}else {
@@ -218,7 +230,7 @@ public class TemplateConfiguration3 {
 						setCellColors(currentRow, currentRow.getCell(5), 5, cellStyle);
 					}
 					
-					if(stdObj.getClassId().equalsIgnoreCase("PP2") && StudentAgeClassValidation(-2,Integer.parseInt(String.valueOf(getAge(stdObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))))) {
+					if(stdObj.getClassId().equalsIgnoreCase("PP2") && StudentAgeClassValidation(-2,Integer.parseInt(String.valueOf(getAge(stdObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))),cwsnFlag)) {
 						if(d !=null) {
 							checkCellAndCreate(currentRow,5,dff.format(d));
 						}else {
@@ -236,7 +248,7 @@ public class TemplateConfiguration3 {
 					System.out.println(sObj);
 					System.out.println(sObj.getRowValue().get(0).get("school_id"));
 					System.out.println(sObj.getRowValue().get(0).get("session_start_date"));
-					if(stdObj.getClassId().equalsIgnoreCase("PP3") && StudentAgeClassValidation(-3,Integer.parseInt(String.valueOf(getAge(stdObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))))) {
+					if(stdObj.getClassId().equalsIgnoreCase("PP3") && StudentAgeClassValidation(-3,Integer.parseInt(String.valueOf(getAge(stdObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))),cwsnFlag)) {
 						if(d != null) {
 							checkCellAndCreate(currentRow,5,dff.format(d));
 						}else {
@@ -253,7 +265,7 @@ public class TemplateConfiguration3 {
 					}
 				}	
 				else if(stdObj.getStudentDob() !=null && sObj.getRowValue().get(0).get("session_start_date") !=null &&  getAge(stdObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date")))>0) { 
-				if ( !StudentAgeClassValidation(Integer.parseInt(stdObj.getClassId()),Integer.parseInt(String.valueOf(getAge(stdObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))))) {
+				if ( !StudentAgeClassValidation(Integer.parseInt(stdObj.getClassId()),Integer.parseInt(String.valueOf(getAge(stdObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))),cwsnFlag)) {
 //					System.out.println("In error age");
 					if (currentRow.getCell(5).getCellType() == CellType.NUMERIC) {
 //						currentRow.getCell(5).setCellValue(dff.format(d));
@@ -283,7 +295,7 @@ public class TemplateConfiguration3 {
 					setCellColors(currentRow, currentRow.getCell(5), 5, correctCellStyle);
 				}
 				}else {
-					setCellColors(currentRow, currentRow.getCell(5), 5, cellStyle);
+					setCellColors(currentRow,currentRow.getCell(5), 5, cellStyle);
 				}
 			} catch (Exception ex) {
 				setCellColors(currentRow, currentRow.getCell(5), 5, cellStyle);
@@ -293,7 +305,7 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(5), 5, cellStyle);
 		}
 
-		stdObj.setMotherName(checkNull(df.formatCellValue(currentRow.getCell(6))).replaceAll("\\s+", " "));
+		stdObj.setMotherName(checkNull(getCellValue(currentRow.getCell(6))).replaceAll("\\s+", " "));
 		if (customFxcelValidator
 				.stringNonSpecialValidation(mObject, "motherName", checkNullandTrim(stdObj.getMotherName()),3,50)
 				.get("motherName").get("s").equalsIgnoreCase("0")) {
@@ -303,7 +315,7 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(6), 6, correctCellStyle);
 		}
 
-		stdObj.setFatherName(checkNull(df.formatCellValue(currentRow.getCell(7))).replaceAll("\\s+", " "));
+		stdObj.setFatherName(checkNull(getCellValue(currentRow.getCell(7))).replaceAll("\\s+", " "));
 		if (customFxcelValidator
 				.stringNonSpecialValidation(mObject, "fatherName", checkNullandTrim(stdObj.getFatherName()),3,50)
 				.get("fatherName").get("s").equalsIgnoreCase("0")) {
@@ -313,7 +325,7 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(7), 7, correctCellStyle);
 		}
 
-		stdObj.setGuardianName(checkNull(df.formatCellValue(currentRow.getCell(8))).replaceAll("\\s+", " "));
+		stdObj.setGuardianName(checkNull(getCellValue(currentRow.getCell(8))).replaceAll("\\s+", " "));
 		if (customFxcelValidator
 				.stringNonSpecialValidation(mObject, "guardianName", checkNullandTrim(stdObj.getGuardianName()),3,50)
 				.get("guardianName").get("s").equalsIgnoreCase("0")) {
@@ -332,9 +344,9 @@ public class TemplateConfiguration3 {
 //		System.out.println(new Double(o.toString()));
 //		System.out.println("Adhar--->"+new BigDecimal(o.toString(),MathContext.DECIMAL128).toPlainString());
 		try {
-		stdObj.setAadhaarNo(df.formatCellValue(currentRow.getCell(9)));
+		stdObj.setAadhaarNo(getCellValue(currentRow.getCell(9)));
 		}catch(Exception ex) {
-		stdObj.setAadhaarNo(df.formatCellValue(currentRow.getCell(9)));
+		stdObj.setAadhaarNo(getCellValue(currentRow.getCell(9)));
 			ex.printStackTrace();
 		}
 	}else {
@@ -349,7 +361,7 @@ public class TemplateConfiguration3 {
 		}
 
 		if (!stdObj.getAadhaarNo().equalsIgnoreCase("999999999999")) {
-			stdObj.setNameAsAadhaar(checkNull(df.formatCellValue(currentRow.getCell(10))).replaceAll("\\s+", " "));
+			stdObj.setNameAsAadhaar(checkNull(getCellValue(currentRow.getCell(10))).replaceAll("\\s+", " "));
 			if (customFxcelValidator
 					.stringNonSpecialValidation(mObject, "nameAsAadhaar", checkNullandTrim(stdObj.getNameAsAadhaar()),3,50)
 					.get("nameAsAadhaar").get("s").equalsIgnoreCase("0")) {
@@ -362,7 +374,7 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(10), 10, correctCellStyle);
 		}
 
-		stdObj.setAddress(checkNull(df.formatCellValue(currentRow.getCell(11))).replaceAll("\\s+", " "));
+		stdObj.setAddress(checkNull(getCellValue(currentRow.getCell(11))).replaceAll("\\s+", " "));
 		if (customFxcelValidator.stringValidation(mObject, "address", checkNullandTrim(stdObj.getAddress()),5,150)
 				.get("address").get("s").equalsIgnoreCase("0")) {
 //			System.out.println("In set color---->13");
@@ -371,7 +383,7 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(11), 11, correctCellStyle);
 		}
 
-		stdObj.setPincode(df.formatCellValue(currentRow.getCell(12)));
+		stdObj.setPincode(getCellValue(currentRow.getCell(12)));
 		if (customFxcelValidator.pincodeValidation(mObject, "pincode", checkNullandTrim(stdObj.getPincode()))
 				.get("pincode").get("s").equalsIgnoreCase("0")) {
 //			System.out.println("In set color---->14");
@@ -380,7 +392,7 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(12), 12, correctCellStyle);
 		}
 
-		stdObj.setMobileNo_1(df.formatCellValue(currentRow.getCell(13)));
+		stdObj.setMobileNo_1(getCellValue(currentRow.getCell(13)));
 		if (customFxcelValidator.mobileValidation(mObject, "mobileNo_1", checkNullandTrim(stdObj.getMobileNo_1()))
 				.get("mobileNo_1").get("s").equalsIgnoreCase("0")) {
 //			System.out.println("In set color---->15");
@@ -389,7 +401,7 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(13), 13, correctCellStyle);
 		}
 
-		stdObj.setMobileNo_2(df.formatCellValue(currentRow.getCell(14)));
+		stdObj.setMobileNo_2(getCellValue(currentRow.getCell(14)));
 		if (customFxcelValidator.mobileValidation(mObject, "mobileNo_2", checkNullandTrim(stdObj.getMobileNo_2()))
 				.get("mobileNo_2").get("s").equalsIgnoreCase("0")) {
 //			System.out.println("In set color---->16");
@@ -398,7 +410,7 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(14), 14, correctCellStyle);
 		}
 
-		stdObj.setEmailId(df.formatCellValue(currentRow.getCell(15)));
+		stdObj.setEmailId(getCellValue(currentRow.getCell(15)));
 		if (customFxcelValidator.emailValidation(mObject, "emailId", checkNullandTrim(stdObj.getEmailId()))
 				.get("emailId").get("s").equalsIgnoreCase("0")) {
 			setCellColors(currentRow, currentRow.getCell(15), 15, cellStyle);
@@ -406,7 +418,7 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(15), 15, correctCellStyle);
 		}
 
-		stdObj.setMotherTongue(df.formatCellValue(currentRow.getCell(16)));
+		stdObj.setMotherTongue(getCellValue(currentRow.getCell(16)));
 
 		try {
 			if(stdObj.getMotherTongue() == null || stdObj.getMotherTongue() == ""
@@ -426,7 +438,7 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(16), 16, cellStyle);
 		}
 
-		stdObj.setSocCatId(df.formatCellValue(currentRow.getCell(17)));
+		stdObj.setSocCatId(getCellValue(currentRow.getCell(17)));
 		if (customFxcelValidator.numberValidation(mObject, "socCatId", checkNullandTrim(stdObj.getSocCatId()), 4)
 				.get("socCatId").get("s").equalsIgnoreCase("0")) {
 //			System.out.println("In set color---->19");
@@ -436,7 +448,7 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(17), 17, correctCellStyle);
 		}
 
-		stdObj.setMinorityId(df.formatCellValue(currentRow.getCell(18)));
+		stdObj.setMinorityId(getCellValue(currentRow.getCell(18)));
 		if (customFxcelValidator.numberValidation(mObject, "minorityId", checkNullandTrim(stdObj.getMinorityId()), 7)
 				.get("minorityId").get("s").equalsIgnoreCase("0")) {
 //			System.out.println("In set color---->20");
@@ -446,12 +458,12 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(18), 18, correctCellStyle);
 		}
 
-//		System.out.println("BPL value--->" + df.formatCellValue(currentRow.getCell(19)));
+//		System.out.println("BPL value--->" + getCellValue(currentRow.getCell(19)));
 		if (df.formatCellValue(currentRow.getCell(19)) == null || df.formatCellValue(currentRow.getCell(19)) == "") {
 			stdObj.setIsBplYn("2");
 			checkCellAndCreate(currentRow,19,"2");
 		} else {
-			stdObj.setIsBplYn(df.formatCellValue(currentRow.getCell(19)));
+			stdObj.setIsBplYn(getCellValue(currentRow.getCell(19)));
 		}
 		
 		if (customFxcelValidator.numberValidation(mObject, "isBplYn", checkNullandTrim(stdObj.getIsBplYn()), 2)
@@ -466,7 +478,7 @@ public class TemplateConfiguration3 {
 			if(df.formatCellValue(currentRow.getCell(20)) ==null || df.formatCellValue(currentRow.getCell(20))=="") {
 				stdObj.setAayBplYn("2");	
 			}else {
-				stdObj.setAayBplYn(df.formatCellValue(currentRow.getCell(20)));
+				stdObj.setAayBplYn(getCellValue(currentRow.getCell(20)));
 			}
 		}else if(stdObj.getIsBplYn() != null && stdObj.getIsBplYn().equalsIgnoreCase("2")) {
 			stdObj.setAayBplYn("9");
@@ -503,7 +515,7 @@ public class TemplateConfiguration3 {
 //			currentRow.getCell(21).setCellValue("2");
 			checkCellAndCreate(currentRow,21,"2");
 		} else {
-			stdObj.setEwsYn(df.formatCellValue(currentRow.getCell(21)));
+			stdObj.setEwsYn(getCellValue(currentRow.getCell(21)));
 		}
 		
 		
@@ -517,7 +529,7 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(21), 21, correctCellStyle);
 		}
 
-		stdObj.setCwsnYn(df.formatCellValue(currentRow.getCell(22)));
+		stdObj.setCwsnYn(getCellValue(currentRow.getCell(22)));
 		if (customFxcelValidator.numberValidation(mObject, "cwsnYn", checkNullandTrim(stdObj.getCwsnYn()), 2)
 				.get("cwsnYn").get("s").equalsIgnoreCase("0")) {
 //			System.out.println("In set color---->24");
@@ -530,7 +542,7 @@ public class TemplateConfiguration3 {
 		if (df.formatCellValue(currentRow.getCell(23)) == null || df.formatCellValue(currentRow.getCell(23)) == "") {
 			stdObj.setImpairmentType("0");
 		} else {
-			stdObj.setImpairmentType(df.formatCellValue(currentRow.getCell(23)));
+			stdObj.setImpairmentType(getCellValue(currentRow.getCell(23)));
 		}
 		
 		if (checkNull(stdObj.getCwsnYn()).equalsIgnoreCase("1")) {
@@ -563,7 +575,7 @@ public class TemplateConfiguration3 {
 //			currentRow.getCell(24).setCellValue("2");
 			checkCellAndCreate(currentRow,24,"2");
 		} else {
-			stdObj.setNatIndYn(df.formatCellValue(currentRow.getCell(24)));
+			stdObj.setNatIndYn(getCellValue(currentRow.getCell(24)));
 		}
 		if (customFxcelValidator.numberValidation(mObject, "natIndYn", checkNullandTrim(stdObj.getNatIndYn()), 2)
 				.get("natIndYn").get("s").equalsIgnoreCase("0")) {
@@ -579,7 +591,7 @@ public class TemplateConfiguration3 {
 //			currentRow.getCell(25).setCellValue("2");
 			checkCellAndCreate(currentRow,25,"2");
 		} else {
-			stdObj.setOoscYn(df.formatCellValue(currentRow.getCell(25)));
+			stdObj.setOoscYn(getCellValue(currentRow.getCell(25)));
 		}
 		if (customFxcelValidator.numberValidation(mObject, "ooscYn", checkNullandTrim(stdObj.getOoscYn()), 2)
 				.get("ooscYn").get("s").equalsIgnoreCase("0")) {
@@ -601,7 +613,7 @@ public class TemplateConfiguration3 {
 //			currentRow.getCell(26).setCellValue("0");
 //		}
 		else {
-			stdObj.setOoscMainstreamedYn(df.formatCellValue(currentRow.getCell(26)));
+			stdObj.setOoscMainstreamedYn(getCellValue(currentRow.getCell(26)));
 		}
 		
 		if(stdObj.getOoscYn() !=null && stdObj.getOoscYn().equalsIgnoreCase("1")) {
@@ -619,7 +631,7 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(26), 26, correctCellStyle);
 		}
 
-		stdObj.setAdmnNumber(df.formatCellValue(currentRow.getCell(27)));
+		stdObj.setAdmnNumber(getCellValue(currentRow.getCell(27)));
 		if (customFxcelValidator
 				.admisionNumberValidation(mObject, "admnNumber", checkNullandTrim(stdObj.getAdmnNumber()))
 				.get("admnNumber").get("s").equalsIgnoreCase("0")) {
@@ -708,7 +720,7 @@ public class TemplateConfiguration3 {
 
 		
 		if(stdObj.getClassId() !=null && (stdObj.getClassId().equalsIgnoreCase("11") || stdObj.getClassId().equalsIgnoreCase("12"))) {
-		stdObj.setAcdemicStream(df.formatCellValue(currentRow.getCell(29)));
+		stdObj.setAcdemicStream(getCellValue(currentRow.getCell(29)));
 		}else {
 			
 //			System.out.println();
@@ -776,7 +788,7 @@ public class TemplateConfiguration3 {
 //			currentRow.getCell(29).setCellValue("");
 		}
 
-		stdObj.setEnrStatusPy(df.formatCellValue(currentRow.getCell(30)));
+		stdObj.setEnrStatusPy(getCellValue(currentRow.getCell(30)));
 
 		
 		if(stdObj.getEnrStatusPy() !=null && stdObj.getEnrStatusPy().equalsIgnoreCase("3")) {
@@ -800,7 +812,7 @@ public class TemplateConfiguration3 {
 			stdObj.setClassPy("");
 			checkCellAndCreate(currentRow,31,"");
 		}else {
-		stdObj.setClassPy(df.formatCellValue(currentRow.getCell(31)));
+		stdObj.setClassPy(getCellValue(currentRow.getCell(31)));
 		}
 		
 		if (stdObj.getEnrStatusPy().equalsIgnoreCase("1") || stdObj.getEnrStatusPy().equalsIgnoreCase("2")) {
@@ -835,7 +847,7 @@ public class TemplateConfiguration3 {
 			}
 		}
 
-		stdObj.setEnrTypeCy(df.formatCellValue(currentRow.getCell(32)));
+		stdObj.setEnrTypeCy(getCellValue(currentRow.getCell(32)));
 		if (Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("sch_mgmt_center_id"))) == 5) {
 			if (customFxcelValidator.numberValidation(mObject, "enrTypeCy", checkNullandTrim(stdObj.getEnrTypeCy()), 5)
 					.get("enrTypeCy").get("s").equalsIgnoreCase("0")) {
@@ -862,7 +874,7 @@ public class TemplateConfiguration3 {
 			stdObj.setExamAppearedPyYn("9");
 			checkCellAndCreate(currentRow,33,"9");
 		}else {
-			stdObj.setExamAppearedPyYn(df.formatCellValue(currentRow.getCell(33)));	
+			stdObj.setExamAppearedPyYn(getCellValue(currentRow.getCell(33)));	
 		}
 		
 		if(stdObj.getEnrStatusPy() !=null && (stdObj.getEnrStatusPy().equalsIgnoreCase("1") || stdObj.getEnrStatusPy().equalsIgnoreCase("2")) ) {
@@ -903,7 +915,7 @@ public class TemplateConfiguration3 {
 		stdObj.setExamResultPy("0");
 		checkCellAndCreate(currentRow,34,"0");
 		}else {
-			stdObj.setExamResultPy(df.formatCellValue(currentRow.getCell(34)));
+			stdObj.setExamResultPy(getCellValue(currentRow.getCell(34)));
 		}
 		if (stdObj.getExamAppearedPyYn().equalsIgnoreCase("1")) {
 		if(stdObj.getEnrStatusPy() !=null && (stdObj.getEnrStatusPy().equalsIgnoreCase("1") || stdObj.getEnrStatusPy().equalsIgnoreCase("2")) ) {
@@ -945,9 +957,9 @@ public class TemplateConfiguration3 {
 			checkCellAndCreate(currentRow,35,"0");
 			}else {
 				try {
-				stdObj.setExamMarksPy(String.valueOf(Math.round(Float.parseFloat(df.formatCellValue(currentRow.getCell(35))))));
+				stdObj.setExamMarksPy(String.valueOf(Math.round(Float.parseFloat(getCellValue(currentRow.getCell(35))))));
 				}catch(Exception ex) {
-					stdObj.setExamMarksPy(df.formatCellValue(currentRow.getCell(35)));
+					stdObj.setExamMarksPy(getCellValue(currentRow.getCell(35)));
 					ex.printStackTrace();
 				}
 			}
@@ -990,7 +1002,7 @@ public class TemplateConfiguration3 {
 		stdObj.setAttendencePy("0");
 		checkCellAndCreate(currentRow,36,"0");
 		}else {
-			stdObj.setAttendencePy(df.formatCellValue(currentRow.getCell(36)));
+			stdObj.setAttendencePy(getCellValue(currentRow.getCell(36)));
 		}
 		
 		if((stdObj.getClassId().equalsIgnoreCase("0") || stdObj.getClassId().equalsIgnoreCase("PP1") || stdObj.getClassId().equalsIgnoreCase("PP2") || stdObj.getClassId().equalsIgnoreCase("PP3"))) {
@@ -1022,7 +1034,7 @@ public class TemplateConfiguration3 {
 			System.out.println("uniform default check----");
 			checkCellAndCreate(currentRow,37,"2");
 		} else {
-			stdObj.setUniformFacProvided(df.formatCellValue(currentRow.getCell(37)));
+			stdObj.setUniformFacProvided(getCellValue(currentRow.getCell(37)));
 		}
 		}
 		
@@ -1050,7 +1062,7 @@ public class TemplateConfiguration3 {
 			stdObj.setTextBoxFacProvided("2");
 			checkCellAndCreate(currentRow,38,"2");
 		} else {
-			stdObj.setTextBoxFacProvided(df.formatCellValue(currentRow.getCell(38)));
+			stdObj.setTextBoxFacProvided(getCellValue(currentRow.getCell(38)));
 		}
 		}
 		
@@ -1074,8 +1086,8 @@ public class TemplateConfiguration3 {
 //			System.out.println("in true");
 		} else {
 //			System.out.println("in false");
-			checkCellAndCreate(currentRow,39,df.formatCellValue(currentRow.getCell(39)));
-			stdObj.setCentrlSchlrshpYn(df.formatCellValue(currentRow.getCell(39)));
+			checkCellAndCreate(currentRow,39,getCellValue(currentRow.getCell(39)));
+			stdObj.setCentrlSchlrshpYn(getCellValue(currentRow.getCell(39)));
 		}
 		
 		
@@ -1095,7 +1107,7 @@ public class TemplateConfiguration3 {
 			stdObj.setCentrlSchlrshpId("0");
 			checkCellAndCreate(currentRow,40,"0");
 		} else {
-			stdObj.setCentrlSchlrshpId(df.formatCellValue(currentRow.getCell(40)));
+			stdObj.setCentrlSchlrshpId(getCellValue(currentRow.getCell(40)));
 		}
 		}
 		
@@ -1126,7 +1138,7 @@ public class TemplateConfiguration3 {
 			stdObj.setStateSchlrshpYn("2");
 			checkCellAndCreate(currentRow,41,"2");
 		} else {
-			stdObj.setStateSchlrshpYn(df.formatCellValue(currentRow.getCell(41)));
+			stdObj.setStateSchlrshpYn(getCellValue(currentRow.getCell(41)));
 		}
 		if (customFxcelValidator
 				.numberValidation(mObject, "stateSchlrshpYn", checkNullandTrim(stdObj.getStateSchlrshpYn()), 2)
@@ -1141,7 +1153,7 @@ public class TemplateConfiguration3 {
 			stdObj.setOtherSchlrshpYn("2");
 			checkCellAndCreate(currentRow,42,"2");
 		} else {
-			stdObj.setOtherSchlrshpYn(df.formatCellValue(currentRow.getCell(42)));
+			stdObj.setOtherSchlrshpYn(getCellValue(currentRow.getCell(42)));
 		}
 		if (customFxcelValidator
 				.numberValidation(mObject, "otherSchlrshpYn", checkNullandTrim(stdObj.getOtherSchlrshpYn()), 2)
@@ -1152,7 +1164,7 @@ public class TemplateConfiguration3 {
 			setCellColors(currentRow, currentRow.getCell(42), 42, correctCellStyle);
 		}
 
-		stdObj.setSchlrshpAmount(df.formatCellValue(currentRow.getCell(43)));
+		stdObj.setSchlrshpAmount(getCellValue(currentRow.getCell(43)));
 		if (checkNull(stdObj.getCentrlSchlrshpYn()).equalsIgnoreCase("1")
 				|| checkNull(stdObj.getStateSchlrshpYn()).equalsIgnoreCase("1")
 				|| checkNull(stdObj.getOtherSchlrshpYn()).equalsIgnoreCase("1")) {
@@ -1175,7 +1187,7 @@ public class TemplateConfiguration3 {
 		}
 
 		if (sObj.getRowValue().get(0).get("sch_mgmt_center_id") !=null && (Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("sch_mgmt_center_id"))) != 5 && Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("sch_mgmt_center_id"))) != 8)) {
-		stdObj.setFacProvidedCwsn(df.formatCellValue(currentRow.getCell(44)));
+		stdObj.setFacProvidedCwsn(getCellValue(currentRow.getCell(44)));
 		}
 		
 		
@@ -1198,7 +1210,7 @@ public class TemplateConfiguration3 {
 			stdObj.setScrndFrSld("2");
 			checkCellAndCreate(currentRow,45,"2");
 		} else {
-			stdObj.setScrndFrSld(df.formatCellValue(currentRow.getCell(45)));
+			stdObj.setScrndFrSld(getCellValue(currentRow.getCell(45)));
 		}
 		if (checkNull(stdObj.getCentrlSchlrshpYn()).equalsIgnoreCase("1")
 				|| checkNull(stdObj.getStateSchlrshpYn()).equalsIgnoreCase("1")
@@ -1217,7 +1229,7 @@ public class TemplateConfiguration3 {
 			stdObj.setSldType("0");
 			checkCellAndCreate(currentRow,46,"0");
 		} else {
-			stdObj.setSldType(df.formatCellValue(currentRow.getCell(46)));
+			stdObj.setSldType(getCellValue(currentRow.getCell(46)));
 		}
 		
 		
@@ -1235,7 +1247,7 @@ public class TemplateConfiguration3 {
 			stdObj.setScrndFrAsd("2");
 			checkCellAndCreate(currentRow,47,"2");
 		} else {
-			stdObj.setScrndFrAsd(df.formatCellValue(currentRow.getCell(47)));
+			stdObj.setScrndFrAsd(getCellValue(currentRow.getCell(47)));
 		}
 		if (customFxcelValidator.numberValidation(mObject, "scrndFrAsd", checkNullandTrim(stdObj.getScrndFrAsd()), 2)
 				.get("scrndFrAsd").get("s").equalsIgnoreCase("0")) {
@@ -1249,7 +1261,7 @@ public class TemplateConfiguration3 {
 			stdObj.setScrndFrAdhd("2");
 			checkCellAndCreate(currentRow,48,"2");
 		} else {
-			stdObj.setScrndFrAdhd(df.formatCellValue(currentRow.getCell(48)));
+			stdObj.setScrndFrAdhd(getCellValue(currentRow.getCell(48)));
 		}
 		if (customFxcelValidator.numberValidation(mObject, "scrndFrAdhd", checkNullandTrim(stdObj.getScrndFrAdhd()), 2)
 				.get("scrndFrAdhd").get("s").equalsIgnoreCase("0")) {
@@ -1262,7 +1274,7 @@ public class TemplateConfiguration3 {
 		if (df.formatCellValue(currentRow.getCell(49)) == null || df.formatCellValue(currentRow.getCell(49)) == "") {
 			stdObj.setIsEcActivity("2");
 		} else {
-			stdObj.setIsEcActivity(df.formatCellValue(currentRow.getCell(49)));
+			stdObj.setIsEcActivity(getCellValue(currentRow.getCell(49)));
 		}
 		if (customFxcelValidator
 				.numberValidation(mObject, "isEcActivity", checkNullandTrim(stdObj.getIsEcActivity()), 2)
@@ -1286,7 +1298,7 @@ public class TemplateConfiguration3 {
 				&& Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("is_vocational_active"))) == 2) {
 			stdObj.setVocYn("9");
 		} else {
-			stdObj.setVocYn(df.formatCellValue(currentRow.getCell(50)));
+			stdObj.setVocYn(getCellValue(currentRow.getCell(50)));
 		}
 		
 		
@@ -1330,7 +1342,7 @@ public class TemplateConfiguration3 {
 		}
 		
 if(stdObj.getVocYn().equalsIgnoreCase("1")) {
-		stdObj.setSector(df.formatCellValue(currentRow.getCell(51)));
+		stdObj.setSector(getCellValue(currentRow.getCell(51)));
 }else {
 	stdObj.setSector("");
 }
@@ -1397,7 +1409,7 @@ if(stdObj.getVocYn().equalsIgnoreCase("1")) {
 		}
 		
 		if(stdObj.getVocYn().equalsIgnoreCase("1")) {
-		stdObj.setJobRole(df.formatCellValue(currentRow.getCell(52)));
+		stdObj.setJobRole(getCellValue(currentRow.getCell(52)));
 		}else {
 			stdObj.setJobRole("");
 		}
@@ -1541,8 +1553,103 @@ try {
 	}
 
 
-	public static boolean StudentAgeClassValidation(Integer grade, Integer age) {
-		  boolean status = false;
+	public static boolean StudentAgeClassValidation(Integer grade, Integer age, Integer cwsnYn) {
+		if(cwsnYn ==1) {
+			 boolean status = false;
+		        if(grade != null) {
+		            switch(grade) {
+		            case -3:
+		                if(age >= 2 && age <= 5) {
+		                    status = true;
+		                }
+		                break;
+		            case -2:
+		                if(age >= 2 && age <= 6) {
+		                    status = true;
+		                }
+		                break;
+		            case -1:
+		                if(age >= 3 && age <= 8) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 1:
+		                if(age >= 4 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 2:
+		                if(age >= 5 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 3:
+		                if(age >= 6 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 4:
+		                if(age >= 7 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 5:
+		                if(age >= 8 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 6:
+		                if(age >= 9 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 7:
+		                if(age >= 10 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 8:
+		                if(age >= 11 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 9:
+		                if(age >= 12 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 10:
+		                if(age >= 13 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 11:
+		                if(age >= 14 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 12:
+		                if(age >= 15 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		            }
+		        }
+		        return status;
+		}else {
+	     boolean status = false;
 	        if(grade != null) {
 	            switch(grade) {
 	            case -3:
@@ -1560,81 +1667,82 @@ try {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 1:
 	                if(age >= 4 && age <= 12) {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 2:
 	                if(age >= 5 && age <= 13) {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 3:
 	                if(age >= 6 && age <= 14) {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 4:
 	                if(age >= 7 && age <= 15) {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 5:
 	                if(age >= 8 && age <= 16) {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 6:
 	                if(age >= 9 && age <= 17) {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 7:
 	                if(age >= 10 && age <= 18) {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 8:
 	                if(age >= 11 && age <= 19) {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 9:
 	                if(age >= 12 && age <= 20) {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 10:
-	                if(age >= 13 && age <= 25) {
+	                if(age >= 13 && age <= 30) {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 11:
-	                if(age >= 14 && age <= 25) {
+	                if(age >= 14 && age <= 30) {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 12:
-	                if(age >= 15 && age <= 25) {
+	                if(age >= 15 && age <= 30) {
 	                    status = true;
 	                }
 	                break;
 	            }
 	        }
 	        return status;
+		}
 	}
 	
 	public void checkCellAndCreate(Row currentRow,Integer cellNumber,String value){
@@ -1658,4 +1766,39 @@ try {
 //        }
 //        return null;
 //    }
+	
+	
+	
+	public String getCellValue(Cell cell) {
+        if (cell != null) {
+            switch (String.valueOf(cell.getCellType())) {
+            case "STRING":
+                return String.valueOf(df.formatCellValue(cell)).trim();
+
+            case "BOOLEAN":
+                return String.valueOf(df.formatCellValue(cell)).trim();
+
+            case "NUMERIC":
+            	try {
+            			return df.formatCellValue(cell).trim();
+            	}catch(Exception ex) {
+            		ex.printStackTrace();
+            		return df.formatCellValue(cell).trim();
+            	}
+            	
+            case "FORMULA":
+            	try {
+            	return String.valueOf(cell.getStringCellValue()).trim();
+            	}catch(Exception ex) {
+            		ex.printStackTrace();
+            		return String.valueOf(cell.getNumericCellValue()).trim();
+            		
+            	}
+            }
+        }
+        return "";
+    }
+	
+	
+	
 }

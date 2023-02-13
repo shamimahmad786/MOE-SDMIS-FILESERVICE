@@ -46,10 +46,9 @@ public class MoeSdmisFileserviceApplication {
         uploadExcelStatusRepository.updateStatusForProcess(Integer.parseInt(String.valueOf(schoolObj.getSchoolId())));
         schoolMap.put("schoolId", String.valueOf(schoolObj.getSchoolId()));
         schoolMap.put("userId", schoolObj.getUploadedBy());
-//        System.out.println("SchoolId for validation--->"+schoolObj.getSchoolId());
         fileCtrl.docValidate(schoolMap, "10.247.141.227");
         }else {
-//        	System.out.println("Validation completed");
+        	System.out.println("Validation completed");
         }
     }
 	

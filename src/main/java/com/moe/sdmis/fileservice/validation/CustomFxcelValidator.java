@@ -47,7 +47,12 @@ public class CustomFxcelValidator {
 			HashMap<String, Boolean> higherSubSector,HashSet<String> adharMach) {
 
 //		System.out.println("Date of birth---->"+stObj.getStudentDob());
-
+		Integer cwsnFlag=0;
+		try {
+			cwsnFlag=Integer.parseInt(stObj.getCwsnYn());
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
 		Map<String, HashMap<String, String>> mObject = new LinkedHashMap<String, HashMap<String, String>>();
 		HashMap<String, String> fs = new HashMap<String, String>();
 		fs.put("s", "1");
@@ -185,7 +190,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 			//			dateValidation(mObject, "studentDob", stObj.getStudentDob());
 		if(stObj.getClassId() !=null && (stObj.getClassId().equalsIgnoreCase("PP1") || stObj.getClassId().equalsIgnoreCase("PP2") || stObj.getClassId().equalsIgnoreCase("PP3"))) {
 			if(stObj.getClassId().equalsIgnoreCase("PP1")) {
-				if(StudentAgeClassValidation(-1,Integer.parseInt(String.valueOf(getAge(stObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))))) {
+				if(StudentAgeClassValidation(-1,Integer.parseInt(String.valueOf(getAge(stObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))),cwsnFlag)) {
 					blankAndTrueValidation(mObject, "studentDob", stObj.getStudentDob());	
 				}else {
 					blankAndFalseValidation(mObject, "studentDob", stObj.getStudentDob(),"(Age is not according to the class as on the Session Start Date)");
@@ -194,7 +199,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 			}
 			
 			if(stObj.getClassId().equalsIgnoreCase("PP2")) {
-				if(StudentAgeClassValidation(-2,Integer.parseInt(String.valueOf(getAge(stObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))))) {
+				if(StudentAgeClassValidation(-2,Integer.parseInt(String.valueOf(getAge(stObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))),cwsnFlag)) {
 					blankAndTrueValidation(mObject, "studentDob", stObj.getStudentDob());	
 				}else {
 					blankAndFalseValidation(mObject, "studentDob", stObj.getStudentDob(),"(Age is not according to the class as on the Session Start Date)");
@@ -203,7 +208,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 			}
 			
 			if(stObj.getClassId().equalsIgnoreCase("PP3")) {
-				if(StudentAgeClassValidation(-3,Integer.parseInt(String.valueOf(getAge(stObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))))) {
+				if(StudentAgeClassValidation(-3,Integer.parseInt(String.valueOf(getAge(stObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))),cwsnFlag)) {
 					blankAndTrueValidation(mObject, "studentDob", stObj.getStudentDob());		
 				}else {
 					blankAndFalseValidation(mObject, "studentDob", stObj.getStudentDob(),"(Age is not according to the class as on the Session Start Date)");
@@ -212,18 +217,18 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 			}
 		}	
 			
-		else if(StudentAgeClassValidation(Integer.parseInt(stObj.getClassId()),Integer.parseInt(String.valueOf(getAge(stObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))))) {
+		else if(StudentAgeClassValidation(Integer.parseInt(stObj.getClassId()),Integer.parseInt(String.valueOf(getAge(stObj.getStudentDob(),String.valueOf(sObj.getRowValue().get(0).get("session_start_date"))))),cwsnFlag)) {
 			blankAndTrueValidation(mObject, "studentDob", stObj.getStudentDob());
 		}else {
 			blankAndFalseValidation(mObject, "studentDob", stObj.getStudentDob(),"(Age is not according to the class as on the Session Start Date)");
 		}
 		}else {
 //			System.out.println("Age else");
-			blankAndFalseValidation(mObject, "studentDob", stObj.getStudentDob(),"(Invalid Age)");
+			blankAndFalseValidation(mObject, "studentDob", stObj.getStudentDob(),"(Invalid Age/Date Format)");
 		}
 
 		}catch(Exception ex) {
-			blankAndFalseValidation(mObject, "studentDob", stObj.getStudentDob(),"(Invalid Age)");
+			blankAndFalseValidation(mObject, "studentDob", stObj.getStudentDob(),"(Invalid Age/Date Format)");
 			ex.printStackTrace();
 		}
 		
@@ -1121,8 +1126,103 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 		return age;
 	}
 
-	public static boolean StudentAgeClassValidation(Integer grade, Integer age) {
-		  boolean status = false;
+	public static boolean StudentAgeClassValidation(Integer grade, Integer age, Integer cwsnYn) {
+		if(cwsnYn ==1) {
+			 boolean status = false;
+		        if(grade != null) {
+		            switch(grade) {
+		            case -3:
+		                if(age >= 2 && age <= 5) {
+		                    status = true;
+		                }
+		                break;
+		            case -2:
+		                if(age >= 2 && age <= 6) {
+		                    status = true;
+		                }
+		                break;
+		            case -1:
+		                if(age >= 3 && age <= 8) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 1:
+		                if(age >= 4 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 2:
+		                if(age >= 5 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 3:
+		                if(age >= 6 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 4:
+		                if(age >= 7 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 5:
+		                if(age >= 8 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 6:
+		                if(age >= 9 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 7:
+		                if(age >= 10 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 8:
+		                if(age >= 11 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 9:
+		                if(age >= 12 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 10:
+		                if(age >= 13 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 11:
+		                if(age >= 14 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		               
+		            case 12:
+		                if(age >= 15 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		            }
+		        }
+		        return status;
+		}else {
+	     boolean status = false;
 	        if(grade != null) {
 	            switch(grade) {
 	            case -3:
@@ -1140,81 +1240,83 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 1:
 	                if(age >= 4 && age <= 12) {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 2:
 	                if(age >= 5 && age <= 13) {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 3:
 	                if(age >= 6 && age <= 14) {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 4:
 	                if(age >= 7 && age <= 15) {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 5:
 	                if(age >= 8 && age <= 16) {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 6:
 	                if(age >= 9 && age <= 17) {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 7:
 	                if(age >= 10 && age <= 18) {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 8:
 	                if(age >= 11 && age <= 19) {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 9:
 	                if(age >= 12 && age <= 20) {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 10:
-	                if(age >= 13 && age <= 25) {
+	                if(age >= 13 && age <= 30) {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 11:
-	                if(age >= 14 && age <= 25) {
+	                if(age >= 14 && age <= 30) {
 	                    status = true;
 	                }
 	                break;
-	                 
+	               
 	            case 12:
-	                if(age >= 15 && age <= 25) {
+	                if(age >= 15 && age <= 30) {
 	                    status = true;
 	                }
 	                break;
 	            }
 	        }
 	        return status;
+		}
 	}
+	
 
 }

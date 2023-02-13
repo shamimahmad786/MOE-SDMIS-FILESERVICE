@@ -34,7 +34,8 @@ public class CustomFxcelValidator {
 	String emaiRegax = "^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$";
 	String adharRegex = "^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$";
 	String dateRegax = "(0[1-9]|1[0-9]|2[0-9]|3[0-1]|[1-9])-(0[1-9]|1[0-2]|[1-9])-([0-9]{4})";
-	String pinregex = "^[1-9]{1}[0-9]{2}\\s{0,1}[0-9]{3}$";
+//	String pinregex = "^[1-9]{1}[0-9]{2}\\s{0,1}[0-9]{3}$";
+	String pinregex = "^[1-9][0-9]{5}$";
 //	String admisionnumericRegax = "^[a-zA-Z0-9-/]([\\w -,/]*[a-zA-Z0-9-/])?$";
 	String admisionnumericRegax = "^[\\-/a-zA-Z0-9 ]+$";
 	static Integer validationFlag = null;

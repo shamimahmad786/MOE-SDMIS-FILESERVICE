@@ -120,7 +120,7 @@ public class TemplateConfiguration3 {
 			else if
 //			(sectionMap.get(stdObj.getClassId()) != null
 //					&& Integer.parseInt(checkNull(sectionMap.get(checkNull(stdObj.getClassId())))) >= Integer
-//							.parseInt(checkNull(String.valueOf(checkNull(stdObj.getSectionId())))) && Integer.parseInt(String.valueOf(stdObj.getSectionId()))>0) {
+//							.parseInt(checkNull(String.valueOf(lcheckNull(stdObj.getSectionId())))) && Integer.parseInt(String.valueOf(stdObj.getSectionId()))>0) {
 			(stdObj.getSectionId() !=null && sectionMap.get(checkNull(stdObj.getClassId())).contains(stdObj.getSectionId().toUpperCase())) {
 				setCellColors(currentRow, currentRow.getCell(1), 1, correctCellStyle);
 			} else {
@@ -194,9 +194,11 @@ public class TemplateConfiguration3 {
 			try {
 				if (currentRow.getCell(5).getCellType() == CellType.NUMERIC) {
 					d = currentRow.getCell(5).getDateCellValue();
-					stdObj.setStudentDob(dff.format(d));
+					stdObj.setStudentDob(dff.format(d).trim());
+					System.out.println("date Dob---->"+(currentRow.getCell(5).getStringCellValue()));
 				} else if (currentRow.getCell(5).getCellType() == CellType.STRING) {
-					stdObj.setStudentDob(currentRow.getCell(5).getStringCellValue());
+					System.out.println("String Dob---->"+(currentRow.getCell(5).getStringCellValue()));
+					stdObj.setStudentDob(currentRow.getCell(5).getStringCellValue().trim());
 				}
 				
 				if(stdObj.getClassId() !=null && (stdObj.getClassId().equalsIgnoreCase("PP1") || stdObj.getClassId().equalsIgnoreCase("PP2") || stdObj.getClassId().equalsIgnoreCase("PP3"))) {

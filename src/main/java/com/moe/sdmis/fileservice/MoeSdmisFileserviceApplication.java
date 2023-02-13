@@ -32,25 +32,25 @@ public class MoeSdmisFileserviceApplication {
 //	}
 //	
 	
-//	@Autowired
-//	UploadExcelStatusRepository uploadExcelStatusRepository;
-//	
-//	@Autowired
-//	FileCtrl fileCtrl;
-//	
-//	Map<String,String> schoolMap=new HashMap<String,String>();  
-//	@Scheduled(fixedRate = 30000)
-//    public void startService() throws Exception {
-//        UploadExcelStatus schoolObj=  uploadExcelStatusRepository.getSchoolIdForProcess();
-//        if(schoolObj !=null) {
-//        uploadExcelStatusRepository.updateStatusForProcess(Integer.parseInt(String.valueOf(schoolObj.getSchoolId())));
-//        schoolMap.put("schoolId", String.valueOf(schoolObj.getSchoolId()));
-//        schoolMap.put("userId", schoolObj.getUploadedBy());
+	@Autowired
+	UploadExcelStatusRepository uploadExcelStatusRepository;
+	
+	@Autowired
+	FileCtrl fileCtrl;
+	
+	Map<String,String> schoolMap=new HashMap<String,String>();  
+	@Scheduled(fixedRate = 30000)
+    public void startService() throws Exception {
+        UploadExcelStatus schoolObj=  uploadExcelStatusRepository.getSchoolIdForProcess();
+        if(schoolObj !=null) {
+        uploadExcelStatusRepository.updateStatusForProcess(Integer.parseInt(String.valueOf(schoolObj.getSchoolId())));
+        schoolMap.put("schoolId", String.valueOf(schoolObj.getSchoolId()));
+        schoolMap.put("userId", schoolObj.getUploadedBy());
 //        System.out.println("SchoolId for validation--->"+schoolObj.getSchoolId());
-//        fileCtrl.docValidate(schoolMap, "10.247.141.227");
-//        }else {
+        fileCtrl.docValidate(schoolMap, "10.247.141.227");
+        }else {
 //        	System.out.println("Validation completed");
-//        }
-//    }
+        }
+    }
 	
 }

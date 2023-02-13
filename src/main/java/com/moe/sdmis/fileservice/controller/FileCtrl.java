@@ -385,7 +385,7 @@ public class FileCtrl {
 				Iterator<Cell> cellIterator = currentRow.iterator();
 				CommonBean stdObj = new CommonBean();
 				stdObj.setUdisecode(String.valueOf(map.get("schoolId")));
-				if (currentRow.getRowNum() > 6) {
+				if (currentRow.getRowNum() > 6 && currentRow.getRowNum() <10) {
 //					if (String.valueOf(map.get("stateId")).equalsIgnoreCase("116")) {
 						mtongObj = MotherTongMaster.motherTongMap_116;
 						Cell classCell = currentRow.getCell(0, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);

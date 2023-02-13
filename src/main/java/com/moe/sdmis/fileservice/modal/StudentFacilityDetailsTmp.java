@@ -140,6 +140,222 @@ public class StudentFacilityDetailsTmp {
 				+ createdBy + ", createdTime=" + createdTime + ", modifiedBy=" + modifiedBy + ", modifiedTime="
 				+ modifiedTime + "]";
 	}
+
+	public Long getTempId() {
+		return tempId;
+	}
+
+	public void setTempId(Long tempId) {
+		this.tempId = tempId;
+	}
+
+	public StudentBasicProfileTmp getStudentBasicProfileTmp() {
+		return studentBasicProfileTmp;
+	}
+
+	public void setStudentBasicProfileTmp(StudentBasicProfileTmp studentBasicProfileTmp) {
+		this.studentBasicProfileTmp = studentBasicProfileTmp;
+	}
+
+	public Integer getSchoolId() {
+		return schoolId;
+	}
+
+	public void setSchoolId(Integer schoolId) {
+		this.schoolId = schoolId;
+	}
+
+	public Integer[] getFacProvided() {
+		return facProvided;
+	}
+
+	public void setFacProvided(Integer[] facProvided) {
+		this.facProvided = facProvided;
+	}
+
+	public Integer getCentralScholarshipYn() {
+		return centralScholarshipYn;
+	}
+
+	public void setCentralScholarshipYn(Integer centralScholarshipYn) {
+		this.centralScholarshipYn = centralScholarshipYn;
+	}
+
+	public Integer getCentralScholarshipId() {
+		return centralScholarshipId;
+	}
+
+	public void setCentralScholarshipId(Integer centralScholarshipId) {
+		this.centralScholarshipId = centralScholarshipId;
+	}
+
+	public Integer getStateScholarshipYn() {
+		return stateScholarshipYn;
+	}
+
+	public void setStateScholarshipYn(Integer stateScholarshipYn) {
+		this.stateScholarshipYn = stateScholarshipYn;
+	}
+
+	public Integer getOtherScholarshipYn() {
+		return otherScholarshipYn;
+	}
+
+	public void setOtherScholarshipYn(Integer otherScholarshipYn) {
+		this.otherScholarshipYn = otherScholarshipYn;
+	}
+
+	public Integer getScholarshipAmount() {
+		return scholarshipAmount;
+	}
+
+	public void setScholarshipAmount(Integer scholarshipAmount) {
+		this.scholarshipAmount = scholarshipAmount;
+	}
+
+	public Integer[] getFacProvidedCwsn() {
+		return facProvidedCwsn;
+	}
+
+	public void setFacProvidedCwsn(Integer[] facProvidedCwsn) {
+		this.facProvidedCwsn = facProvidedCwsn;
+	}
+
+	public Integer getScreenedForSld() {
+		return screenedForSld;
+	}
+
+	public void setScreenedForSld(Integer screenedForSld) {
+		this.screenedForSld = screenedForSld;
+	}
+
+	public Integer getSldType() {
+		return sldType;
+	}
+
+	public void setSldType(Integer sldType) {
+		this.sldType = sldType;
+	}
+
+	public Integer getScreenedForAsd() {
+		return screenedForAsd;
+	}
+
+	public void setScreenedForAsd(Integer screenedForAsd) {
+		this.screenedForAsd = screenedForAsd;
+	}
+
+	public Integer getScreenedForAdhd() {
+		return screenedForAdhd;
+	}
+
+	public void setScreenedForAdhd(Integer screenedForAdhd) {
+		this.screenedForAdhd = screenedForAdhd;
+	}
+
+	public Integer getIsEcActivity() {
+		return isEcActivity;
+	}
+
+	public void setIsEcActivity(Integer isEcActivity) {
+		this.isEcActivity = isEcActivity;
+	}
+
+	public Integer[] getGiftedChildren() {
+		return giftedChildren;
+	}
+
+	public void setGiftedChildren(Integer[] giftedChildren) {
+		this.giftedChildren = giftedChildren;
+	}
+
+	public Integer getMentorProvided() {
+		return mentorProvided;
+	}
+
+	public void setMentorProvided(Integer mentorProvided) {
+		this.mentorProvided = mentorProvided;
+	}
+
+	public Integer getNurturanceCmpsState() {
+		return nurturanceCmpsState;
+	}
+
+	public void setNurturanceCmpsState(Integer nurturanceCmpsState) {
+		this.nurturanceCmpsState = nurturanceCmpsState;
+	}
+
+	public Integer getNurturanceCmpsNational() {
+		return nurturanceCmpsNational;
+	}
+
+	public void setNurturanceCmpsNational(Integer nurturanceCmpsNational) {
+		this.nurturanceCmpsNational = nurturanceCmpsNational;
+	}
+
+	public Integer getOlympdsNlc() {
+		return olympdsNlc;
+	}
+
+	public void setOlympdsNlc(Integer olympdsNlc) {
+		this.olympdsNlc = olympdsNlc;
+	}
+
+	public Integer getNccNssYn() {
+		return nccNssYn;
+	}
+
+	public void setNccNssYn(Integer nccNssYn) {
+		this.nccNssYn = nccNssYn;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Date getModifiedTime() {
+		return modifiedTime;
+	}
+
+	public void setModifiedTime(Date modifiedTime) {
+		this.modifiedTime = modifiedTime;
+	}
+
+	public Integer getIsFacProv() {
+		return isFacProv;
+	}
+
+	public void setIsFacProv(Integer isFacProv) {
+		this.isFacProv = isFacProv;
+	}
+
+	public Integer getIsCwsnFacProv() {
+		return isCwsnFacProv;
+	}
+
+	public void setIsCwsnFacProv(Integer isCwsnFacProv) {
+		this.isCwsnFacProv = isCwsnFacProv;
+	}
 	
 	
 	

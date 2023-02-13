@@ -11,7 +11,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>MOE-SDMIS-FILESERVICE</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<name>MOE-SDMIS-FILESERVICE</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -89,13 +89,6 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			<plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <skipTests>true</skipTests>
-                </configuration>
-    </plugin>
 		</plugins>
 	</build>
 

@@ -28,5 +28,43 @@ public class UploadExcelStatus {
 	private String uploadedBy;
 	@Column(name="uploaded_date_time")
 	private Date uploadedDateTime;
+	public Integer getSchoolId() {
+		return schoolId;
+	}
+	public void setSchoolId(Integer schoolId) {
+		this.schoolId = schoolId;
+	}
+	public String getUdiseCode() {
+		return udiseCode;
+	}
+	public void setUdiseCode(String udiseCode) {
+		this.udiseCode = udiseCode;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getHost() {
+		return host;
+	}
+	public void setHost(String host) {
+		this.host = host;
+	}
+	public String getUploadedBy() {
+		return uploadedBy;
+	}
+	public void setUploadedBy(String uploadedBy) {
+		this.uploadedBy = uploadedBy;
+	}
+	public Date getUploadedDateTime() {
+		return uploadedDateTime;
+	}
+	public void setUploadedDateTime(Date uploadedDateTime) {
+		this.uploadedDateTime = uploadedDateTime;
+	}
+	
+	
 	
 }

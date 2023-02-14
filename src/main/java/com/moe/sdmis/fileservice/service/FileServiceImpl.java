@@ -134,7 +134,7 @@ public class FileServiceImpl {
 //			System.out.println(finalList);
 			long statusCount = finalList.stream().filter((e) -> e.get("fs").get("s").equalsIgnoreCase("0")).count();
 
-//			System.out.println("Status count--->"+statusCount);
+			System.out.println("Status count--->"+statusCount);
 			
 			if (statusCount > 0) {
 				statusFlag = "3";
@@ -644,6 +644,41 @@ public class FileServiceImpl {
 		return sObj;
 
 	}
+	
+	public List<Map<String, HashMap<String, String>>> getValidatedErrorData(Integer schoolId) throws IOException, ClassNotFoundException {
+		Stream<String> sObj = null;
+		 List<Map<String, HashMap<String, String>>> obj=null;
+		 List<Map<String, HashMap<String, String>>> finalObj=new  ArrayList<Map<String, HashMap<String, String>>>();
+		String string1 = Files
+				.lines(Paths.get(userBucketPath + File.separator + schoolId + File.separator + schoolId + "." + "txt")).collect(Collectors.joining());
+
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		try {
+		TypeReference<List<Map<String, HashMap<String, String>>> > typeRef 
+        = new TypeReference<List<Map<String, HashMap<String, String>>> >() {};
+       
+        obj=	 objectMapper.readValue(string1, typeRef);
+//        System.out.println("Before data");
+        
+//        System.out.println(obj.get(0).get("fs").get("s"));
+        for(int i=0;i<obj.size();i++) {
+        
+        	if(obj.get(i).get("fs").get("s").equalsIgnoreCase("0")) {
+//        		System.out.println(obj.get(i).get("fs").get("s"));
+        		finalObj.add(obj.get(i));
+//        		obj.remove(i);
+        	}
+        }
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+//System.out.println("final object--->"+finalObj.size());
+		return finalObj;
+
+	}
+	
+	
 
 	public void updateHistory(String requestHost, String schoolId, String userid, String status) {
 		try {

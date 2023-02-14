@@ -179,6 +179,12 @@ public class FileCtrl {
 		Iterator<Row> iterator = datatypeSheet.iterator();
 		Integer totalRows = datatypeSheet.getPhysicalNumberOfRows();
 
+		System.out.println("totalRows---->"+totalRows);
+		if(totalRows<=6) {
+			throw new GenericExceptionHandler("Excel didn't have any data in sheet 2",
+					"100008", request.getRemoteAddr(), userid, schoolId);
+		}
+		
 		while (iterator.hasNext()) {
 			Row currentRow = iterator.next();
 			Iterator<Cell> cellIterator = currentRow.iterator();
@@ -315,6 +321,11 @@ public class FileCtrl {
 			Sheet datatypeSheet = workbook.getSheetAt(1);
 			Iterator<Row> iterator = datatypeSheet.iterator();
 //			Integer totalRows = datatypeSheet.getPhysicalNumberOfRows();
+			
+			if(datatypeSheet.getPhysicalNumberOfRows()<=6) {
+				
+			}
+			
 			Integer totalRows =0;
 			Map<String, HashMap<String, String>> mObject = new LinkedHashMap<String, HashMap<String, String>>();
 
@@ -380,12 +391,13 @@ public class FileCtrl {
 			HashSet<String> adharMach=new HashSet<String>();
 			HashSet<String> excelAdharMach=new HashSet<String>();
 //			System.out.println("Before while condition");
+//			System.out.println();
 			while (iterator.hasNext()) {
 				Row currentRow = iterator.next();
 				Iterator<Cell> cellIterator = currentRow.iterator();
 				CommonBean stdObj = new CommonBean();
 				stdObj.setUdisecode(String.valueOf(map.get("schoolId")));
-				if (currentRow.getRowNum() > 6 && currentRow.getRowNum() <10) {
+				if (currentRow.getRowNum() > 6) {
 //					if (String.valueOf(map.get("stateId")).equalsIgnoreCase("116")) {
 						mtongObj = MotherTongMaster.motherTongMap_116;
 						Cell classCell = currentRow.getCell(0, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
@@ -553,6 +565,25 @@ public class FileCtrl {
 //		return fileServiceImpl.getValidatedData((int)map.get("schoolId"));
 		return mp;
 	}
+	
+	
+	@RequestMapping(value = "/getValidatedErrorData", method = RequestMethod.POST)
+//	public Stream<String>  getValidatedData(@RequestBody String data) throws Exception {
+	public Map<String, Object> getValidatedErrorData(@RequestBody String data) throws Exception {
+		Map<String, Object> map = null;
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			map = new ObjectMapper().readValue(data, Map.class);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		Map<String, Object> mp = new HashMap<String, Object>();
+		mp.put("value", fileServiceImpl.getValidatedErrorData((int) map.get("schoolId")));
+			mp.put("header", ConfigurableUtility.commonHeaderKey_3);
+		return mp;
+	}
+	
+	
 
 	@RequestMapping(path = "/downloadUploadedExcel", method = RequestMethod.GET)
 	public ResponseEntity<Resource> downloadUploadedExcel(@RequestParam("schoolId") String param) throws IOException {

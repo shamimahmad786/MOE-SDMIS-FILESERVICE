@@ -320,6 +320,8 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 			ex.printStackTrace();
 		}
 		
+		}else {
+			blankAndFalseValidation(mObject, "admnStartDate", stObj.getAdmnStartDate(),"(Invalid Date or Admission Date is not between Session Start and End Date)");	
 		}
 		
 		

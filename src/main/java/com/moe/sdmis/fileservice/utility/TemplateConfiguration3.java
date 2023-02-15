@@ -1474,6 +1474,7 @@ if(stdObj.getVocYn().equalsIgnoreCase("1")) {
 		
 		
 try {
+	
 		if (stdObj.getClassId() !=null && df.formatCellValue(currentRow.getCell(53)) == null || df.formatCellValue(currentRow.getCell(53)) == "" || (stdObj.getClassId().equalsIgnoreCase("PP") || stdObj.getClassId().equalsIgnoreCase("PP1") || stdObj.getClassId().equalsIgnoreCase("PP2") || stdObj.getClassId().equalsIgnoreCase("PP3") || (Integer.parseInt((String.valueOf(stdObj.getClassId())))>0 && Integer.parseInt((String.valueOf(stdObj.getClassId())))<9))) {
 			stdObj.setAppVocPy("0");
 			checkCellAndCreate(currentRow,53,"0");
@@ -1485,7 +1486,9 @@ try {
 	ex.printStackTrace();
 }	
 		try {
-		
+			if(Integer.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("is_vocational_active"))))==1) {
+				
+			if(stdObj.getVocYn() !=null && stdObj.getVocYn() !="" && stdObj.getVocYn().equalsIgnoreCase("1")) {	
 		if(stdObj.getClassId() !=null && df.formatCellValue(currentRow.getCell(53)) == null || df.formatCellValue(currentRow.getCell(53)) == "" || (stdObj.getClassId().equalsIgnoreCase("PP") || stdObj.getClassId().equalsIgnoreCase("PP1") || stdObj.getClassId().equalsIgnoreCase("PP2") || stdObj.getClassId().equalsIgnoreCase("PP3") || (Integer.parseInt((String.valueOf(stdObj.getClassId())))>0 && Integer.parseInt((String.valueOf(stdObj.getClassId())))<9))) {
 			setCellColors(currentRow, currentRow.getCell(53), 53, correctCellStyle);
 		}else if (customFxcelValidator.numberValidation(mObject, "appVocPy", checkNullandTrim(stdObj.getAppVocPy()), 2)
@@ -1494,6 +1497,15 @@ try {
 		} else {
 			setCellColors(currentRow, currentRow.getCell(53), 53, correctCellStyle);
 		}
+			}else {
+				checkCellAndCreate(currentRow,53,"0");
+				setCellColors(currentRow, currentRow.getCell(53), 53, correctCellStyle);
+			}
+			
+			}else {
+				checkCellAndCreate(currentRow,53,"0");
+				setCellColors(currentRow, currentRow.getCell(53), 53, correctCellStyle);	
+			}
 		}catch(Exception ex) {
 			ex.printStackTrace();
 			

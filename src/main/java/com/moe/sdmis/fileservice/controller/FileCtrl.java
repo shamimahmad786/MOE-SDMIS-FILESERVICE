@@ -227,6 +227,17 @@ public class FileCtrl {
 //					numberOfCell = ConfigurableUtility.commonPhysicalColumn;
 //				}
 
+					System.out.println(currentRow.getPhysicalNumberOfCells());
+					System.out.println(numberOfCell);
+					System.out.println(currentRow.getCell(53));
+					System.out.println(currentRow.getCell(55));
+					for(int i=0;i<currentRow.getPhysicalNumberOfCells();i++) {
+						System.out.println(currentRow.getCell(i).getStringCellValue());
+					}
+					System.out.println("final");
+//				System.out.println();
+					
+					
 				if (currentRow.getPhysicalNumberOfCells() != numberOfCell) {
 					uploadedExcel.delete();
 					uploadedResponse.delete();

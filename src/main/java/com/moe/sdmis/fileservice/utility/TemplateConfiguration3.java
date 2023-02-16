@@ -201,7 +201,7 @@ public class TemplateConfiguration3 {
 				if (currentRow.getCell(5).getCellType() == CellType.NUMERIC) {
 					d = currentRow.getCell(5).getDateCellValue();
 					stdObj.setStudentDob(dff.format(d).trim());
-					System.out.println("date Dob---->"+(currentRow.getCell(5).getStringCellValue()));
+//					System.out.println("date Dob---->"+(currentRow.getCell(5).getStringCellValue()));
 				} else if (currentRow.getCell(5).getCellType() == CellType.STRING) {
 //<<<<<<< HEAD
 //					System.out.println("String Dob---->"+(currentRow.getCell(5).getStringCellValue()));
@@ -209,7 +209,7 @@ public class TemplateConfiguration3 {
 //=======
 					
 					stdObj.setStudentDob(currentRow.getCell(5).getStringCellValue().trim());
-					System.out.println("Date String --->"+stdObj.getStudentDob());
+//					System.out.println("Date String --->"+stdObj.getStudentDob());
 //>>>>>>> c10fd8d144575a79f575f0f48636147f7140c02e
 				}
 				
@@ -1120,7 +1120,7 @@ public class TemplateConfiguration3 {
 				setCellColors(currentRow, currentRow.getCell(40), 40, cellStyle);
 			} else {
 //				currentRow.getCell(40).setCellValue("");
-				checkCellAndCreate(currentRow,40,"");
+				checkCellAndCreate(currentRow,40,df.formatCellValue(currentRow.getCell(40)));
 				setCellColors(currentRow, currentRow.getCell(40), 40, correctCellStyle);
 				
 			}
@@ -1198,8 +1198,20 @@ public class TemplateConfiguration3 {
 //					.get("facProvidedCwsn").get("s").equalsIgnoreCase("0")) {
 //				setCellColors(currentRow, currentRow.getCell(44), 44, cellStyle);
 //			} else {
-				setCellColors(currentRow, currentRow.getCell(44), 44, correctCellStyle);
+//				setCellColors(currentRow, currentRow.getCell(44), 44, correctCellStyle);
 //			}
+				
+				if(stdObj.getFacProvidedCwsn().equalsIgnoreCase("")) {
+					setCellColors(currentRow, currentRow.getCell(44), 44, correctCellStyle);
+				}else if(customFxcelValidator
+						.numberValidation(mObject, "facProvidedCwsn", checkNullandTrim(stdObj.getFacProvidedCwsn()), 12)
+						.get("facProvidedCwsn").get("s").equalsIgnoreCase("0")){
+					setCellColors(currentRow, currentRow.getCell(44), 44, cellStyle);
+				}else {
+					setCellColors(currentRow, currentRow.getCell(44), 44, correctCellStyle);
+				}
+				
+				
 		}else if(checkNull(stdObj.getCwsnYn()).equalsIgnoreCase("2")) {
 			checkCellAndCreate(currentRow,44,"");
 //			setCellColors(currentRow, currentRow.getCell(44), 44, correctCellStyle);
@@ -1346,7 +1358,7 @@ if(stdObj.getVocYn().equalsIgnoreCase("1")) {
 }else {
 	stdObj.setSector("");
 }
-//		System.out.println("vocational true---->"+sObj.getRowValue().get(0).get("is_vocational_active"));
+		System.out.println("vocational true---->"+sObj.getRowValue().get(0).get("is_vocational_active"));
 //		System.out.println("Vocational--->"+stdObj.getVocYn());
 		
 		try {
@@ -1393,7 +1405,8 @@ if(stdObj.getVocYn().equalsIgnoreCase("1")) {
 				}
 			}
 			else {
-				setCellColors(currentRow, currentRow.getCell(51), 51, cellStyle);
+				checkCellAndCreate(currentRow,51,"");
+//				setCellColors(currentRow, currentRow.getCell(51), 51, cellStyle);
 			}
 			}else {
 //				System.out.println("sector else");
@@ -1430,10 +1443,11 @@ if(stdObj.getVocYn().equalsIgnoreCase("1")) {
 					setCellColors(currentRow, currentRow.getCell(52), 52, correctCellStyle);
 				
 				} else {
+					System.out.println("In job false");
 					setCellColors(currentRow, currentRow.getCell(52), 52, cellStyle);
 				}
 				}catch(Exception ex) {
-					setCellColors(currentRow, currentRow.getCell(51), 51, cellStyle);
+					setCellColors(currentRow, currentRow.getCell(52), 52, cellStyle);
 					ex.printStackTrace();
 				}
 			} else if (sObj.getRowValue().get(0).get("is_vocational_active") != null
@@ -1457,6 +1471,8 @@ if(stdObj.getVocYn().equalsIgnoreCase("1")) {
 					setCellColors(currentRow, currentRow.getCell(52), 52, cellStyle);
 					ex.printStackTrace();
 				}
+			}else {
+				checkCellAndCreate(currentRow,52,"");
 			}
 
 			}else {

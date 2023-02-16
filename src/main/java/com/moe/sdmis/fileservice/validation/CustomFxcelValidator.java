@@ -125,7 +125,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 
 		try {
 			
-			System.out.println("Section Map--->"+sectionMap);
+//			System.out.println("Section Map--->"+sectionMap);
 			
 			if(stObj.getClassId() !=null && (stObj.getClassId().equalsIgnoreCase("PP1") || stObj.getClassId().equalsIgnoreCase("PP2") || stObj.getClassId().equalsIgnoreCase("PP3") ) ) {
 				if(stObj.getClassId().equalsIgnoreCase("PP1")) {
@@ -514,7 +514,12 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 
 		if (sObj.getRowValue().get(0).get("sch_mgmt_center_id") !=null && (Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("sch_mgmt_center_id"))) != 5 && Integer.parseInt(String.valueOf(sObj.getRowValue().get(0).get("sch_mgmt_center_id"))) != 8)) {
 		if (checkNull(stObj.getCwsnYn()).equalsIgnoreCase("1")) {
-			blankAndTrueValidation(mObject, "facProvidedCwsn",  checkNullandTrim(stObj.getFacProvidedCwsn()));
+//			blankAndTrueValidation(mObject, "facProvidedCwsn",  checkNullandTrim(stObj.getFacProvidedCwsn()));
+			if(stObj.getFacProvidedCwsn().equalsIgnoreCase("")) {
+				blankAndTrueValidation(mObject, "facProvidedCwsn",  checkNullandTrim(stObj.getFacProvidedCwsn()));	
+			}else {
+				numberValidation(mObject, "facProvidedCwsn", checkNullandTrim(stObj.getFacProvidedCwsn()), 12);
+			}
 //			numberValidation(mObject, "facProvidedCwsn", checkNullandTrim(stObj.getFacProvidedCwsn()), 12);
 		} else {
 			blankAndTrueValidation(mObject, "facProvidedCwsn", "");
@@ -617,8 +622,8 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 
 
 		try {
-			System.out.println("lowerSubSector--->"+lowerSubSector);
-			System.out.println("higherSubSector--->"+higherSubSector);
+//			System.out.println("lowerSubSector--->"+lowerSubSector);
+//			System.out.println("higherSubSector--->"+higherSubSector);
 			
 			if(stObj.getVocYn() !=null && stObj.getVocYn() !="" && stObj.getVocYn().equalsIgnoreCase("1") && Integer.parseInt(checkNull(String.valueOf(sObj.getRowValue().get(0).get("is_vocational_active"))))==1) {
 			if (sObj.getRowValue().get(0).get("is_vocational_active") != null && sObj.getRowValue().get(0).get("vocational_grade") !=null
@@ -752,18 +757,18 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 				
 				if (Integer.parseInt(value) > 100) {
 					hs.put("s", "0");
-					hs.put("m", "invalid marks");
+					hs.put("m", "(invalid marks)");
 				}
 			} else if (mapKey.equalsIgnoreCase("attendencePy")) {
 				if (Integer.parseInt(value) > 250) {
 					hs.put("s", "0");
-					hs.put("m", "invalid attendence days");
+					hs.put("m", "(invalid attendence days)");
 				}
 			} else if ((mapKey.equalsIgnoreCase("centrlSchlrshpYn") || mapKey.equalsIgnoreCase("textBoxFacProvided")|| mapKey.equalsIgnoreCase("uniformFacProvided") || mapKey.equalsIgnoreCase("examAppearedPyYn") || mapKey.equalsIgnoreCase("enrStatusPy") || mapKey.equalsIgnoreCase("socCatId") || mapKey.equalsIgnoreCase("cwsnYn")
 					|| mapKey.equalsIgnoreCase("ewsYn") || mapKey.equalsIgnoreCase("minorityId")
 					|| mapKey.equalsIgnoreCase("isBplYn") || mapKey.equalsIgnoreCase("natIndYn") || mapKey.equalsIgnoreCase("ooscYn") || mapKey.equalsIgnoreCase("ooscMainstreamedYn")) && originalValue < 1) {
 				hs.put("s", "0");
-				hs.put("m", "invalid value");
+				hs.put("m", "(invalid value)");
 			}else if(mapKey.equalsIgnoreCase("gender")) {
 //				try {
 //				if(GeneralUtility.typeMapping.containsKey(value)) {
@@ -778,7 +783,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 			hs.put("s", "1");
 		}else if(value==null || value =="") {
 			hs.put("s", "0");
-			hs.put("m", "Required");
+			hs.put("m", "(Required)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		} else {
@@ -799,14 +804,14 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 		hs.put("v", value);
 		if (value != null && (value.length() < minRange || value.length() > maxRange)) {
 			hs.put("s", "0");
-			hs.put("m", "Invalid string length. Minimum lenght will be "+minRange+" and Maximum length will be "+maxRange);
+			hs.put("m", "(Invalid string length. Minimum lenght will be "+minRange+" and Maximum length will be "+maxRange+")");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		} else if (value != null && value.matches(alphanumericRegax) && value != "") {
 			hs.put("s", "1");
 		} else if(value==null || value =="") {
 			hs.put("s", "0");
-			hs.put("m", "Required");
+			hs.put("m", "(Required)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		}else {
@@ -829,17 +834,17 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 		hs.put("v", value);
 		if (value != null && GeneralUtility.ImperialMapping.get(value) !=null && !GeneralUtility.ImperialMapping.get(value)) {
 			hs.put("s", "0");
-			hs.put("m", "Invalid Imperial Type");
+			hs.put("m", "(Invalid Imperial Type)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		}else if(GeneralUtility.ImperialMapping.get(value)==null) {
 			hs.put("s", "0");
-			hs.put("m", "Invalid Imperial Type");
+			hs.put("m", "(Invalid Imperial Type)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		} else if(value==null || value =="") {
 			hs.put("s", "0");
-			hs.put("m", "Required");
+			hs.put("m", "(Required)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		} else {
@@ -868,7 +873,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 		hs.put("v", value);
 		if (value != null && GeneralUtility.INVALID_MOBILE_NUMBERS.contains(value)) {
 			hs.put("s", "0");
-			hs.put("m", "Invalid Mobile Format");
+			hs.put("m", "(Invalid Mobile Format)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		} else if (value != null && value.matches(mobileRegax) && value != "") {
@@ -877,12 +882,12 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 			hs.put("s", "1");
 		}else if(value==null || value =="") {
 			hs.put("s", "0");
-			hs.put("m", "Required");
+			hs.put("m", "(Required)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		} else {
 			hs.put("s", "0");
-			hs.put("m", "Invalid Mobile Format");
+			hs.put("m", "(Invalid Mobile Format)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		}
@@ -905,13 +910,13 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 			hs.put("s", "1");
 		}else if(value==null || value =="") {
 			hs.put("s", "0");
-			hs.put("m", "Required");
+			hs.put("m", "(Required)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		} else {
 //			System.out.println("Email Status");
 			hs.put("s", "0");
-			hs.put("m", "Invalid Email Format");
+			hs.put("m", "(Invalid Email Format)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		}
@@ -933,12 +938,12 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 			
 		} else if(value==null || value =="") {
 			hs.put("s", "0");
-			hs.put("m", "Required");
+			hs.put("m", "(Required)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		}else {
 			hs.put("s", "0");
-			hs.put("m", "Invalid Date Format dd/mm/yyyy");
+			hs.put("m", "(Invalid Date Format dd/mm/yyyy)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		}
@@ -962,7 +967,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 				hs.put("m", "");
 			}else {
 				hs.put("s", "0");
-				hs.put("m", "Invalid Name length");
+				hs.put("m", "(Invalid Name length)");
 				fs.put("s", "0");
 				mp.put("fs", fs);
 			}
@@ -976,12 +981,12 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 			hs.put("s", "1");
 		}else if(value==null || value =="") {
 			hs.put("s", "0");
-			hs.put("m", "Required");
+			hs.put("m", "(Required)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		} else {
 			hs.put("s", "0");
-			hs.put("m", "Invalid String Format");
+			hs.put("m", "(Invalid String Format)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		}
@@ -999,12 +1004,12 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 			hs.put("s", "1");
 		}else if(value==null || value =="") {
 			hs.put("s", "0");
-			hs.put("m", "Required");
+			hs.put("m", "(Required)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		} else {
 			hs.put("s", "0");
-			hs.put("m", "Invalid Pincode Format");
+			hs.put("m", "(Invalid Pincode Format)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		}
@@ -1028,7 +1033,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 			
 			if(!adharMach.add(value) && !value.equalsIgnoreCase("999999999999")) {
 				hs.put("s", "0");
-				hs.put("m", "Duplicate Adhar");
+				hs.put("m", "(Duplicate Adhar)");
 				fs.put("s", "0");
 				mp.put("fs", fs);
 			}
@@ -1036,12 +1041,12 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 			hs.put("s", "1");
 		}else if(value==null || value =="") {
 			hs.put("s", "0");
-			hs.put("m", "Required");
+			hs.put("m", "(Required)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		} else {
 			hs.put("s", "0");
-			hs.put("m", "Invalid Aadhar Format");
+			hs.put("m", "(Invalid Aadhar Format)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		}
@@ -1070,12 +1075,12 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 			hs.put("s", "1");
 		}else if(value==null || value =="") {
 			hs.put("s", "0");
-			hs.put("m", "Required");
+			hs.put("m", "(Required)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		} else {
 			hs.put("s", "0");
-			hs.put("m", "Invalid Admision Format");
+			hs.put("m", "(Invalid Admision Format)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		}

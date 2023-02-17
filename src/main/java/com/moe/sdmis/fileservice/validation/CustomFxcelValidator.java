@@ -1033,7 +1033,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 			
 			if(!adharMach.add(value) && !value.equalsIgnoreCase("999999999999")) {
 				hs.put("s", "0");
-				hs.put("m", "(Duplicate Adhar)");
+				hs.put("m", "(Duplicate Aadhaar)");
 				fs.put("s", "0");
 				mp.put("fs", fs);
 			}
@@ -1046,7 +1046,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 			mp.put("fs", fs);
 		} else {
 			hs.put("s", "0");
-			hs.put("m", "(Invalid Aadhar Format)");
+			hs.put("m", "(Invalid Aadhaar Format)");
 			fs.put("s", "0");
 			mp.put("fs", fs);
 		}

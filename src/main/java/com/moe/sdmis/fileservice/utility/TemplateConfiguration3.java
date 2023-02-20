@@ -1125,12 +1125,12 @@ public class TemplateConfiguration3 {
 				
 			}
 		} else {
-			if (currentRow.getCell(41) == null) {
-				currentRow.createCell(41);
+			if (currentRow.getCell(40) == null) {
+				currentRow.createCell(40);
 			}
 //			currentRow.getCell(41).setCellValue("");
-			checkCellAndCreate(currentRow,41,"");
-			setCellColors(currentRow, currentRow.getCell(41), 41, correctCellStyle);
+			checkCellAndCreate(currentRow,40,"");
+			setCellColors(currentRow, currentRow.getCell(40), 40, correctCellStyle);
 			
 		}
 
@@ -1373,7 +1373,7 @@ if(stdObj.getVocYn().equalsIgnoreCase("1")) {
 //				System.out.println("lower sector true");
 				try {
 				if (lowerSector.get(String.valueOf(checkNull(stdObj.getSector())))) {
-					checkCellAndCreate(currentRow,51,"");
+					checkCellAndCreate(currentRow,51,stdObj.getSector());
 					setCellColors(currentRow, currentRow.getCell(51), 51, correctCellStyle);
 					
 				} else {
@@ -1394,7 +1394,7 @@ if(stdObj.getVocYn().equalsIgnoreCase("1")) {
 //				System.out.println("higher sector true");
 				try {
 				if (higherSector.get(String.valueOf(checkNull(stdObj.getSector())))) {
-					checkCellAndCreate(currentRow,51,"");
+					checkCellAndCreate(currentRow,51,stdObj.getSector());
 					setCellColors(currentRow, currentRow.getCell(51), 51, correctCellStyle);	
 				} else {
 					setCellColors(currentRow, currentRow.getCell(51), 51, cellStyle);
@@ -1439,7 +1439,7 @@ if(stdObj.getVocYn().equalsIgnoreCase("1")) {
 //				System.out.println("JOb-1");
 				try {
 				if (lowerSubSector.get(String.valueOf(checkNull(stdObj.getJobRole())))) {
-					checkCellAndCreate(currentRow,52,"");
+					checkCellAndCreate(currentRow,52,stdObj.getJobRole());
 					setCellColors(currentRow, currentRow.getCell(52), 52, correctCellStyle);
 				
 				} else {
@@ -1461,7 +1461,7 @@ if(stdObj.getVocYn().equalsIgnoreCase("1")) {
 				try {
 //					System.out.println("Job-2-->"+stdObj.getJobRole());
 				if (stdObj.getJobRole() !=null && higherSubSector.get(String.valueOf(checkNull(stdObj.getJobRole())))) {
-					checkCellAndCreate(currentRow,52,"");
+					checkCellAndCreate(currentRow,52,stdObj.getJobRole());
 					setCellColors(currentRow, currentRow.getCell(52), 52, correctCellStyle);
 					
 				} else {

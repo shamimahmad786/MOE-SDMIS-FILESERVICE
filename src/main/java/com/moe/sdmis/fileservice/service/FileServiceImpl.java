@@ -410,7 +410,7 @@ public class FileServiceImpl {
 //	        		stdfacility.setStudentId(1L);
 				stdfacility.setSchoolId(Integer.parseInt(data));
 				stdfacility.setFacProvided(jsonCreation(nullCheck(studentObj.get("textBoxFacProvided")).get("v"),
-						nullCheck(studentObj.get("uniformFacProvided")).get("value")));
+						nullCheck(studentObj.get("uniformFacProvided")).get("v")));
 //						System.out.println(studentObj.get("centralScholarshipId"));
 
 				if (stdfacility.getFacProvided() != null && stdfacility.getFacProvided().length > 0) {

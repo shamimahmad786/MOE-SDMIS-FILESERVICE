@@ -580,7 +580,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 					blankAndFalseValidation(mObject, "sector", stObj.getSector(),"(Invalid Trade/Sector Id)");
 				}
 				}catch(Exception ex) {
-					Map<String, HashMap<String, String>> mp=blankAndFalseValidation(mObject, "sector", stObj.getSector(),"");
+					Map<String, HashMap<String, String>> mp=blankAndFalseValidation(mObject, "sector", stObj.getSector(),"(Invalid Trade/Sector Id)");
 					mp.get("sector").put("message", "Sector Id not available");
 					ex.printStackTrace();
 				}
@@ -600,7 +600,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 					blankAndFalseValidation(mObject, "sector", stObj.getSector(),"(Invalid Trade/Sector Id)");
 				}
 				}catch(Exception ex) {
-					Map<String, HashMap<String, String>> mp=blankAndFalseValidation(mObject, "sector", stObj.getSector(),"");
+					Map<String, HashMap<String, String>> mp=blankAndFalseValidation(mObject, "sector", stObj.getSector(),"(Invalid Trade/Sector Id)");
 					mp.get("sector").put("message", "Sector Id not available");
 					
 				}
@@ -662,7 +662,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 					blankAndFalseValidation(mObject, "jobRole", stObj.getJobRole(),"(Invalid Job/Role Id)");
 				}
 				}catch(Exception ex) {
-					Map<String, HashMap<String, String>> mp=blankAndFalseValidation(mObject, "jobRole", stObj.getJobRole(),"");
+					Map<String, HashMap<String, String>> mp=blankAndFalseValidation(mObject, "jobRole", stObj.getJobRole(),"(Invalid Job/Role Id)");
 					mp.get("jobRole").put("message", "Role Id not available");
 					ex.printStackTrace();
 				}

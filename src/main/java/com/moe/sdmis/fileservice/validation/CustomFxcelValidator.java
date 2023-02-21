@@ -735,7 +735,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 
 		long originalValue = 0;
 
-		if (value != "" && value != null && !value.equalsIgnoreCase("PP1") && !value.equalsIgnoreCase("PP2")
+		if (!value.isEmpty() && value != "" && value != null && !value.equalsIgnoreCase("PP1") && !value.equalsIgnoreCase("PP2")
 				&& !value.equalsIgnoreCase("PP3") && value.matches(numberRegex)) {
 			try {
 			originalValue = Long.parseLong(value);
@@ -748,13 +748,13 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 			}
 		}
 
-		if (value != null && value.matches(numberRegex) && value != "" && originalValue <= valueRange) {
+		if (!value.isEmpty() && value != null && value.matches(numberRegex) && value != "" && originalValue <= valueRange) {
 			hs.put("s", "1");
 
 			if (mapKey.equalsIgnoreCase("examMarksPy")) {
 				
 //				System.out.println();
-				
+				System.out.println("value--->"+value+"----");
 				if (Integer.parseInt(value) > 100) {
 					hs.put("s", "0");
 					hs.put("m", "(invalid marks)");
@@ -802,14 +802,14 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 		HashMap<String, String> fs = new HashMap<String, String>();
 		HashMap<String, String> hs = new HashMap<String, String>();
 		hs.put("v", value);
-		if (value != null && (value.length() < minRange || value.length() > maxRange)) {
+		if (!value.isEmpty() && value != null && (value.length() < minRange || value.length() > maxRange)) {
 			hs.put("s", "0");
 			hs.put("m", "(Invalid string length. Minimum lenght will be "+minRange+" and Maximum length will be "+maxRange+")");
 			fs.put("s", "0");
 			mp.put("fs", fs);
-		} else if (value != null && value.matches(alphanumericRegax) && value != "") {
+		} else if (!value.isEmpty() && value != null && value.matches(alphanumericRegax) && value != "") {
 			hs.put("s", "1");
-		} else if(value==null || value =="") {
+		} else if(value==null || value =="" || value.isEmpty()) {
 			hs.put("s", "0");
 			hs.put("m", "(Required)");
 			fs.put("s", "0");
@@ -1094,7 +1094,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 		if (value != null && value != "") {
 			return value.trim();
 		}
-		return value;
+		return value.trim();
 	}
 
 	public String checkNull(String value) {
@@ -1237,99 +1237,99 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 		        }
 		        return status;
 		}else {
-	     boolean status = false;
-	        if(grade != null) {
-	            switch(grade) {
-	            case -3:
-	                if(age >= 2 && age <= 5) {
-	                    status = true;
-	                }
-	                break;
-	            case -2:
-	                if(age >= 2 && age <= 6) {
-	                    status = true;
-	                }
-	                break;
-	            case -1:
-	                if(age >= 3 && age <= 8) {
-	                    status = true;
-	                }
-	                break;
-	               
-	            case 1:
-	                if(age >= 4 && age <= 12) {
-	                    status = true;
-	                }
-	                break;
-	               
-	            case 2:
-	                if(age >= 5 && age <= 13) {
-	                    status = true;
-	                }
-	                break;
-	               
-	            case 3:
-	                if(age >= 6 && age <= 14) {
-	                    status = true;
-	                }
-	                break;
-	               
-	            case 4:
-	                if(age >= 7 && age <= 15) {
-	                    status = true;
-	                }
-	                break;
-	               
-	            case 5:
-	                if(age >= 8 && age <= 16) {
-	                    status = true;
-	                }
-	                break;
-	               
-	            case 6:
-	                if(age >= 9 && age <= 17) {
-	                    status = true;
-	                }
-	                break;
-	               
-	            case 7:
-	                if(age >= 10 && age <= 18) {
-	                    status = true;
-	                }
-	                break;
-	               
-	            case 8:
-	                if(age >= 11 && age <= 19) {
-	                    status = true;
-	                }
-	                break;
-	               
-	            case 9:
-	                if(age >= 12 && age <= 20) {
-	                    status = true;
-	                }
-	                break;
-	               
-	            case 10:
-	                if(age >= 13 && age <= 30) {
-	                    status = true;
-	                }
-	                break;
-	               
-	            case 11:
-	                if(age >= 14 && age <= 30) {
-	                    status = true;
-	                }
-	                break;
-	               
-	            case 12:
-	                if(age >= 15 && age <= 30) {
-	                    status = true;
-	                }
-	                break;
-	            }
-	        }
-	        return status;
+			   boolean status = false;
+		        if(grade != null) {
+		            switch(grade) {
+		            case -3:
+		                if(age >= 2 && age <= 5) {
+		                    status = true;
+		                }
+		                break;
+		            case -2:
+		                if(age >= 2 && age <= 6) {
+		                    status = true;
+		                }
+		                break;
+		            case -1:
+		                if(age >= 3 && age <= 8) {
+		                    status = true;
+		                }
+		                break;
+		                 
+		            case 1:
+		                if(age >= 3 && age <= 15) {
+		                    status = true;
+		                }
+		                break;
+		                 
+		            case 2:
+		                if(age >= 4 && age <= 16) {
+		                    status = true;
+		                }
+		                break;
+		                 
+		            case 3:
+		                if(age >= 5 && age <= 17) {
+		                    status = true;
+		                }
+		                break;
+		                 
+		            case 4:
+		                if(age >= 6 && age <= 18) {
+		                    status = true;
+		                }
+		                break;
+		                 
+		            case 5:
+		                if(age >= 7 && age <= 19) {
+		                    status = true;
+		                }
+		                break;
+		                 
+		            case 6:
+		                if(age >= 8 && age <= 20) {
+		                    status = true;
+		                }
+		                break;
+		                 
+		            case 7:
+		                if(age >= 9 && age <= 21) {
+		                    status = true;
+		                }
+		                break;
+		                 
+		            case 8:
+		                if(age >= 10 && age <= 22) {
+		                    status = true;
+		                }
+		                break;
+		                 
+		            case 9:
+		                if(age >= 11 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		                 
+		            case 10:
+		                if(age >= 12 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		                 
+		            case 11:
+		                if(age >= 13 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		                 
+		            case 12:
+		                if(age >= 14 && age <= 30) {
+		                    status = true;
+		                }
+		                break;
+		            }
+		        }
+		        return status;
 		}
 	}
 	

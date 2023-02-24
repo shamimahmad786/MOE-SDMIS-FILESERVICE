@@ -1819,8 +1819,11 @@ try {
             	return String.valueOf(cell.getStringCellValue()).trim();
             	}catch(Exception ex) {
             		ex.printStackTrace();
+            		try {
             		return String.valueOf(cell.getNumericCellValue()).trim();
-            		
+            		}catch(Exception e) {
+            			return  df.formatCellValue(cell).trim();
+            		}
             	}
             }
         }

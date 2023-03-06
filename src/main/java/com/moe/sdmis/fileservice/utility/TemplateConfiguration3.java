@@ -439,10 +439,14 @@ public class TemplateConfiguration3 {
 		}
 
 		stdObj.setSocCatId(getCellValue(currentRow.getCell(17)));
-		if (customFxcelValidator.numberValidation(mObject, "socCatId", checkNullandTrim(stdObj.getSocCatId()), 4)
+		if(String.valueOf(sObj.getRowValue().get(0).get("state_id")).equalsIgnoreCase("110") && customFxcelValidator.numberValidation(mObject, "socCatId", checkNullandTrim(stdObj.getSocCatId()), 5)
 				.get("socCatId").get("s").equalsIgnoreCase("0")) {
-//			System.out.println("In set color---->19");
-//			currentRow.getCell(17).setCellStyle(cellStyle);
+			setCellColors(currentRow, currentRow.getCell(17), 17, cellStyle);
+		}else if(String.valueOf(sObj.getRowValue().get(0).get("state_id")).equalsIgnoreCase("127") && customFxcelValidator.numberValidation(mObject, "socCatId", checkNullandTrim(stdObj.getSocCatId()), 10)
+				.get("socCatId").get("s").equalsIgnoreCase("0")) {
+			setCellColors(currentRow, currentRow.getCell(17), 17, cellStyle);
+		} else if (customFxcelValidator.numberValidation(mObject, "socCatId", checkNullandTrim(stdObj.getSocCatId()), 4)
+				.get("socCatId").get("s").equalsIgnoreCase("0")) {
 			setCellColors(currentRow, currentRow.getCell(17), 17, cellStyle);
 		} else {
 			setCellColors(currentRow, currentRow.getCell(17), 17, correctCellStyle);
@@ -1507,7 +1511,7 @@ try {
 			if(stdObj.getVocYn() !=null && stdObj.getVocYn() !="" && stdObj.getVocYn().equalsIgnoreCase("1")) {	
 		if(stdObj.getClassId() !=null && df.formatCellValue(currentRow.getCell(53)) == null || df.formatCellValue(currentRow.getCell(53)) == "" || (stdObj.getClassId().equalsIgnoreCase("PP") || stdObj.getClassId().equalsIgnoreCase("PP1") || stdObj.getClassId().equalsIgnoreCase("PP2") || stdObj.getClassId().equalsIgnoreCase("PP3") || (Integer.parseInt((String.valueOf(stdObj.getClassId())))>0 && Integer.parseInt((String.valueOf(stdObj.getClassId())))<9))) {
 			setCellColors(currentRow, currentRow.getCell(53), 53, correctCellStyle);
-		}else if (customFxcelValidator.numberValidation(mObject, "appVocPy", checkNullandTrim(stdObj.getAppVocPy()), 2)
+		}else if (customFxcelValidator.numberValidation(mObject, "appVocPy", checkNullandTrim(stdObj.getAppVocPy()), 4)
 				.get("appVocPy").get("s").equalsIgnoreCase("0")) {
 			setCellColors(currentRow, currentRow.getCell(53), 53, cellStyle);
 		} else {

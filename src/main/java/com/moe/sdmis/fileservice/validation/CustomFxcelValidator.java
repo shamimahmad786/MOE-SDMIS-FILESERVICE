@@ -260,7 +260,15 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 			blankAndFalseValidation(mObject, "motherTongue", checkNullandTrim(stObj.getMotherTongue()),"(Invalid Mother Tongue)");
 			ex.printStackTrace();
 		}
+		
+		if(String.valueOf(sObj.getRowValue().get(0).get("state_id")).equalsIgnoreCase("110")) {
+		numberValidation(mObject, "socCatId", checkNullandTrim(stObj.getSocCatId()), 5);
+		}else if(String.valueOf(sObj.getRowValue().get(0).get("state_id")).equalsIgnoreCase("127")) {
+		numberValidation(mObject, "socCatId", checkNullandTrim(stObj.getSocCatId()), 10);	
+		}else {
 		numberValidation(mObject, "socCatId", checkNullandTrim(stObj.getSocCatId()), 4);
+		}
+		
 		numberValidation(mObject, "minorityId", checkNullandTrim(stObj.getMinorityId()), 7);
 		numberValidation(mObject, "isBplYn", checkNullandTrim(stObj.getIsBplYn()), 2);
 
@@ -685,7 +693,7 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 			blankAndTrueValidation(mObject, "appVocPy", "0");
 		}else if (stObj.getClassId() !=null &&   (Integer.parseInt(String.valueOf(stObj.getClassId()))>8 && Integer.parseInt(String.valueOf(stObj.getClassId()))<=12)) {
 //			setCellColors(currentRow, currentRow.getCell(53), 53, cellStyle);
-			numberValidation(mObject, "appVocPy", checkNullandTrim(stObj.getAppVocPy()), 2);
+			numberValidation(mObject, "appVocPy", checkNullandTrim(stObj.getAppVocPy()), 4);
 		} else {
 			blankAndFalseValidation(mObject, "appVocPy", stObj.getAppVocPy(),"(Invalid Number/Format)");
 //			setCellColors(currentRow, currentRow.getCell(53), 53, correctCellStyle);

@@ -330,7 +330,7 @@ public class FileServiceImpl {
 				studentPojo.setEwsYN(handleInteger(nullCheck(studentObj.get("ewsYn")).get("v")));
 				studentPojo.setCwsnYN(handleInteger(nullCheck(studentObj.get("cwsnYn")).get("v")));
 				if (studentPojo.getCwsnYN() != null && studentPojo.getCwsnYN() == 2) {
-				} else {
+				} else if(studentObj.get("impairmentType").get("v") !=null && !studentObj.get("impairmentType").get("v").equalsIgnoreCase("")){
 					studentPojo.setImpairmentType(
 							new GeneralUtility().CustomStringMapper(studentObj.get("impairmentType").get("v")));
 				}

@@ -70,7 +70,11 @@ public class GeneralUtility {
 		}
 		
 		for(int i=0;i<elephantList.size();i++) {
+			try {
 			arrayObj[i]=Integer.parseInt(elephantList.get(0));
+			}catch(Exception ex) {
+				ex.printStackTrace();
+			}
 		}
 		
 		

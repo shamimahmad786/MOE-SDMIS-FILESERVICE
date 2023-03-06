@@ -180,7 +180,7 @@ public class FileCtrl {
 		Integer totalRows = datatypeSheet.getPhysicalNumberOfRows();
 
 		System.out.println("totalRows---->"+totalRows);
-		if(totalRows<=6) {
+		if(totalRows<7) {
 			throw new GenericExceptionHandler("Excel didn't have any data in sheet 2",
 					"100008", request.getRemoteAddr(), userid, schoolId);
 		}

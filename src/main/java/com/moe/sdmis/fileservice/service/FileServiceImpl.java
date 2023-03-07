@@ -551,7 +551,7 @@ public class FileServiceImpl {
 //			System.out.println(nativeRepository);
 
 			qrObj = nativeRepository.executeQueries(
-					"select is_exl_active,is_sec_com,udise_sch_code,is_vocational_active from public.school_master_live where school_id="
+					"select is_exl_active,is_sec_com,udise_sch_code,is_vocational_active,is_prefilled_active from public.school_master_live where school_id="
 							+ schoolId);
 			sobj.setColumnName(qrObj.getColumnName());
 			sobj.setRowValue(qrObj.getRowValue());

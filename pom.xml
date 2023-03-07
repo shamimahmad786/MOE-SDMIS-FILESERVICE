@@ -11,7 +11,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>MOE-SDMIS-FILESERVICE</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>MOE-SDMIS-FILESERVICE</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -72,6 +72,7 @@
   <!-- <version>2.9.11</version> -->
   <version>2.17.3</version>
 </dependency>
+
 	</dependencies>
 
 	<build>

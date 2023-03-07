@@ -180,8 +180,8 @@ public class FileCtrl {
 		Integer totalRows = datatypeSheet.getPhysicalNumberOfRows();
 
 		System.out.println("totalRows---->"+totalRows);
-		if(totalRows<7) {
-			throw new GenericExceptionHandler("Excel didn't have any data in sheet 2",
+		if(totalRows<8) {
+			throw new GenericExceptionHandler("Excel didn't have any data in Student Data sheet",
 					"100008", request.getRemoteAddr(), userid, schoolId);
 		}
 		
@@ -227,14 +227,14 @@ public class FileCtrl {
 //					numberOfCell = ConfigurableUtility.commonPhysicalColumn;
 //				}
 
-					System.out.println(currentRow.getPhysicalNumberOfCells());
-					System.out.println(numberOfCell);
-					System.out.println(currentRow.getCell(53));
-					System.out.println(currentRow.getCell(55));
+//					System.out.println(currentRow.getPhysicalNumberOfCells());
+//					System.out.println(numberOfCell);
+//					System.out.println(currentRow.getCell(53));
+//					System.out.println(currentRow.getCell(55));
 					for(int i=0;i<currentRow.getPhysicalNumberOfCells();i++) {
-						System.out.println(currentRow.getCell(i).getStringCellValue());
+//						System.out.println(currentRow.getCell(i).getStringCellValue());
 					}
-					System.out.println("final");
+//					System.out.println("final");
 //				System.out.println();
 					
 					

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+//import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,6 +19,7 @@ import com.moe.sdmis.fileservice.repository.UploadExcelStatusRepository;
 
 @SpringBootApplication
 @EnableScheduling
+//@EnableFeignClients
 public class MoeSdmisFileserviceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MoeSdmisFileserviceApplication.class, args);
@@ -32,25 +34,25 @@ public class MoeSdmisFileserviceApplication {
 //	}
 //	
 	
-//	@Autowired
-//	UploadExcelStatusRepository uploadExcelStatusRepository;
-//	
-//	@Autowired
-//	FileCtrl fileCtrl;
-//	
-//	Map<String,String> schoolMap=new HashMap<String,String>();  
-//	@Scheduled(fixedRate = 5000)
-//    public void startService() throws Exception {
-//        UploadExcelStatus schoolObj=  uploadExcelStatusRepository.getSchoolIdForProcess();
-//        if(schoolObj !=null) {
-//        uploadExcelStatusRepository.updateStatusForProcess(Integer.parseInt(String.valueOf(schoolObj.getSchoolId())));
-//        schoolMap.put("schoolId", String.valueOf(schoolObj.getSchoolId()));
-//        schoolMap.put("userId", schoolObj.getUploadedBy());
-//        fileCtrl.docValidate(schoolMap, "10.247.141.227");
-//        System.out.println("In validation if");
-//        }else {
-//        	System.out.println("Validation completed");
-//        }
-//    }
+	@Autowired
+	UploadExcelStatusRepository uploadExcelStatusRepository;
+	
+	@Autowired
+	FileCtrl fileCtrl;
+	
+	Map<String,String> schoolMap=new HashMap<String,String>();  
+	@Scheduled(fixedRate = 5000)
+    public void startService() throws Exception {
+        UploadExcelStatus schoolObj=  uploadExcelStatusRepository.getSchoolIdForProcess();
+        if(schoolObj !=null) {
+        uploadExcelStatusRepository.updateStatusForProcess(Integer.parseInt(String.valueOf(schoolObj.getSchoolId())));
+        schoolMap.put("schoolId", String.valueOf(schoolObj.getSchoolId()));
+        schoolMap.put("userId", schoolObj.getUploadedBy());
+        fileCtrl.docValidate(schoolMap, "10.247.141.227");
+        System.out.println("In validation if");
+        }else {
+        	System.out.println("Validation completed");
+        }
+    }
 	
 }

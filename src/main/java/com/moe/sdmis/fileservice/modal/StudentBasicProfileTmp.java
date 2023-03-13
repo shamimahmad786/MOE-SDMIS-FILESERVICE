@@ -225,6 +225,9 @@ public class StudentBasicProfileTmp {
     
     @Column(name = "enr_modified_time")
     private Date enrModifiedTime;
+    
+    @Column(name = "student_state_code")
+    private String studentStateCode;
 
 	public Long getTemp_id() {
 		return temp_id;
@@ -666,6 +669,8 @@ public class StudentBasicProfileTmp {
 		this.enrModifiedTime = enrModifiedTime;
 	}
     
+	
+	
 //	@Column(name = "is_fac_prov")
 //	private Integer isFacProv;
 //	

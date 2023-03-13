@@ -192,7 +192,7 @@ public class FileCtrl {
 			stdObj.setUdisecode(schoolId);
 			if (currentRow.getRowNum() == 0) {
 				currentRow.setZeroHeight(false);
-				datatypeSheet.setColumnHidden(54, false);
+				datatypeSheet.setColumnHidden(55, false);
 				while (cellIterator.hasNext()) {
 					Cell currentCell = cellIterator.next();
 				}
@@ -238,7 +238,7 @@ public class FileCtrl {
 //				System.out.println();
 					
 					
-				if (currentRow.getPhysicalNumberOfCells() != numberOfCell) {
+				if ((currentRow.getPhysicalNumberOfCells() != numberOfCell && currentRow.getPhysicalNumberOfCells() != numberOfCell+1)) {
 					uploadedExcel.delete();
 					uploadedResponse.delete();
 					throw new GenericExceptionHandler("Column Missing", "100002", request.getRemoteAddr(), userid,
@@ -261,6 +261,8 @@ public class FileCtrl {
 				Map<String, Integer> headerIndexMap = IntStream.range(0, cellHeader.size()).boxed()
 						.collect(Collectors.toMap(i -> cellHeader.get(i), i -> i));
 
+				if(currentRow.getPhysicalNumberOfCells() ==54) {
+				
 //				if (stateId.equalsIgnoreCase("116")) {
 					headersFromExcel = ConfigurableUtility.templateHeadersFromExcel_3;
 //				} else if (stateId.equalsIgnoreCase("112")) {
@@ -284,6 +286,24 @@ public class FileCtrl {
 					throw new GenericExceptionHandler("Column Sequence changed or Missing column", "100003",
 							request.getRemoteAddr(), userid, schoolId);
 				}
+				}else if(currentRow.getPhysicalNumberOfCells() ==55) {
+					headersFromExcel = ConfigurableUtility.templateHeadersFromExcel_3A;
+					Integer result = null;
+					try {
+						for (int i = 0; i < cellHeader.size(); i++) {
+							if (!cellHeader.get(i).equalsIgnoreCase(headersFromExcel.get(i))) {
+							}
+						}
+						result = headersFromExcel.stream().map(headerIndexMap::get).reduce(-1,
+								(x, hi) -> x < hi ? hi : cellHeader.size());
+					} catch (Exception ex) {
+						uploadedExcel.delete();
+						uploadedResponse.delete();
+						throw new GenericExceptionHandler("Column Sequence changed or Missing column", "100003",
+								request.getRemoteAddr(), userid, schoolId);
+					}	
+				}
+				
 			}
 
 		}

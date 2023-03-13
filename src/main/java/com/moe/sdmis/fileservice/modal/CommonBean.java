@@ -73,6 +73,8 @@ public class CommonBean {
 	private String sector;
 	private String jobRole;
 	private String appVocPy;
+	private String studentStateCode;
+	
 	public Long getId() {
 		return id;
 	}

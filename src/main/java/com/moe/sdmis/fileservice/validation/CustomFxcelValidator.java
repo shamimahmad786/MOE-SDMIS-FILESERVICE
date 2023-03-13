@@ -707,6 +707,13 @@ if(stObj.getClassId() != null && (stObj.getClassId().equalsIgnoreCase("PP1") || 
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}
+		
+		
+//		System.out.println("stObj.getStudentStateCode()--->"+stObj.getStudentStateCode());
+		
+		if(stObj.getStudentStateCode() !=null && stObj.getStudentStateCode() !="" && !stObj.getStudentStateCode().isEmpty()) {
+		stringValidation(mObject, "studentStateCode", checkNullandTrim(stObj.getStudentStateCode()), 1, 25);
+		}
 
 		return mObject;
 

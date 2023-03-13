@@ -487,7 +487,7 @@ public class UserExcelExporter {
 			Row zerorow = datatypeSheet.getRow(0);
 			Cell zeroRowFiftyOnecell = zerorow.createCell(54);
 			zeroRowFiftyOnecell.setCellValue((int) qrObj.getRowValue().get(0).get("school_id"));
-			datatypeSheet.setColumnHidden(54, true);
+			datatypeSheet.setColumnHidden(55, true);
 
 //         while (iterator.hasNext()) {
 //

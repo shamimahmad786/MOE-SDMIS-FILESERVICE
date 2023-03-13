@@ -1530,6 +1530,22 @@ try {
 			ex.printStackTrace();
 			
 		}
+		
+		stdObj.setStudentStateCode(getCellValue(currentRow.getCell(54)));
+		
+		try {
+			if(stdObj.getStudentStateCode() !=null && stdObj.getStudentStateCode() !="" && !stdObj.getStudentStateCode().isEmpty()) {
+			if(customFxcelValidator.stringValidation(mObject, "studentStateCode", checkNullandTrim(stdObj.getAddress()),1,25)
+					.get("studentStateCode").get("s").equalsIgnoreCase("0")) {
+				setCellColors(currentRow, currentRow.getCell(54), 54, cellStyle);
+			}else {
+				setCellColors(currentRow, currentRow.getCell(54), 54, correctCellStyle);
+			}
+			}
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		
 
 		return stdObj;
 

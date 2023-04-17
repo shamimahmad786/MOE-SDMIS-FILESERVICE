@@ -441,7 +441,7 @@ public class FileCtrl {
 							TemplateConfiguration3 tcObj = new TemplateConfiguration3();
 							stdObj = tcObj.dataPrepration(mtongObj, stdObj, currentRow, sObj, sectionsObj, vocationObj,
 									cellStyle, correctCellStyle, lowerSector, lowerSubSector, higherSector,
-									higherSubSector, sectionMap, mObject,excelAdharMach);
+									higherSubSector, sectionMap, mObject,excelAdharMach,workbook);
 							stdList.add(stdObj);
 							++totalRows; 
 						}
@@ -489,7 +489,10 @@ public class FileCtrl {
 			try {
 				PrintWriter printWriter = new PrintWriter(uploadedResponse);
 				printWriter.print(objectMapper.writeValueAsString(finalResponse));
+				printWriter.flush();
 				printWriter.close();
+			
+				
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}

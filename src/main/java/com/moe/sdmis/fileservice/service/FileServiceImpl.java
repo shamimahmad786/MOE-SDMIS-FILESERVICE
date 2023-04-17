@@ -310,7 +310,9 @@ public class FileServiceImpl {
 				studentPojo.setDob(sourceFormat.parse(studentObj.get("studentDob").get("v").replaceAll("-", "/")));
 				studentPojo.setMotherName(studentObj.get("motherName").get("v"));
 				studentPojo.setFatherName(studentObj.get("fatherName").get("v"));
+				
 				studentPojo.setAadhaarNo(studentObj.get("aadhaarNo").get("v"));
+				
 				studentPojo.setNameAsAadhaar(studentObj.get("nameAsAadhaar").get("v"));
 				studentPojo.setAddress(studentObj.get("address").get("v"));
 				studentPojo.setPincode(handleInteger(nullCheck(studentObj.get("pincode")).get("v")));

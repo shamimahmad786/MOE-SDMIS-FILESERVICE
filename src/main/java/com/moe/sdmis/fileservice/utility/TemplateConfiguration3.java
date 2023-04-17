@@ -16,8 +16,13 @@ import java.util.Map;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.moe.sdmis.fileservice.db.StaticReportBean;
 import com.moe.sdmis.fileservice.modal.CommonBean;
@@ -30,10 +35,24 @@ public class TemplateConfiguration3 {
 			StaticReportBean sObj, StaticReportBean sectionsObj, StaticReportBean vocationObj, CellStyle cellStyle,
 			CellStyle correctCellStyle, HashMap<String, Boolean> lowerSector, HashMap<String, Boolean> lowerSubSector,
 			HashMap<String, Boolean> higherSector, HashMap<String, Boolean> higherSubSector,
-			HashMap<String, List<String>> sectionMap, Map<String, HashMap<String, String>> mObject,HashSet<String> adharMach) {
+			HashMap<String, List<String>> sectionMap, Map<String, HashMap<String, String>> mObject,HashSet<String> adharMach,Workbook  workbook) {
 		CustomFxcelValidator customFxcelValidator = new CustomFxcelValidator();
 		stdObj.setClassId(getCellValue(currentRow.getCell(0)));
 		Integer cwsnFlag=0;
+		
+//		CellStyle integerCellStyle = workbook.createCellStyle();
+		  //integerCellStyle.setDataFormat(format.getFormat("0"));
+//		  integerCellStyle.setDataFormat();
+//		correctCellStyle.setDataFormat(format.getFormat("#,##0"));
+//		 Workbook workbook = new XSSFWorkbook(); 
+		  
+		  // Create CellStyles
+		  DataFormat format = workbook.createDataFormat();
+		  CellStyle integerCellStyle = workbook.createCellStyle();
+		  integerCellStyle.setDataFormat(format.getFormat("0"));
+//		  integerCellStyle.setDataFormat(format.getFormat("#,##0"));
+		
+		
 		try {
 			cwsnFlag=Integer.parseInt(df.formatCellValue(currentRow.getCell(22)));
 		}catch(Exception ex) {
@@ -352,14 +371,31 @@ public class TemplateConfiguration3 {
 	}else {
 		stdObj.setAadhaarNo("");
 	}
+	
+	try {
 		if (customFxcelValidator.adharValidation(mObject, "aadhaarNo", checkNullandTrim(stdObj.getAadhaarNo()),adharMach)
 				.get("aadhaarNo").get("s").equalsIgnoreCase("0")) {
 //			System.out.println("In set color---->11");
-			setCellColors(currentRow, currentRow.getCell(9), 9, cellStyle);
+			
+			System.out.println(stdObj.getAadhaarNo());
+			checkCellAndCreate(currentRow,9,stdObj.getAadhaarNo());
+			currentRow.getCell(9).setCellStyle(integerCellStyle);
+			integerCellStyle.setFillForegroundColor(IndexedColors.YELLOW.index);
+			integerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+			setCellColors(currentRow, currentRow.getCell(9), 9, integerCellStyle);
 		} else {
-			setCellColors(currentRow, currentRow.getCell(9), 9, correctCellStyle);
+			System.out.println(stdObj.getAadhaarNo());
+			checkCellAndCreate(currentRow,9,stdObj.getAadhaarNo());
+			currentRow.getCell(9).setCellStyle(integerCellStyle);
+			integerCellStyle.setFillForegroundColor(IndexedColors.WHITE.index);
+			integerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+			setCellColors(currentRow, currentRow.getCell(9), 9, integerCellStyle);
 		}
 
+	}catch(Exception ex) {
+		ex.printStackTrace();
+	}
+		
 		if (!stdObj.getAadhaarNo().equalsIgnoreCase("999999999999")) {
 			stdObj.setNameAsAadhaar(checkNull(getCellValue(currentRow.getCell(10))).replaceAll("\\s+", " "));
 			if (customFxcelValidator
@@ -874,7 +910,7 @@ public class TemplateConfiguration3 {
 		
 		
 		
-		if(stdObj.getEnrTypeCy() !=null &&  (stdObj.getEnrTypeCy().equalsIgnoreCase("3") || stdObj.getEnrTypeCy().equalsIgnoreCase("4")) ) {
+		if(stdObj.getEnrStatusPy() !=null &&  (stdObj.getEnrStatusPy().equalsIgnoreCase("3") || stdObj.getEnrStatusPy().equalsIgnoreCase("4")) ) {
 			stdObj.setExamAppearedPyYn("9");
 			checkCellAndCreate(currentRow,33,"9");
 		}else {
